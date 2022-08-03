@@ -1,0 +1,49 @@
+.container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container > div {
+    display: grid;
+}
+
+.buttonContainer {
+    grid-column: 1;
+    grid-row: 1;
+    color: var(--text);
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.power {
+    color: white !important;
+    transition: background-color 0.4s ease-in-out;
+    background-color: transparent !important;
+    font-size: 5rem !important;
+}
+
+.power:hover {
+    color: var(--dark-paper);
+}
+
+.rotate {
+    grid-column: 1;
+    grid-row: 1;
+    width: 200px;
+    height: 200px;
+    cursor: pointer;
+}
+
+.pulse {
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    scale: inherit;
+    rotate: inherit;
+    cursor: pointer;
+}

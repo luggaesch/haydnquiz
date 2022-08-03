@@ -1,0 +1,86 @@
+/*:root {
+  --dark-background: #111111;
+  --dark-paper: #222222;
+  --dark-popup: #191919;
+  --paper: #333333;
+  --paper-highlight: #555555;
+  --accent: rgb(0,255,139);
+  --input: #262626;
+  --text: #ffffff
+}*/
+:root {
+  --dark-background: #fff;
+  --dark-paper: #fefefe;
+  --dark-popup: #f9f9f9;
+  --paper: #fefefe;
+  --paper-highlight: #ddd;
+  --accent: rgb(0,255,139);
+  --input: #f9f9f9;
+  --text: #222
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 8px;
+    margin-right: 20px;
+    background-color: transparent;
+    height: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: transparent;
+    padding: 2px;
+    border-radius: 50%;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: var(--accent);
+    border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: OpenSans, sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  color: var(--text);
+  background: var(--dark-popup) !important;
+  width: 100vw;
+  height: 100vh;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.svg {
+  /*fill: white;*/
+  fill: #222;
+}

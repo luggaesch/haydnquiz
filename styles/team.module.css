@@ -1,0 +1,37 @@
+.container {
+    width: 100%;
+    padding: 10px;
+    margin-top: 30px;
+    color: white;
+    background-color: #333;
+    border-radius: 12px;
+}
+
+.container > h3 {
+    margin: 0;
+}
+
+.container > div {
+    display: grid;
+    grid-row: auto;
+    grid-row-gap: 10px;
+    margin: 20px 0 0 10px;
+}
+
+.teamItem {
+    display: flex;
+    flex-direction: column;
+}
+
+.teamItem > div {
+    margin-top: 5px;
+}
+
+.submitButton {
+    position: absolute !important;
+    bottom: 30px;
+    right: 30px;
+    font-size: 8rem !important;
+    background-color: transparent;
+    color: var(--text) !important;
+}

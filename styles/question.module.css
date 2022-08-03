@@ -1,0 +1,353 @@
+.wrapper {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow-y: hidden;
+}
+
+.wrapperOverlay {
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--paper);
+    color: var(--text);
+    font-size: 6rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 5;
+}
+
+.questionContainer {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 3;
+}
+
+.metaContainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 12vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.topic {
+    height: 100%;
+    width: 11vh;
+    color: var(--text);
+    margin: 0;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 5rem;
+    padding: 20px;
+    border-radius: 0 0 12px 0;
+}
+
+.mediaType {
+    height: 10vh;
+    width: 10vh;
+    color: var(--text);
+    margin-left: 3px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    padding: 40px;
+    border-radius: 50%;
+    background-color: var(--dark-paper);
+    box-shadow: 0 3px 6px rgba(0,0,0,0.19), 0 2px 2px rgba(0,0,0,0.23);
+}
+
+.value {
+    margin-left: 3px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 10vh;
+    width: 10vh;
+    font-size: 3rem;
+    color: var(--text);
+    background-color: var(--dark-paper);
+    border-radius: 50%;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.19), 0 2px 2px rgba(0,0,0,0.23);
+}
+
+.jokerDisplay {
+    padding: 10px;
+    font-size: 2.8rem;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    text-align: center;
+    color: var(--text);
+    position: absolute;
+    top: 1vh;
+    width: 25vw;
+    background-color: var(--dark-paper);
+    border-radius: 4px;
+    left: 50vw;
+    transform: translateX(-50%);
+    box-shadow: 0 3px 6px rgba(0,0,0,0.19), 0 2px 2px rgba(0,0,0,0.23);
+}
+
+.icon {
+    font-size: inherit !important;
+}
+
+.content {
+    padding: 10px;
+    width: 80%;
+    height: 55%;
+    background-color: var(--paper);
+    color: var(--text);
+    margin: 0;
+    text-align: center;
+    position: absolute;
+    top: 20%;
+    left: 10%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 5rem;
+    border-radius: 8px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.19), 0 3px 3px rgba(0,0,0,0.23);
+}
+
+.choiceContainer {
+    width: 80%;
+    height: 40%;
+    color: var(--text);
+    margin: 0;
+    position: absolute;
+    bottom: 4vh;
+    left: 10%;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-row: auto;
+    grid-column-gap: 20px;
+    grid-row-gap: 20px;
+    border-radius: 8px;
+    padding: 10px;
+    justify-content: center;
+}
+
+.guessContainer {
+    width: 80%;
+    height: 40%;
+    color: var(--text);
+    margin: 0;
+    position: absolute;
+    bottom: 2vh;
+    left: 10%;
+    display: grid;
+    grid-template-columns: 40% 40%;
+    grid-row: auto;
+    grid-column-gap: 20px;
+    grid-row-gap: 20px;
+    border-radius: 8px;
+    padding: 10px;
+    justify-content: space-between;
+}
+
+.box {
+    background-color: var(--paper);
+    padding:20px;
+    border-radius:10px;
+    color: var(--text);
+    display:grid;
+    align-items:center;
+    justify-content:center;
+    grid-template-columns: 20% 80%;
+    font-size: 4rem;
+    transition: background-color ease-in-out 0.3s;
+    cursor: pointer;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.19), 0 3px 3px rgba(0,0,0,0.23);
+}
+
+.box:hover {
+    background-color: var(--paper-highlight);
+}
+
+.popupButtonContainer {
+    padding: 20px;
+    position: absolute;
+    bottom: 5vh;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 1px solid var(--text);
+    border-radius: 50%;
+}
+
+.popupButton {
+    grid-row: 1;
+    grid-column: 1;
+    color: var(--text) !important;
+    background: transparent !important;
+    font-size: 5rem !important;
+}
+
+.buttonIcon {
+    font-size: inherit !important;
+}
+
+.popupContainer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: transparent;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 10000;
+}
+
+.popupContainerContent {
+    width: 100%;
+    height: 95%;
+    position: relative;
+}
+
+.imageGrid {
+    width: 100%;
+    height: 100%;
+    display: grid;
+}
+
+.imageWrap {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.imageLabel {
+    background: #eeeeeed0;
+    color: var(--text);
+    font-size: 4rem;
+    font-weight: 20;
+    border-radius: 4px;
+    padding: 10px;
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    z-index: 20;
+}
+
+.popupContainerCollapse {
+    font-size: 1.2rem;
+    background-color: transparent !important;
+    color: var(--text) !important;
+}
+
+.audioPlayerContainer {
+    display: grid;
+    width: 250px;
+    position: absolute;
+    bottom: 5vh;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.inputContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.input {
+    width: 80%;
+    color: var(--text) !important;
+    background-color: var(--input) !important;
+    font-size: 1.8rem !important;
+    padding: 10px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.19), 0 3px 3px rgba(0,0,0,0.23);
+}
+
+.submitButton {
+    position: absolute !important;
+    bottom: 30px;
+    right: 30px;
+    font-size: 8rem !important;
+    background-color: transparent;
+    color: var(--accent) !important;
+}
+
+.sortColumnContainer {
+    width: 100%;
+    height: 95%;
+    background-color: var(--dark-background);
+    display: grid;
+    justify-content: center;grid-template-columns: 40% 40%;
+    grid-gap: 20px;
+}
+
+.sortRowGrid {
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 10% 10% 10% 10% 10% 10% 10% 10% 10% 10%;
+    justify-content: center;
+    align-items: center;
+}
+
+.sortItem {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    text-align: center;
+    font-size: 2.8rem;
+    border-radius: 12px;
+    width: 100%;
+    height: 8vh;
+    padding: 20px;
+    background-color: white;
+    color: var(--text);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.19), 0 3px 3px rgba(0,0,0,0.23);
+}
+
+.sortButton {
+    background-color: transparent !important;
+    color: var(--text);
+    position: absolute !important;
+    right: 0;
+}
+
+.popupContainerText {
+    width: 100%;
+    height: 100%;
+    background-color: var(--dark-popup);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--text);
+    font-size: 5.2rem;
+    text-align: center;
+    z-index: 8;
+    position: relative;
+}
+
+.solutionButton {
+    padding: 20px;
+    position: absolute;
+    bottom: 5vh;
+    left: 9vh;
+    transform: translateX(-50%);
+    border: 1px solid var(--text);
+    border-radius: 50%;
+    font-size: 8rem;
+}
