@@ -53,6 +53,7 @@ export type Question = {
     items?: OrderElement[],
     unit?: string,
     solution: string | number | string[],
+    solutionUrl?: string,
     value: number | Joker,
     timeInSeconds: number
 }
@@ -122,6 +123,7 @@ const questions: Question[] = [
         caption: "Wo findet man diese Zahlenfolge?",
         media: { type: Media.Text, content: "20 1 18 4 13 6 10 15 2 17 3 19 7 16 8 11 14 9 12 5" },
         solution: "Dartscheibe",
+        solutionUrl: `${baseImagePath}dart.png`,
         value: 2,
         timeInSeconds: 150
     },
@@ -214,6 +216,7 @@ const questions: Question[] = [
         caption: "Aus welchem Film stammt dieser Ausschnitt?",
         media: { type: Media.Video, source: "https://streamable.com/rp5g18" },
         solution: "The Shining",
+        solutionUrl: `${baseImagePath}shining.jpg`,
         value: 2,
         timeInSeconds: 60
     },
@@ -273,6 +276,7 @@ const questions: Question[] = [
         topic: Topics.Finance,
         caption: "Welches Ergebnis erhält man, wenn man alle Zahlen eines Roulette Rades aufaddiert?",
         solution: "666",
+        solutionUrl: `${baseImagePath}roulette.jpg`,
         value: 2,
         timeInSeconds: 180,
     },
@@ -299,6 +303,7 @@ const questions: Question[] = [
         caption: "Auf einer Seite im Rezeptbuch meiner Mama sind folgende Zutaten aufgelistet, doch einige Stellen sind wegen Schokoladenflecken nicht mehr lesbar. Wie lautet der Titel?",
         media: {type: Media.Image, source: "recipe.jpg"},
         solution: "Bienenstich",
+        solutionUrl: `${baseImagePath}bienenstich.jpg`,
         value: 2,
         timeInSeconds: 180
     },
@@ -307,6 +312,7 @@ const questions: Question[] = [
         topic: Topics.History,
         caption: "Welchen Namen trägt der Vater von Megaras Kindern?",
         solution: "Herakles",
+        solutionUrl: `${baseImagePath}heracles.webp`,
         value: 2,
         timeInSeconds: 150
     },
@@ -431,6 +437,7 @@ const questions: Question[] = [
         caption: 'Von folgender Darstellung wurde vollständig die Beschriftung entfernt. Was soll sie veranschaulichen?',
         media: { type: Media.Image, source: "code.jpg" },
         solution: "Morse Code",
+        solutionUrl: `${baseImagePath}morse_o.jpg`,
         value: 2,
         timeInSeconds: 150
     },
@@ -449,25 +456,5 @@ const questions: Question[] = [
         timeInSeconds: 60
     },
 ]
-
-console.log(questions.map((question) => {
-    if (question.items) {
-        return "Sort";
-    } else if (question.choices) {
-        return "List";
-    } else if (typeof question.solution === "number") {
-        return "Numbers";
-    }
-    switch (question.media?.type) {
-        case Media.Audio:
-            return "Hearing";
-        case Media.Image:
-            return "Image";
-        case Media.Video:
-            return "VideoLibrary";
-        default:
-            return "TextSnippet";
-    }
-}).sort());
 
 export default questions;

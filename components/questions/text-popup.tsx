@@ -6,6 +6,8 @@ import {EmojiObjects, ReadMore} from "@mui/icons-material";
 import PopupContainer from "../view/popup-container";
 import SolutionView from "../view/solution-view";
 import {GameState, useGameContext} from "../../contexts/GameContext";
+import Image from "next/image";
+import {baseImagePath} from "../../data/questions";
 
 export default function TextPopupQuestion({ question, ...rest }: WrapperChildProps) {
     const {gameState} = useGameContext();
@@ -37,8 +39,14 @@ export default function TextPopupQuestion({ question, ...rest }: WrapperChildPro
                     setShowSolution(true);
                     setIsInitialSolutionScreen(false);
                 }} />
-                <SolutionView showSolution={showSolution} setShowSolution={setShowSolution} isInitialScreen={isInitialScreen}>
-                    {typeof question.solution === "string" ? question.solution :
+                <SolutionView showSolution={showSolution} setShowSolution={setShowSolution} isInitialScreen={isInitialSolutionScreen}>
+                    {question.solutionUrl ?
+                        <div className={styles.popupContainerContent}>
+                            <Image layout="fill" objectFit="contain" src={question.solutionUrl}
+                                   style={{background: question.media?.transparent ? "white" : "transparent"}} alt=""/>
+                        </div>
+                        :
+                        typeof question.solution === "string" ? question.solution :
                         <div style={{ width: "100%", height: "90%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", fontSize: "4rem" }}>
                             {(question.solution as string[]).map((s, index) => (
                                 <p key={index}>{s}</p>
