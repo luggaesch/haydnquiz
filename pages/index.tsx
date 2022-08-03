@@ -19,24 +19,6 @@ import Topics from "../components/view/topics";
 import {AlignJustify} from "@rsuite/icons/lib/icons/legacy";
 import FinishButton from "../components/view/finish-button";
 import {v4} from "uuid";
-import initializeBasicAuth from 'nextjs-basic-auth'
-import {GetServerSideProps} from "next";
-
-const users = [
-    { user: 'lukas', password: 'haydnquiz' },
-]
-const basicAuthCheck = initializeBasicAuth({
-    users: users
-})
-
-// some-route.js
-export const getServerSideProps: GetServerSideProps = async (context) => {
-    const {req, res} = context;
-    await basicAuthCheck(req, res)
-    return {
-        props: {}
-    }
-}
 
 export default function Index() {
     const {gameState, setGameState, currentQuestionNum, setCurrentQuestionNum} = useGameContext();
