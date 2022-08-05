@@ -85,7 +85,7 @@ export default function AudioQuestion({ question, showtimer, ...rest }: WrapperC
                     setIsInitialScreen(false);
                 }} />
                 <SolutionView showSolution={showSolution} setShowSolution={setShowSolution} isInitialScreen={isInitialScreen}>
-                    {typeof question.solution === "string" ? question.solution :
+                    {typeof question.solution === "string" ? <div>{question.solution}</div>:
                         <div style={{ width: "100%", height: "90%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", fontSize: "4rem" }}>
                             {(question.solution as string[]).map((s, index) => (
                                 <p key={index}>{s}</p>

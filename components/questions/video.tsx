@@ -1,17 +1,13 @@
 import {WrapperChildProps} from "./wrapper";
-import React, {useMemo, useState} from "react";
-import {getColorByTopic, getIconByTopic} from "../../data/topics";
+import React, {useState} from "react";
 import styles from "../../styles/question.module.css";
 import ReactPlayer from "react-player";
-import {motion} from "framer-motion";
 import {IconButton} from "rsuite";
 import {EmojiObjects, PlayArrowRounded} from "@mui/icons-material";
-import Down from "@rsuite/icons/legacy/Down";
 import PopupContainer from "../view/popup-container";
 import SolutionView from "../view/solution-view";
 import {GameState, useGameContext} from "../../contexts/GameContext";
 import Image from "next/image";
-import {baseImagePath} from "../../data/questions";
 
 export default function VideoQuestion({ question, showtimer, ...rest }: WrapperChildProps) {
     const {gameState} = useGameContext();
@@ -50,7 +46,7 @@ export default function VideoQuestion({ question, showtimer, ...rest }: WrapperC
                                    style={{background: question.media?.transparent ? "white" : "transparent"}} alt=""/>
                         </div>
                         :
-                        typeof question.solution === "string" ? question.solution :
+                        typeof question.solution === "string" ? <div>{question.solution}</div> :
                         <div style={{ width: "100%", height: "90%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", fontSize: "4rem" }}>
                             {(question.solution as string[]).map((s, index) => (
                                 <p key={index}>{s}</p>

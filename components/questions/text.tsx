@@ -33,7 +33,7 @@ export default function TextQuestion({ question, ...rest }: WrapperChildProps) {
                                    style={{background: question.media?.transparent ? "white" : "transparent"}} alt=""/>
                         </div>
                         :
-                        typeof question.solution === "string" ? <div>question.solution</div> :
+                        typeof question.solution === "string" ? <div>{question.solution}</div> :
                         <div style={{ width: "100%", height: "90%", overflowY: "auto", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", fontSize: "4rem" }}>
                             {(question.solution as string[]).map((s, index) => (
                                 <p key={index}>{s}</p>
