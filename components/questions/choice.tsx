@@ -1,6 +1,6 @@
 import {WrapperChildProps} from "./wrapper";
 import React, {useMemo, useState} from "react";
-import {getColorByTopic, getIconByTopic} from "../../data/topics";
+import {getIconByTopic} from "../../data/topics";
 import styles from "../../styles/question.module.css";
 import {IconButton} from "rsuite";
 import {EmojiObjects} from "@mui/icons-material";
@@ -24,7 +24,7 @@ export default function ChoiceQuestion({ question, ...rest }: WrapperChildProps)
             </div>
             <div className={styles.choiceContainer}>
                 {question.choices!.map((c, index) => (
-                    <div className={styles.box} key={question.id + "_" + question.choices!.indexOf(c)}>
+                    <div className={styles.box} key={question._id + "_" + question.choices!.indexOf(c)}>
                         <div>
                             {options[index]}
                         </div>

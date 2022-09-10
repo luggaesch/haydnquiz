@@ -1,7 +1,6 @@
 import {WrapperChildProps} from "./wrapper";
 import styles from "../../styles/question.module.css";
 import {IconButton} from "rsuite";
-import {PlayArrowRounded} from "@mui/icons-material";
 import {motion} from "framer-motion";
 import Down from "@rsuite/icons/legacy/Down";
 import React, {useEffect, useMemo, useState} from "react";
@@ -24,12 +23,12 @@ const selectedAnimation = {
 }
 
 export default function SortQuestion({ question, ...rest }: WrapperChildProps) {
-    const [orderedItems, setOrderedItems] = useState<OrderElement[]>([question.items![getAverageIndex(question.items!.map((e) => e.value))]])
+    const [orderedItems, setOrderedItems] = useState<OrderElement[]>([question.sortElements![getAverageIndex(question.sortElements!.map((e) => e.value))]])
     const [selectedElementIndex, setSelectedElementIndex] = useState(-1);
     const [showGame, setShowGame] = useState(false);
     const [isInitialScreen, setIsInitialScreen] = useState(true);
     const isFinished = useMemo(() => {
-        return orderedItems.length === question.items!.length
+        return orderedItems.length === question.sortElements!.length
     }, [orderedItems, question]);
     const [successIndex, setSuccessIndex] = useState(-1);
     const [failureIndex, setFailureIndex] = useState(-1);
@@ -41,7 +40,7 @@ export default function SortQuestion({ question, ...rest }: WrapperChildProps) {
     function handleElementClick(index: number) {
         setSuccessIndex(-1);
         setFailureIndex(-1);
-        console.log(question.items![index]);
+        console.log(question.sortElements![index]);
         if (selectedElementIndex === index) {
             setSelectedElementIndex(-1);
         } else {
@@ -53,7 +52,7 @@ export default function SortQuestion({ question, ...rest }: WrapperChildProps) {
         if (selectedElementIndex === -1) return;
         setSelectedElementIndex(-1);
         const targetIndex = currentIndex + modifier;
-        const selectedElement = question.items![selectedElementIndex];
+        const selectedElement = question.sortElements![selectedElementIndex];
         let success = false;
         if (targetIndex === -1) {
             if (selectedElement.value < orderedItems[0].value) {
@@ -109,7 +108,7 @@ export default function SortQuestion({ question, ...rest }: WrapperChildProps) {
                 <PopupContainer isInitialScreen={isInitialScreen} showContent={showGame} setShowContent={setShowGame} backgroundColor={"#fff"}>
                     <div className={styles.sortColumnContainer}>
                         <div className={styles.sortRowGrid}>
-                            {question.items!.map((e, index, arr) => (
+                            {question.sortElements!.map((e, index, arr) => (
                                 <motion.div
                                     animate={(failureIndex !== -1 && e.value === arr[failureIndex].value) ? failureAnimation : (selectedElementIndex === index) ? selectedAnimation : {}}
                                     transition={{
@@ -118,14 +117,14 @@ export default function SortQuestion({ question, ...rest }: WrapperChildProps) {
                                         repeat: 0
                                     }}
                                     className={styles.sortItem}
-                                    onClick={() => handleElementClick(index)} key={question.id + index} style={{ display: orderedItems.indexOf(e) !== -1 ? "none" : "flex" }}>
+                                    onClick={() => handleElementClick(index)} key={question._id + index} style={{ display: orderedItems.indexOf(e) !== -1 ? "none" : "flex" }}>
                                     {e.name}
                                 </motion.div>
                             ))}
                         </div>
                         <div className={styles.sortRowGrid}>
                             {[...orderedItems].reverse().map((v, index, arr) => (
-                                <motion.div key={question.id + "_v_" + v.name} className={styles.sortItem} style={{ position: "relative" }}
+                                <motion.div key={question._id + "_v_" + v.name} className={styles.sortItem} style={{ position: "relative" }}
                                             animate={(successIndex !== -1 && v.value === orderedItems[successIndex].value) ? successAnimation : {}}
                                             transition={{
                                                 duration: 1,

@@ -12,6 +12,9 @@ import SolutionView from "../view/solution-view";
 import {GameState, useGameContext} from "../../contexts/GameContext";
 
 export default function ImageQuestion({question, ...rest}: WrapperChildProps) {
+    if (!question.media) {
+        throw "No question.Media supplied";
+    }
     const {gameState} = useGameContext();
     const [showImage, setShowImage] = useState(false);
     const [isInitialScreen, setIsInitialScreen] = useState(true);
@@ -24,8 +27,6 @@ export default function ImageQuestion({question, ...rest}: WrapperChildProps) {
     }, [showImage, isInitialScreen]);
     const [showSolution, setShowSolution] = useState(false);
     const [isInitialSolutionScreen, setIsInitialSolutionScreen] = useState(true);
-
-    const source = question.media!.source!;
 
     return (
         <div {...rest}>
@@ -57,16 +58,16 @@ export default function ImageQuestion({question, ...rest}: WrapperChildProps) {
                     className={styles.popupContainer}
                 >
                     <div className={styles.popupContainerContent}>
-                        {typeof source === "string" ?
-                            <Image layout="fill" objectFit="contain" src={`${baseImagePath}${source}`}
-                                   style={{background: question.media?.transparent ? "white" : "transparent"}} alt=""/>
+                        {question.media.content ?
+                            <Image layout="fill" objectFit="contain" src={question.media.content}
+                                   style={{background: "white"}} alt=""/>
                             :
-                            source.length === 8 ?
+                            question.media.sources!.length === 8 ?
                                 <div className={styles.imageGrid} style={{
                                     gridTemplateColumns: "25% 25% 25% 25%"
                                 }}>
-                                    {source.map((url, index) => (
-                                        <div key={question.id + "_" + url} className={styles.imageWrap}>
+                                    {question.media.sources!.map((url: string, index: number) => (
+                                        <div key={question._id + "_" + url} className={styles.imageWrap}>
                                             <div className={styles.imageLabel}>{index + 1}</div>
                                             <Image layout="fill" objectFit="cover" src={`${baseImagePath}${url}`}
                                                    alt={""}/>
@@ -74,13 +75,13 @@ export default function ImageQuestion({question, ...rest}: WrapperChildProps) {
                                     }
                                 </div>
                                 :
-                                source.length === 4 ?
+                                question.media.sources!.length === 4 ?
                                     <div className={styles.imageGrid} style={{
                                         gridTemplateColumns: "50% 50%",
                                         backgroundColor: "white"
                                     }}>
-                                        {source.map((url, index) => (
-                                            <div key={question.id + "_" + url} className={styles.imageWrap}
+                                        {question.media.sources!.map((url: string, index: number) => (
+                                            <div key={question._id + "_" + url} className={styles.imageWrap}
                                                  style={{backgroundColor: "white", border: "1px solid #22222240", padding: 10 }}>
                                                 <div className={styles.imageLabel}>{index + 1}</div>
                                                 <Image layout="fill"
@@ -97,8 +98,8 @@ export default function ImageQuestion({question, ...rest}: WrapperChildProps) {
                                         justifyContent: "center",
                                         backgroundColor: "#fff"
                                     }}>
-                                        {source.map((url) => (
-                                            <div key={question.id + "_" + url}
+                                        {question.media.sources!.map((url: string) => (
+                                            <div key={question._id + "_" + url}
                                                  style={{
                                                      position: "relative",
                                                      width: "55vw",
@@ -127,18 +128,18 @@ export default function ImageQuestion({question, ...rest}: WrapperChildProps) {
                     setIsInitialSolutionScreen(false);
                 }} />
                 <SolutionView showSolution={showSolution} setShowSolution={setShowSolution} isInitialScreen={isInitialSolutionScreen}>
-                    {question.solutionUrl ?
+                    {question.solutionIsUrl ?
                         <div className={styles.popupContainerContent}>
-                            <Image layout="fill" objectFit="contain" src={question.solutionUrl}
-                                   style={{background: question.media?.transparent ? "white" : "transparent"}} alt=""/>
+                            <Image layout="fill" objectFit="contain" src={question.solution}
+                                   style={{background: "white" }} alt=""/>
                         </div>
                         :
-                        typeof question.solution === "string" ? <div>{question.solution}</div> :
+                        question.solutionArray ?
                         <div style={{ width: "100%", height: "90%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", fontSize: "4rem" }}>
-                            {(question.solution as string[]).map((s, index) => (
+                            {(question.solutionArray).map((s, index) => (
                                 <p key={index}>{s}</p>
                             ))}
-                        </div>
+                        </div> : <div>{question.solution}</div>
                     }
                 </SolutionView>
             </>}

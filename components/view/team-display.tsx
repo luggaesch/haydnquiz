@@ -1,9 +1,9 @@
-import {useTeamContext} from "../../contexts/TeamContext";
 import {Person} from "@mui/icons-material";
 import styles from "../../styles/team.module.css";
+import {useGameContext} from "../../contexts/GameContext";
+import Team from "../../types/team";
 
-export default function TeamDisplay() {
-    const { teams } = useTeamContext();
+export default function TeamDisplay({ teams }: { teams: Team[] }) {
 
     return (
         <div className={styles.container}>
@@ -13,7 +13,7 @@ export default function TeamDisplay() {
                     <div key={index} className={styles.teamItem}>
                         <p>{t.name}</p>
                         <div>
-                            {[...Array(t.members)].map((e, index) => (
+                            {[...Array(t.numOfPlayers)].map((e, index) => (
                                 <Person style={{ color: t.color }} key={"p_" + index} />
                             ))}
                         </div>

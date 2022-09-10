@@ -1,9 +1,11 @@
-import NextAuth, { NextAuthOptions } from "next-auth"
-import GithubProvider from "next-auth/providers/github"
+import NextAuth, {NextAuthOptions} from "next-auth";
 import GoogleProvider from "next-auth/providers/google"
+import clientPromise from "../../../lib/mongodb";
+import {MongoDBAdapter} from "@next-auth/mongodb-adapter";
 
 export const authOptions: NextAuthOptions = {
     // https://next-auth.js.org/configuration/providers/oauth
+    adapter: MongoDBAdapter(clientPromise),
     providers: [
         /* EmailProvider({
              server: process.env.EMAIL_SERVER,
@@ -23,11 +25,15 @@ export const authOptions: NextAuthOptions = {
         colorScheme: "light",
     },
     callbacks: {
-        async jwt({ token }) {
-            token.userRole = "admin"
-            return token
-        },
+        async session({ session, token, user }) {
+            // Send properties to the client, like an access_token from a provider.
+            session.user = user;
+            return session
+        }
     },
+    /*pages: {
+        signIn: "/auth/login"
+    }*/
 }
 
 export default NextAuth(authOptions)

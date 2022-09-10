@@ -1,6 +1,6 @@
-import {Question} from "../../data/questions";
 import {getColorByTopic, getIconByTopic} from "../../data/topics";
 import {GameState, useGameContext} from "../../contexts/GameContext";
+import Question from "../../types/question";
 
 export default function TopicQueue({ currentQuestionIndex, questions }: { currentQuestionIndex: number, questions: Question[] }) {
     const { setCurrentQuestionNum, gameState, setGameState } = useGameContext();

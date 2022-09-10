@@ -11,8 +11,11 @@ import SolutionView from "../view/solution-view";
 import {GameState, useGameContext} from "../../contexts/GameContext";
 
 export default function AudioQuestion({ question, showtimer, ...rest }: WrapperChildProps) {
+    if (!question.media) {
+        throw "No Media supplied";
+    }
     const {gameState} = useGameContext();
-    const [play, { pause, stop, duration }] = useSound(question.media!.file!, {volume: 1});
+    const [play, { pause, stop, duration }] = useSound(question.media.content!, {volume: 1});
     const [currentTime, setCurrentTime] = useState<number>(0);
     const expiryTimestamp = new Date(new Date().getTime() + 100000000000000);
     const { seconds, isRunning, start: startSeeker, pause: pauseSeeker, restart: restartSeeker } = useTimer({ expiryTimestamp, autoStart: false });
@@ -85,12 +88,12 @@ export default function AudioQuestion({ question, showtimer, ...rest }: WrapperC
                     setIsInitialScreen(false);
                 }} />
                 <SolutionView showSolution={showSolution} setShowSolution={setShowSolution} isInitialScreen={isInitialScreen}>
-                    {typeof question.solution === "string" ? <div>{question.solution}</div>:
+                    {question.solutionArray ?
                         <div style={{ width: "100%", height: "90%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", fontSize: "4rem" }}>
-                            {(question.solution as string[]).map((s, index) => (
+                            {question.solutionArray.map((s, index) => (
                                 <p key={index}>{s}</p>
                             ))}
-                        </div>
+                        </div> : <div>{question.solution}</div>
                     }
                 </SolutionView>
             </>}

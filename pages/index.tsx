@@ -1,4 +1,3 @@
-import questions from "../data/questions";
 import {useMemo, useState} from "react";
 import {getColorByTopic, Topics as TopicList} from "../data/topics";
 import ParticleWrapper from "../components/view/particle-wrapper";
@@ -18,10 +17,10 @@ import PopupContainer from "../components/view/popup-container";
 import Topics from "../components/view/topics";
 import {AlignJustify} from "@rsuite/icons/lib/icons/legacy";
 import FinishButton from "../components/view/finish-button";
-import {v4} from "uuid";
+import {QuestionTypes} from "../types/question";
 
 export default function Index() {
-    const {gameState, setGameState, currentQuestionNum, setCurrentQuestionNum} = useGameContext();
+    const {gameState, setGameState, currentQuestionNum, setCurrentQuestionNum, teams} = useGameContext();
     const [open, setOpen] = useState(false);
     const currentQuestion = useMemo(() => {
         return questions[currentQuestionNum];
@@ -48,7 +47,7 @@ export default function Index() {
                 return (
                     <>
                         <RightDrawer open={open} setOpen={setOpen}>
-                            <TeamDisplay />
+                            <TeamDisplay teams={teams} />
                             <Soundcheck />
                             <TopicOverlay setShowOverlay={setShowOverlay} setIsInitialScreen={setIsInitialScreen} />
                             <TopicQueue currentQuestionIndex={currentQuestionNum} questions={questions} />
@@ -59,7 +58,7 @@ export default function Index() {
                             }} />}
                         </RightDrawer>
                         <IconButton icon={<AlignJustify />} style={{ borderRadius: "50%", position: "absolute", top: 10, right: 5, zIndex: 10, color: "var(--text)", backgroundColor: "transparent", boxShadow: "0 3px 6px rgba(0,0,0,0.19), 0 2px 2px rgba(0,0,0,0.23)" }} onClick={() => setOpen(!open)}/>
-                        <Slideshow currentIndex={currentQuestionNum} setCurrentIndex={setCurrentQuestionNum} nodes={[<QuestionWrapper key={0} question={{ id: v4(), topic: TopicList.Music, caption: "Wer ist das größte musikalische Genie unserer Zeit?", solution: "Haftbefehl", solutionUrl: "/images/questions_resized/haftbefehl.webp", value: 2, timeInSeconds: 30 }} />]}/>
+                        <Slideshow currentIndex={currentQuestionNum} setCurrentIndex={setCurrentQuestionNum} nodes={[<QuestionWrapper key={0} question={{ type: QuestionTypes.Basic, topic: TopicList.Music, caption: "Wer ist das größte musikalische Genie unserer Zeit?", solution: "Haftbefehl", value: 2, timeInSeconds: 30 }} />]}/>
                         <PopupContainer isInitialScreen={isInitialScreen} showContent={showOverlay} setShowContent={setShowOverlay}>
                             <Topics />
                         </PopupContainer>

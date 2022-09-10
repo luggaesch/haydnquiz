@@ -12,6 +12,7 @@ module.exports = nextConfig;*/
 module.exports = {
   webpack(config, options) {
     const { isServer } = options;
+    config.optimization.minimize = false;
     config.module.rules.push({
       test: /\.(ogg|mp3|mp4|wav|mpe?g)$/i,
       exclude: config.exclude,

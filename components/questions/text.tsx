@@ -6,7 +6,6 @@ import {EmojiObjects} from "@mui/icons-material";
 import SolutionView from "../view/solution-view";
 import {GameState, useGameContext} from "../../contexts/GameContext";
 import Image from "next/image";
-import {baseImagePath} from "../../data/questions";
 
 export default function TextQuestion({ question, ...rest }: WrapperChildProps) {
     const {gameState} = useGameContext();
@@ -27,18 +26,18 @@ export default function TextQuestion({ question, ...rest }: WrapperChildProps) {
                     setIsInitialScreen(false);
                 }} />
                 <SolutionView showSolution={showSolution} setShowSolution={setShowSolution} isInitialScreen={isInitialScreen}>
-                    {question.solutionUrl ?
+                    {question.solutionIsUrl ?
                         <div className={styles.popupContainerContent}>
-                            <Image layout="fill" objectFit="contain" src={question.solutionUrl}
-                                   style={{background: question.media?.transparent ? "white" : "transparent"}} alt=""/>
+                            <Image layout="fill" objectFit="contain" src={question.solution}
+                                   style={{background: "white" }} alt=""/>
                         </div>
                         :
-                        typeof question.solution === "string" ? <div>{question.solution}</div> :
+                        question.solutionArray ?
                         <div style={{ width: "100%", height: "90%", overflowY: "auto", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", fontSize: "4rem" }}>
-                            {(question.solution as string[]).map((s, index) => (
+                            {(question.solutionArray).map((s, index) => (
                                 <p key={index}>{s}</p>
                             ))}
-                        </div>
+                        </div> : <div>{question.solution}</div>
                     }
                 </SolutionView>
             </>}

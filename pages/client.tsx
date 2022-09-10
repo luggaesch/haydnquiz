@@ -1,6 +1,52 @@
 import Layout from "../components/layout"
+import {GetServerSideProps} from "next";
+import clientPromise from "../lib/mongodb";
+import {getSession} from "next-auth/react";
+import styles from "../styles/question.module.css";
+import {Input} from "rsuite";
+import React, {useState} from "react";
 
-export default function ClientPage() {
+export const getServerSideProps: GetServerSideProps = async (context) => {
+    try {
+        const session = await getSession(context);
+        const client = await clientPromise;
+        // `await clientPromise` will use the default database passed in the MONGODB_URI
+        // However you can use another database (e.g. myDatabase) by replacing the `await clientPromise` with the following code:
+        //
+        // `const client = await clientPromise`
+        // `const db = client.db("myDatabase")`
+        //
+        // Then you can execute queries against your database like so:
+        // db.find({}) or any of the MongoDB Node Driver commands
+        if (session) {
+            /*const db = client.db("hubquiz");
+            const collection = db.collection("quizzes");
+            const findResult = await collection.find({ owner: new mongo.ObjectId(session.user.id) }).toArray();
+            console.log(findResult);*/
+            /*await connectMongo;
+            const quiz = new Quiz("haydnquiz", session.user.id, []);
+            const result = await QuizModel.create(quiz);
+            console.log(result);*/
+        }
+        return {
+            props: { isConnected: true },
+        }
+    } catch (e) {
+        console.error(e)
+        return {
+            props: { isConnected: false },
+        }
+    }
+}
+
+export default function ClientPage({ isConnected }: { isConnected: boolean }) {
+    const [value, setValue] = useState("");
+
+    async function onClick() {
+        const res = await fetch("/api/hello", { method: "post", body: value });
+        console.log(res.json());
+    }
+
     return (
         <Layout>
             <h1>Client Side Rendering</h1>
@@ -22,6 +68,10 @@ export default function ClientPage() {
                 The disadvantage of <strong>useSession()</strong> is that it requires
                 client side JavaScript.
             </p>
+            <Input className={styles.input} value={value} onChange={(value) => setValue(value)} type="text"/>
+            <div onClick={onClick} style={{ width: 300, height: 300, borderRadius: 8, background: "#222", color: "white", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                Test
+            </div>
         </Layout>
     )
 }

@@ -1,16 +1,12 @@
 import {WrapperChildProps} from "./wrapper";
 import React, {useMemo, useState} from "react";
-import {getColorByTopic, getIconByTopic} from "../../data/topics";
 import styles from "../../styles/question.module.css";
-import {useTeamContext} from "../../contexts/TeamContext";
 import {IconButton, Input} from "rsuite";
 import {CheckOutline} from "@rsuite/icons";
+import {useGameContext} from "../../contexts/GameContext";
 
 export default function GuesstimateQuestion({ question, ...rest }: WrapperChildProps) {
-    const Icon = useMemo(() => {
-        return getIconByTopic(question.topic);
-    }, [question])
-    const { teams } = useTeamContext();
+    const { teams } = useGameContext();
     const [values, setValues] = useState<string[]>(teams.map(() => ""));
     const [isSubmitted, setIsSubmitted] = useState(false);
     const results = useMemo(() => {
@@ -36,7 +32,7 @@ export default function GuesstimateQuestion({ question, ...rest }: WrapperChildP
             </div>
             <div className={styles.guessContainer}>
                 {teams.map((c, index) => (
-                    <div className={styles.inputContainer} key={question.id + "_" + index}>
+                    <div className={styles.inputContainer} key={question._id + "_" + index}>
                         <Input className={styles.input} style={{ borderColor: c.color }}
                                inputMode="numeric" placeholder={`Team ${c.name}`}
                                value={values[index]} onChange={(value) => handleValueChange(value, index)}

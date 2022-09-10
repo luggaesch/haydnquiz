@@ -7,9 +7,11 @@ import PopupContainer from "../view/popup-container";
 import SolutionView from "../view/solution-view";
 import {GameState, useGameContext} from "../../contexts/GameContext";
 import Image from "next/image";
-import {baseImagePath} from "../../data/questions";
 
 export default function TextPopupQuestion({ question, ...rest }: WrapperChildProps) {
+    if (!question.media) {
+        throw "No question.Media supplied";
+    }
     const {gameState} = useGameContext();
     const [showContent, setShowContent] = useState(false);
     const [isInitialScreen, setIsInitialScreen] = useState(true);
@@ -30,7 +32,7 @@ export default function TextPopupQuestion({ question, ...rest }: WrapperChildPro
                     }} />
                 </div>
                 <PopupContainer isInitialScreen={isInitialScreen} showContent={showContent} setShowContent={setShowContent}>
-                    {question.media!.content}
+                    {question.media.content}
                 </PopupContainer>
             </div>
             {gameState === GameState.Solutions && <>
@@ -40,18 +42,18 @@ export default function TextPopupQuestion({ question, ...rest }: WrapperChildPro
                     setIsInitialSolutionScreen(false);
                 }} />
                 <SolutionView showSolution={showSolution} setShowSolution={setShowSolution} isInitialScreen={isInitialSolutionScreen}>
-                    {question.solutionUrl ?
+                    {question.solutionIsUrl ?
                         <div className={styles.popupContainerContent}>
-                            <Image layout="fill" objectFit="contain" src={question.solutionUrl}
-                                   style={{background: question.media?.transparent ? "white" : "transparent"}} alt=""/>
+                            <Image layout="fill" objectFit="contain" src={question.solution}
+                                   style={{background: "white" }} alt=""/>
                         </div>
                         :
-                        typeof question.solution === "string" ? <div>{question.solution}</div> :
+                        question.solutionArray ?
                         <div style={{ width: "100%", height: "90%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", fontSize: "4rem" }}>
-                            {(question.solution as string[]).map((s, index) => (
+                            {(question.solutionArray).map((s, index) => (
                                 <p key={index}>{s}</p>
                             ))}
-                        </div>
+                        </div> : <div>{question.solution}</div>
                     }
                 </SolutionView>
             </>}

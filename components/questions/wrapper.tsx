@@ -1,4 +1,3 @@
-import {getIconByQuestionType, Media, Question} from "../../data/questions";
 import TextQuestion from "./text";
 import ImageQuestion from "./image";
 import styles from "../../styles/question.module.css";
@@ -14,14 +13,11 @@ import {getColorByTopic, getIconByTopic} from "../../data/topics";
 import SortQuestion from "./sort";
 import TextPopupQuestion from "./text-popup";
 import Joker from "../../public/joker.svg";
-import { motion } from "framer-motion";
+import {motion} from "framer-motion";
 import TimerControl from "../view/timer-control";
 import {getIconByJoker} from "../../data/jokers";
-import SolutionView from "../view/solution-view";
-import {IconButton} from "rsuite";
-import {EmojiObjects} from "@mui/icons-material";
-import Link from "next/link";
 import {GameState, useGameContext} from "../../contexts/GameContext";
+import Question, {getIconByQuestionType, QuestionTypes} from "../../types/question";
 
 export interface WrapperChildProps {
     question: Question;
@@ -30,33 +26,27 @@ export interface WrapperChildProps {
 }
 
 function formatQuestionFromType(question: Question, showTimer: () => void) {
-    if (question.media) {
-        switch (question.media?.type) {
-            case Media.Image: {
-                return <ImageQuestion className={styles.questionContainer} question={question}/>
-            }
-            case Media.Audio: {
-                return <AudioQuestion showtimer={showTimer} className={styles.questionContainer} question={question}/>
-            }
-            case Media.Video: {
-                return <VideoQuestion showtimer={showTimer} className={styles.questionContainer} question={question}/>
-            }
-            case Media.Text: {
-                return <TextPopupQuestion showtimer={showTimer} className={styles.questionContainer} question={question}/>
-            }
-        }
-    } else if (question.choices) {
-        return <ChoiceQuestion className={styles.questionContainer} question={question}/>
-    } else if (question.items) {
-        return <SortQuestion question={question} className={styles.questionContainer} />
-    } else if (typeof question.solution === "number") {
-        return <GuesstimateQuestion className={styles.questionContainer} question={question}/>
-    } else {
-        return <TextQuestion className={styles.questionContainer} question={question}/>
+    switch (question.type) {
+        case QuestionTypes.Basic:
+            return <TextQuestion className={styles.questionContainer} question={question}/>
+        case QuestionTypes.Quote:
+            return <TextPopupQuestion showtimer={showTimer} className={styles.questionContainer} question={question}/>
+        case QuestionTypes.Image:
+            return <ImageQuestion className={styles.questionContainer} question={question}/>
+        case QuestionTypes.Hearing:
+            return <AudioQuestion showtimer={showTimer} className={styles.questionContainer} question={question}/>
+        case QuestionTypes.Video:
+            return <VideoQuestion showtimer={showTimer} className={styles.questionContainer} question={question}/>
+        case QuestionTypes.Choice:
+            return <ChoiceQuestion className={styles.questionContainer} question={question}/>
+        case QuestionTypes.Sort:
+            return <SortQuestion question={question} className={styles.questionContainer}/>
+        case QuestionTypes.Guesstimate:
+            return <GuesstimateQuestion className={styles.questionContainer} question={question}/>
     }
 }
 
-export default function QuestionWrapper({question }: { question: Question }) {
+export default function QuestionWrapper({ question, hideOverlay, ...rest }: { question: Question, hideOverlay?: boolean }) {
     const {gameState} = useGameContext();
     const { TopicIcon, TypeIcon } = useMemo(() => {
         return {
@@ -64,9 +54,9 @@ export default function QuestionWrapper({question }: { question: Question }) {
             TypeIcon: getIconByQuestionType(question)
         }
     }, [question]);
-    const [timerHidden, setTimerHidden] = useState(question.media && (question.media.type === Media.Audio || question.media.type == Media.Video))
+    const [timerHidden, setTimerHidden] = useState(false /*question.media && (question.media.type === MediaType.Audio || question.media.type == MediaType.Video)*/)
     const child = useMemo(() => {
-        return formatQuestionFromType(question, () => setTimerHidden(false))
+        return formatQuestionFromType(question,() => setTimerHidden(false))
     }, [question]);
     const [play] = useSound(countdownSfx, { volume: 1});
     const [questionHidden, setQuestionHidden] = useState(true);
@@ -80,7 +70,7 @@ export default function QuestionWrapper({question }: { question: Question }) {
     }, [questionHidden]);
 
     return (
-        <div className={styles.wrapper}>
+        <div className={styles.wrapper} {...rest}>
             <div className={styles.metaContainer}>
                 <div className={styles.topic} style={{backgroundColor: getColorByTopic(question.topic) }}>
                     <TopicIcon className={styles.icon}/>
@@ -89,13 +79,13 @@ export default function QuestionWrapper({question }: { question: Question }) {
                     <TypeIcon className={styles.icon} />
                 </div>
                 <div className={styles.value}>
-                    {typeof question.value === "number" ? <p>{question.value}</p> : <Joker style={{ fill: "var(--text)", width: "100%", height: "100%" }} />}
+                    {question.value !== -1 ? <p>{question.value}</p> : <Joker style={{ fill: "var(--text)", width: "100%", height: "100%" }} />}
                 </div>
             </div>
-            {typeof question.value === "string" && <div className={styles.jokerDisplay}>
-                {getIconByJoker(question.value)} {question.value}
+            {question.jokerReward && <div className={styles.jokerDisplay}>
+                {getIconByJoker(question.jokerReward)} {question.jokerReward}
             </div>}
-            {gameState !== GameState.Solutions && <motion.div className={styles.wrapperOverlay}
+            {gameState !== GameState.Solutions && !hideOverlay && <motion.div className={styles.wrapperOverlay}
                         initial={{ opacity: 1 }}
                         animate={animation}
                         transition={{
