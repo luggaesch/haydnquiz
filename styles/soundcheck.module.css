@@ -1,15 +1,20 @@
 .container {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    font-size: 1.6rem;
+    font-size: 1.3rem;
     color: white;
     width: 100%;
-    padding: 20px;
+    padding: 5px;
     background-color: #333333;
+    transition: background-color 0.4s ease-in-out;
     border-radius: 12px;
-    border: 1px solid #333;
+    cursor: pointer;
+}
+
+.container:hover {
+    background-color: #444444
 }
 
 .iconButton {

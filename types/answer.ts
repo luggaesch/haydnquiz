@@ -1,7 +1,8 @@
+import Question from "./question";
+
 type Answer = {
-    _id?: string,
-    team: string,
-    question: string,
+    teamId: string,
+    question: Question,
     values: string[]
 }
 

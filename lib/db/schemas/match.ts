@@ -15,6 +15,17 @@ const MatchSchema = new mongoose.Schema({
     teams: [
         {
             type: new mongoose.Schema({ name: { type: String, required: true }, numOfPlayers: { type: Number, required: true }, color: { type: String, required: true } }),
+            default: []
+        }
+    ],
+    answers: [
+        {
+            type: new mongoose.Schema({
+                teamId: { type: String, required: true },
+                question: { type: mongoose.Schema.Types.ObjectId, ref: "Question", required: true },
+                values: [{ type: String }]
+            }),
+            default: []
         }
     ],
     state: {

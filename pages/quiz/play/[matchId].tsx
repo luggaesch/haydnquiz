@@ -8,7 +8,7 @@ import TeamInput from "../../../components/view/team-input";
 import RightDrawer from "../../../components/view/right-drawer";
 import TeamDisplay from "../../../components/view/team-display";
 import Soundcheck from "../../../components/view/soundcheck";
-import TopicOverlay from "../../../components/view/topic-overlay";
+import TopicOverlayToggle from "../../../components/view/topic-overlay";
 import TopicQueue from "../../../components/view/topic-queue";
 import ProgressControl from "../../../components/view/progress-control";
 import FinishButton from "../../../components/view/finish-button";
@@ -21,6 +21,11 @@ import PopupContainer from "../../../components/view/popup-container";
 import Topics from "../../../components/view/topics";
 import StartButton from "../../../components/view/start-button";
 import ParticleWrapper from "../../../components/view/particle-wrapper";
+import {QRCodeCanvas} from "qrcode.react";
+import Link from "next/link";
+import {Home} from "@mui/icons-material";
+import styles from "../../../styles/soundcheck.module.css";
+import {PagePrevious} from "@rsuite/icons";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const result = await axios.get(`${process.env.SERVER_URL}/api/match/fetchById/` + context.query.matchId);
@@ -40,10 +45,17 @@ export default function MatchPage({ match }: { match: Match }) {
     }, [questions, currentQuestionNum]);
     const [showOverlay, setShowOverlay] = useState(false);
     const [isInitialScreen, setIsInitialScreen] = useState(true);
+    const [showAnswerInput, setShowAnswerInput] = useState(currentQuestionNum === Math.ceil(questions.length / 2));
 
     useEffect(() => {
         setMatch(match);
     }, [match]);
+
+    useEffect(() => {
+        if (currentQuestionNum === Math.ceil(questions.length / 2)) {
+            setShowAnswerInput(true);
+        }
+    }, [currentQuestionNum, questions]);
 
     function getComponent() {
         switch (gameState) {
@@ -65,8 +77,8 @@ export default function MatchPage({ match }: { match: Match }) {
                     <>
                         <RightDrawer open={open} setOpen={setOpen}>
                             <TeamDisplay teams={teams} />
-                            <Soundcheck />
-                            <TopicOverlay setShowOverlay={setShowOverlay} setIsInitialScreen={setIsInitialScreen} />
+                            <Soundcheck open={open} />
+                            <TopicOverlayToggle setShowOverlay={setShowOverlay} setIsInitialScreen={setIsInitialScreen} />
                             <TopicQueue currentQuestionIndex={currentQuestionNum} questions={questions} />
                             <ProgressControl currentIndex={currentQuestionNum} maxIndex={questions.length - 1}  onTransition={(modifier) => setCurrentQuestionNum(currentQuestionNum + modifier)} />
                             {<FinishButton onPress={() => {
@@ -86,18 +98,45 @@ export default function MatchPage({ match }: { match: Match }) {
                     <StartButton onClick={() => setGameState(GameState.Playing)}/>
                 )
             case GameState.Playing:
+                if (showAnswerInput) {
+                    return (
+                        <div style={{ background: "white", width: "100vw", height: "100vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                            <div style={{ background: "white", width: "80%", height: "80%", display: "grid", gridTemplateColumns: "50% 50%", gridTemplateRows: "50% 50%", gridGap: 20 }}>
+                                {match.teams.map((team, index) => {
+                                    return (
+                                        <div key={index} style={{ color: "black", fontSize: "4em", background: "white", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", padding: 20, borderRadius: 8, border: `1px solid ${team.color}` }}>
+                                            <p>{team.name}</p>
+                                            <p style={{ fontSize: 10 }}>{`http://${location.host}/quiz/play/${match._id}/${questions[0]._id}/${currentQuestion._id}/${team._id}`}</p>
+                                            <QRCodeCanvas size={256} value={`http://${location.host}/quiz/play/${match._id}/${questions[0]._id}/${currentQuestion._id}/${team._id}`} />
+                                        </div>
+                                    )
+                                })}
+                                <div onClick={() => setShowAnswerInput(false)}>Weiter</div>
+                            </div>
+                        </div>
+                    )
+                }
                 return (
                     <>
                         <RightDrawer open={open} setOpen={setOpen}>
+                            <div style={{ width: "100%", display: "grid", gridTemplateColumns: "1fr 1fr 3fr", gridGap: 10 }}>
+                                <Soundcheck open={open} />
+                                <TopicOverlayToggle setShowOverlay={setShowOverlay} setIsInitialScreen={setIsInitialScreen} />
+                                <Link href={"/dashboard"}>
+                                    <a className={styles.container}>
+                                        <IconButton style={{ color: "white", background: "transparent", fontSize: "3rem" }} icon={<Home style={{ fontSize: "inherit" }} />} />
+                                    </a>
+                                </Link>
+                            </div>
+                            <div style={{ width: "100%", display: "grid", gridTemplateColumns: "1fr 1fr", gridGap: 10, marginTop: 10 }}>
+                                <div className={styles.container}>
+                                    <IconButton style={{ color: "white", background: "transparent", fontSize: "3rem" }} icon={<PagePrevious style={{ fontSize: "inherit" }} />} onClick={() => setGameState(gameState - 1)} />
+                                </div>
+                                {currentQuestionNum === questions.length - 1 && <FinishButton onPress={() => setGameState(gameState + 1)} />}
+                            </div>
                             <TeamDisplay teams={teams} />
-                            <Soundcheck />
-                            <TopicOverlay setShowOverlay={setShowOverlay} setIsInitialScreen={setIsInitialScreen} />
                             <TopicQueue currentQuestionIndex={currentQuestionNum} questions={questions} />
                             <ProgressControl currentIndex={currentQuestionNum} maxIndex={questions.length - 1}  onTransition={(modifier) => setCurrentQuestionNum(currentQuestionNum + modifier)} />
-                            {currentQuestionNum === questions.length - 1 && <FinishButton onPress={() => {
-                                setGameState(GameState.Transition);
-                                setOpen(false);
-                            }} />}
                         </RightDrawer>
                         <IconButton icon={<AlignJustify />} style={{ borderRadius: "50%", position: "absolute", top: 10, right: 5, zIndex: 10, color: "var(--text)", backgroundColor: "transparent", boxShadow: "0 3px 6px rgba(0,0,0,0.19), 0 2px 2px rgba(0,0,0,0.23)" }} onClick={() => setOpen(!open)}/>
                         <Slideshow currentIndex={currentQuestionNum} setCurrentIndex={setCurrentQuestionNum} nodes={questions.map((q) => (
@@ -123,12 +162,14 @@ export default function MatchPage({ match }: { match: Match }) {
                 return (
                     <>
                         <RightDrawer open={open} setOpen={setOpen}>
+                            <div style={{ display: "grid", gridTemplateColumns: "20% 20% 60%", gridGap: 20 }}>
+                                <Soundcheck open={open} />
+                                <TopicOverlayToggle setShowOverlay={setShowOverlay} setIsInitialScreen={setIsInitialScreen} />
+                                {currentQuestionNum === questions.length - 1 && <FinishButton onPress={() => setGameState(GameState.End)} />}
+                            </div>
                             <TeamDisplay teams={teams} />
-                            <Soundcheck />
-                            <TopicOverlay setShowOverlay={setShowOverlay} setIsInitialScreen={setIsInitialScreen} />
                             <TopicQueue currentQuestionIndex={currentQuestionNum} questions={questions} />
                             <ProgressControl currentIndex={currentQuestionNum} maxIndex={questions.length - 1}  onTransition={(modifier) => setCurrentQuestionNum(currentQuestionNum + modifier)} />
-                            {currentQuestionNum === questions.length - 1 && <FinishButton onPress={() => setGameState(GameState.End)} />}
                         </RightDrawer>
                         <IconButton icon={<AlignJustify />} style={{ borderRadius: "50%", position: "absolute", top: 10, right: 5, zIndex: 10, color: "var(--text)", backgroundColor: "transparent", boxShadow: "0 3px 6px rgba(0,0,0,0.19), 0 2px 2px rgba(0,0,0,0.23)" }} onClick={() => setOpen(!open)}/>
                         <Slideshow currentIndex={currentQuestionNum} setCurrentIndex={setCurrentQuestionNum} nodes={questions.map((q) => (

@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import AnswerSchema from "./schemas/answer";
 import MatchSchema from "./schemas/match";
 import MediaSchema from "./schemas/media";
 import QuestionSchema from "./schemas/question";
@@ -19,13 +18,6 @@ try {
     QuestionModel = mongoose.model("question", QuestionSchema);
 }
 
-let AnswerModel: mongoose.Model<any>;
-try {
-    AnswerModel = mongoose.model("answer");
-} catch (err) {
-    AnswerModel = mongoose.model("answer", AnswerSchema);
-}
-
 let QuizModel: mongoose.Model<any>;
 try {
     QuizModel = mongoose.model("quiz");
@@ -40,4 +32,4 @@ try {
     MatchModel = mongoose.model("match", MatchSchema);
 }
 
-export {AnswerModel, MatchModel, MediaModel, QuestionModel, QuizModel};
+export {MatchModel, MediaModel, QuestionModel, QuizModel};

@@ -44,7 +44,7 @@ export default function TimerControl({ totalTime, playCountdown, ...rest}: Timer
                                 }
                     } />
                     : <div className={styles.secondDisplay}>
-                        <p>{currentTime}</p>
+                        <p>{totalTime - currentTime}</p>
                     </div>}
             </div>
         </div>
