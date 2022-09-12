@@ -107,7 +107,7 @@ export default function MatchPage({ match }: { match: Match }) {
                                         <div key={index} style={{ color: "black", fontSize: "4em", background: "white", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", padding: 20, borderRadius: 8, border: `1px solid ${team.color}` }}>
                                             <p>{team.name}</p>
                                             <p style={{ fontSize: 10 }}>{`http://${location.host}/quiz/play/${match._id}/${questions[0]._id}/${currentQuestion._id}/${team._id}`}</p>
-                                            <QRCodeCanvas size={256} value={`http://${location.host}/quiz/play/${match._id}/${questions[0]._id}/${currentQuestion._id}/${team._id}`} />
+                                            <QRCodeCanvas size={256} value={`http://192.168.178.30:3000/quiz/play/${match._id}/${questions[0]._id}/${currentQuestion._id}/${team._id}`} />
                                         </div>
                                     )
                                 })}
@@ -135,8 +135,10 @@ export default function MatchPage({ match }: { match: Match }) {
                                 {currentQuestionNum === questions.length - 1 && <FinishButton onPress={() => setGameState(gameState + 1)} />}
                             </div>
                             <TeamDisplay teams={teams} />
-                            <TopicQueue currentQuestionIndex={currentQuestionNum} questions={questions} />
-                            <ProgressControl currentIndex={currentQuestionNum} maxIndex={questions.length - 1}  onTransition={(modifier) => setCurrentQuestionNum(currentQuestionNum + modifier)} />
+                            <div>
+                                <TopicQueue currentQuestionIndex={currentQuestionNum} questions={questions} />
+                                <ProgressControl currentIndex={currentQuestionNum} maxIndex={questions.length - 1}  onTransition={(modifier) => setCurrentQuestionNum(currentQuestionNum + modifier)} />
+                            </div>
                         </RightDrawer>
                         <IconButton icon={<AlignJustify />} style={{ borderRadius: "50%", position: "absolute", top: 10, right: 5, zIndex: 10, color: "var(--text)", backgroundColor: "transparent", boxShadow: "0 3px 6px rgba(0,0,0,0.19), 0 2px 2px rgba(0,0,0,0.23)" }} onClick={() => setOpen(!open)}/>
                         <Slideshow currentIndex={currentQuestionNum} setCurrentIndex={setCurrentQuestionNum} nodes={questions.map((q) => (

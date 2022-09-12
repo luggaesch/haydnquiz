@@ -1,6 +1,5 @@
 import {Person} from "@mui/icons-material";
 import styles from "../../styles/team.module.css";
-import {useGameContext} from "../../contexts/GameContext";
 import Team from "../../types/team";
 
 export default function TeamDisplay({ teams }: { teams: Team[] }) {

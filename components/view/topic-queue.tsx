@@ -15,7 +15,7 @@ export default function TopicQueue({ currentQuestionIndex, questions }: { curren
     }
 
     return (
-        <div style={{ display: "grid", gridAutoFlow: "column", overflow: "auto", width: "100%", whiteSpace: "nowrap" }}>
+        <div style={{ marginTop: 20, display: "grid", gridAutoFlow: "column", overflow: "auto", width: "100%", whiteSpace: "nowrap" }}>
             {questions.slice(currentQuestionIndex).map((q, index) => {
                 const Icon = getIconByTopic(q.topic);
                 return (

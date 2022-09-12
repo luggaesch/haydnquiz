@@ -9,15 +9,14 @@ import AudioQuestion from "./audio";
 import VideoQuestion from "./video";
 import ChoiceQuestion from "./choice";
 import GuesstimateQuestion from "./guesstimate";
-import {getColorByTopic, getIconByTopic} from "../../data/topics";
 import SortQuestion from "./sort";
 import TextPopupQuestion from "./text-popup";
-import Joker from "../../public/joker.svg";
 import {motion} from "framer-motion";
 import TimerControl from "../view/timer-control";
 import {getIconByJoker} from "../../data/jokers";
 import {GameState, useGameContext} from "../../contexts/GameContext";
-import Question, {getIconByQuestionType, QuestionTypes} from "../../types/question";
+import Question, {QuestionTypes} from "../../types/question";
+import MetaContainer from "../view/meta-container";
 
 export interface WrapperChildProps {
     question: Question;
@@ -48,12 +47,6 @@ function formatQuestionFromType(question: Question, showTimer: () => void) {
 
 export default function QuestionWrapper({ question, hideOverlay, ...rest }: { question: Question, hideOverlay?: boolean }) {
     const {gameState} = useGameContext();
-    const { TopicIcon, TypeIcon } = useMemo(() => {
-        return {
-            TopicIcon: getIconByTopic(question.topic),
-            TypeIcon: getIconByQuestionType(question)
-        }
-    }, [question]);
     const [timerHidden, setTimerHidden] = useState(false /*question.media && (question.media.type === MediaType.Audio || question.media.type == MediaType.Video)*/)
     const child = useMemo(() => {
         return formatQuestionFromType(question,() => setTimerHidden(false))
@@ -71,17 +64,7 @@ export default function QuestionWrapper({ question, hideOverlay, ...rest }: { qu
 
     return (
         <div className={styles.wrapper} {...rest}>
-            <div className={styles.metaContainer}>
-                <div className={styles.topic} style={{backgroundColor: getColorByTopic(question.topic) }}>
-                    <TopicIcon className={styles.icon}/>
-                </div>
-                <div className={styles.mediaType}>
-                    <TypeIcon className={styles.icon} />
-                </div>
-                <div className={styles.value}>
-                    {question.value !== -1 ? <p>{question.value}</p> : <Joker style={{ fill: "var(--text)", width: "100%", height: "100%" }} />}
-                </div>
-            </div>
+            <MetaContainer topic={question.topic} type={question.type} value={question.value} />
             {question.jokerReward && <div className={styles.jokerDisplay}>
                 {getIconByJoker(question.jokerReward)} {question.jokerReward}
             </div>}

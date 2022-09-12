@@ -74,7 +74,7 @@ export default function Slideshow({ nodes, currentIndex, setCurrentIndex }: { no
                             paginate(-1);
                         }
                     }}
-                    style={{ width: "100vw", height: "100vh" }}
+                    style={{ width: "100%", height: "100%" }}
                 >
                     {nodes[currentIndex]}
                 </motion.div>

@@ -1,7 +1,6 @@
 import {useMemo} from "react";
 import {IconButton, Progress} from "rsuite";
 import styles from "../../styles/progress.module.css";
-import 'rsuite/dist/rsuite.min.css';
 import Left from "@rsuite/icons/legacy/Left";
 import Right from "@rsuite/icons/legacy/Right";
 

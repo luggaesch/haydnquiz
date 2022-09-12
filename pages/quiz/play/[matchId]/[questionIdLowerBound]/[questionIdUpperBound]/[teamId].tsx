@@ -30,7 +30,12 @@ export default function AnswerInput({ match, questionIdLowerBound, questionIdUpp
 
     function handleSubmit() {
         values.forEach((v, index) => {
-            match.answers.push({ teamId, question: questions[index], values: v })
+            const i = match.answers.findIndex((a) => a.teamId === teamId && a.question._id === questions[index]._id);
+            if (i !== -1) {
+                match.answers[i].values = v;
+            } else {
+                match.answers.push({ teamId, question: questions[index], values: v });
+            }
         });
         axios.post("/api/match/update", { match }).then((res) => console.log(res));
     }

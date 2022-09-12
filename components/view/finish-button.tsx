@@ -1,6 +1,4 @@
 import styles from "../../styles/soundcheck.module.css";
-// @ts-ignore
-import soundcheckSfx from "../../assets/songs/soundcheck.mp3";
 import {IconButton} from "rsuite";
 import {PageNext} from "@rsuite/icons";
 

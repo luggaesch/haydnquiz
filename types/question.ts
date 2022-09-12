@@ -34,8 +34,8 @@ type Question = {
 
 export default Question;
 
-export function getIconByQuestionType(question: Question) {
-    switch (question.type) {
+export function getIconByQuestionType(type: QuestionTypes) {
+    switch (type) {
         case QuestionTypes.Basic:
             return TextSnippet;
         case QuestionTypes.Quote:
