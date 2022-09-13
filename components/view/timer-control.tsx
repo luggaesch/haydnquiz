@@ -1,8 +1,8 @@
-import {IconButton, Progress} from "rsuite";
 import {useEffect, useMemo, useState} from "react";
 import {PauseOutline, PlayOutline} from "@rsuite/icons";
 import {useTimer} from "react-timer-hook";
 import styles from "../../styles/timer.module.css";
+import {Progress} from "antd";
 
 interface TimerProps {
     totalTime: number,
@@ -31,21 +31,19 @@ export default function TimerControl({ totalTime, playCountdown, ...rest}: Timer
     return (
         <div {...rest}>
             <div className={styles.container} onMouseEnter={() => setShowControl(true)} onMouseLeave={() => setShowControl(false)}>
-                <Progress.Circle strokeLinecap="round" trailColor="#aaaaaab0" strokeColor="rgb(0,255,139)" style={{ gridColumn: 1, gridRow: 1 }} showInfo={false} percent={Math.floor(percent)} />
                 {showControl ?
-                    <IconButton className={styles.iconButton}
-                                icon={isRunning ? <PauseOutline style={{ fontSize: "inherit" }} /> : <PlayOutline style={{ fontSize: "inherit" }} />}
-                                onClick={() => {
-                                    if (!isRunning) {
-                                        resume();
-                                    } else {
-                                        pause();
-                                    }
-                                }
-                    } />
+                    <div className={styles.iconButton} onClick={() => {
+                        if (!isRunning) {
+                            resume();
+                        } else {
+                            pause();
+                        }}}>
+                        {isRunning ? <PauseOutline style={{ fontSize: "inherit" }} /> : <PlayOutline style={{ fontSize: "inherit" }} />}
+                    </div>
                     : <div className={styles.secondDisplay}>
                         <p>{totalTime - currentTime}</p>
                     </div>}
+                <Progress type={"circle"} width={200} trailColor="#aaaaaab0" strokeColor="rgb(0,255,139)" style={{ width: "100%", height: "100%", gridColumn: 1, gridRow: 1 }} showInfo={false} percent={percent} />
             </div>
         </div>
     )

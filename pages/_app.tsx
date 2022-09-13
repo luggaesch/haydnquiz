@@ -1,4 +1,5 @@
 import '../styles/globals.css'
+import "antd/dist/antd.css"
 import type {AppProps} from 'next/app'
 import {GameProvider} from "../contexts/GameContext";
 import {SessionProvider} from "next-auth/react";

@@ -9,6 +9,10 @@
     grid-column: 1;
     grid-row: 1;
     font-size: 3rem !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
 }
 
 .secondDisplay {
@@ -17,7 +21,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: var(--dark-popup);
+    background-color: var(--dark-paper);
     width: 100%;
     height: 100%;
     border-radius: 50%;
@@ -25,6 +29,7 @@
 }
 
 .secondDisplay > p {
-    font-size: 3rem;
+    font-size: 4rem;
     color: var(--text);
+    margin: 0
 }

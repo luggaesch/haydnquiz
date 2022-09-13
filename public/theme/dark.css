@@ -1,0 +1,13 @@
+:root {
+  --dark-background: #111111;
+  --dark-paper: #222222;
+  --dark-popup: #191919;
+  --paper: #333333;
+  --paper-highlight: #555555;
+  --accent: rgb(0,255,139);
+  --accent-negative: rgb(255, 0, 89);
+  --input: #262626;
+  --text: #ffffff;
+  --text-transparent: #ffffff80;
+  --elevation-shadow: none;
+}

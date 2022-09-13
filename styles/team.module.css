@@ -9,6 +9,7 @@
 
 .container > h3 {
     margin: 0;
+    color: inherit;
 }
 
 .container > div {

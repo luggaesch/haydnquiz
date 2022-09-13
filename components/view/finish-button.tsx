@@ -1,4 +1,4 @@
-import styles from "../../styles/soundcheck.module.css";
+import styles from "../../styles/drawer.module.css";
 import {IconButton} from "rsuite";
 import {PageNext} from "@rsuite/icons";
 

@@ -1,4 +1,4 @@
-import React, {ReactNode, SetStateAction, useEffect, useState} from "react";
+import React, {ReactNode, SetStateAction, useEffect, useMemo, useState} from "react";
 import Team from "../types/team";
 import Match from "../types/match";
 import axios from "axios";
@@ -20,6 +20,7 @@ interface GameValue {
     setGameState: React.Dispatch<SetStateAction<GameState>>,
     currentQuestionNum: number,
     setCurrentQuestionNum: React.Dispatch<SetStateAction<number>>,
+    maxQuestionNum: number,
     teams: Team[],
     setTeams: React.Dispatch<SetStateAction<Team[]>>
 }
@@ -36,6 +37,9 @@ export function useGameContext() {
 
 export const GameProvider = ({ children }: { children: ReactNode } ) => {
     const [match, setMatch] = useState<Match | undefined>(undefined);
+    const maxQuestionNum = useMemo(() => {
+        return match?.quiz.questions.length || 0;
+    }, [match]);
     const [gameState, setGameState] = useState(GameState.Intro);
     const [currentQuestionNum, setCurrentQuestionNum] = useState(0);
     const [teams, setTeams] = useState<Team[]>([]);
@@ -63,6 +67,7 @@ export const GameProvider = ({ children }: { children: ReactNode } ) => {
         setGameState,
         currentQuestionNum,
         setCurrentQuestionNum,
+        maxQuestionNum,
         teams,
         setTeams
     };
