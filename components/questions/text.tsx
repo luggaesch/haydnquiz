@@ -1,7 +1,6 @@
 import React, {useState} from "react";
 import {WrapperChildProps} from "./wrapper";
 import styles from "../../styles/question.module.css";
-import {IconButton} from "rsuite";
 import {EmojiObjects} from "@mui/icons-material";
 import SolutionView from "../view/solution-view";
 import {GameState, useGameContext} from "../../contexts/GameContext";
@@ -20,11 +19,13 @@ export default function TextQuestion({ question, ...rest }: WrapperChildProps) {
                 <p>{question.caption}</p>
             </div>
             {(gameState === GameState.Solutions || gameState === GameState.Example) && <>
-                <IconButton className={styles.solutionButton}
-                            icon={<EmojiObjects style={{ fontSize: "inherit" }} />} onClick={() => {
+                <div className={styles.solutionButton}
+                            onClick={() => {
                     setShowSolution(true);
                     setIsInitialScreen(false);
-                }} />
+                }}>
+                    <EmojiObjects style={{ fontSize: "inherit" }} />
+                </div>
                 <SolutionView showSolution={showSolution} setShowSolution={setShowSolution} isInitialScreen={isInitialScreen}>
                     {question.solutionIsUrl ?
                         <div className={styles.popupContainerContent}>

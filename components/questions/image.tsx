@@ -1,15 +1,15 @@
 import {WrapperChildProps} from "./wrapper";
 import styles from "../../styles/question.module.css";
 import React, {useMemo, useState} from "react";
-import {IconButton} from "rsuite";
 import {motion} from "framer-motion";
-import Down from "@rsuite/icons/legacy/Down";
-import {Image as ImageIcon} from "@rsuite/icons";
 import Image from "next/image";
 import {baseImagePath} from "../../data/questions";
 import {EmojiObjects} from "@mui/icons-material";
 import SolutionView from "../view/solution-view";
 import {GameState, useGameContext} from "../../contexts/GameContext";
+import {SolutionTypes} from "../../types/question";
+import {FaImage} from "react-icons/fa";
+import {BsChevronDown} from "react-icons/bs"
 
 export default function ImageQuestion({question, ...rest}: WrapperChildProps) {
     if (!question.media) {
@@ -35,12 +35,14 @@ export default function ImageQuestion({question, ...rest}: WrapperChildProps) {
             </div>
             <div>
                 <div className={styles.popupButtonContainer}>
-                    <IconButton
+                    <div
                         className={styles.popupButton}
-                        icon={<ImageIcon className={styles.buttonIcon}/>} onClick={() => {
+                        onClick={() => {
                         setShowImage(true);
                         setIsInitialScreen(false);
-                    }}/>
+                    }}>
+                        <FaImage className={styles.buttonIcon}/>
+                    </div>
                 </div>
                 <motion.div
                     animate={animation}
@@ -114,29 +116,33 @@ export default function ImageQuestion({question, ...rest}: WrapperChildProps) {
                                     </div>
                         }
                     </div>
-                    <IconButton className={styles.popupContainerCollapse}
-                                icon={<Down style={{fontSize: "inherit"}}/>}
+                    <div className={styles.popupContainerCollapse}
+
                                 onClick={() => {
                                     setShowImage(false);
-                                }}/>
+                                }}>
+                        <BsChevronDown style={{fontSize: "inherit"}}/>
+                    </div>
                 </motion.div>
             </div>
             {gameState === GameState.Solutions && <>
-                <IconButton className={styles.solutionButton}
-                            icon={<EmojiObjects style={{ fontSize: "inherit" }} />} onClick={() => {
+                <div className={styles.solutionButton}
+                            onClick={() => {
                     setShowSolution(true);
                     setIsInitialSolutionScreen(false);
-                }} />
+                }}>
+                    <EmojiObjects style={{ fontSize: "inherit" }} />
+                </div>
                 <SolutionView showSolution={showSolution} setShowSolution={setShowSolution} isInitialScreen={isInitialSolutionScreen}>
-                    {question.solutionIsUrl ?
+                    {question.solutionType === SolutionTypes.Image ?
                         <div className={styles.popupContainerContent}>
                             <Image layout="fill" objectFit="contain" src={question.solution}
                                    style={{background: "white" }} alt=""/>
                         </div>
                         :
-                        question.solutionArray ?
+                        question.solutionType === SolutionTypes.List ?
                         <div style={{ width: "100%", height: "90%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", fontSize: "4rem" }}>
-                            {(question.solutionArray).map((s, index) => (
+                            {(question.solutionArray!).map((s, index) => (
                                 <p key={index}>{s}</p>
                             ))}
                         </div> : <div>{question.solution}</div>

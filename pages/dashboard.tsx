@@ -9,28 +9,24 @@ import axios from "axios";
 import {getSession} from "next-auth/react";
 import {useRouter} from "next/router";
 import Match from "../types/match";
-import {useMemo} from "react";
+import {useMemo, useState} from "react";
 import TeamDisplay from "../components/view/team-display";
+import {Input, Form, Popover, Button} from "antd";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const session = await getSession(context);
     const result = await axios.get(`${process.env.SERVER_URL}/api/quiz/fetchForUserId/${session?.user.id}`);
     const quizzes = result.data;
-    quizzes.push(...quizzes);
-    console.log(quizzes);
     const matchQueryRes = await axios.get(`${process.env.SERVER_URL}/api/match/fetchOngoingForUserId/${session?.user.id}`);
     const matches = matchQueryRes.data;
     return {
         props: { quizzes: JSON.parse(JSON.stringify(quizzes)), unfinishedMatches: JSON.parse(JSON.stringify(matches)) }
     }
-    /*
-    return {
-        props: { quizzes: [], unfinishedMatches: [] }
-    }
-    */
 }
 
 export default function Dashboard({ quizzes, unfinishedMatches }: { quizzes: Quiz[], unfinishedMatches: Match[] }) {
+    const [modalOpen, setModalOpen] = useState(false);
+    const [quizName, setQuizName] = useState("");
     const mostRecentUnfinishedMatch = useMemo(() => {
         return unfinishedMatches.length > 0 ? unfinishedMatches.reduce((a, b) => (a.startTime > b.startTime ? a : b)) : null;
     }, [unfinishedMatches]);
@@ -41,6 +37,21 @@ export default function Dashboard({ quizzes, unfinishedMatches }: { quizzes: Qui
     async function handlePlayClicked(quizId: string) {
         const res = await axios.post(`/api/match/create`, { quizId });
         router.push("/quiz/play/" + res.data._id);
+    }
+
+    function handleAddClick() {
+        setModalOpen(true);
+    }
+
+    const handleOpenChange = (newOpen: boolean) => {
+        setModalOpen(newOpen);
+    };
+
+    async function handleSubmit() {
+        const res = await axios.post(`/api/quiz/create`, { quizName });
+        console.log(res);
+        router.push("/quiz/" + res.data._id);
+        setModalOpen(false);
     }
 
     return (
@@ -61,9 +72,31 @@ export default function Dashboard({ quizzes, unfinishedMatches }: { quizzes: Qui
                 </a>
             </Link>}
             <div style={{ position: "absolute", bottom: 10,  gridAutoFlow: "column", overflow: "auto", width: "100%", display: "grid", gridGap: 10, padding: 10 }}>
-                <div style={{ border: "1px dashed white", fontSize: "3rem", color: "white", minWidth: "40vh", height: "40vh", borderRadius: 8, cursor: "pointer", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                    <Add fontSize="inherit" />
-                </div>
+                <Popover
+                    content={
+                        <div style={{ width: 400 }}>
+                            <Form>
+                                <Form.Item label="Name">
+                                    <Input value={quizName} onChange={(event) => setQuizName(event.target.value)} />
+                                </Form.Item>
+                                <Form.Item >
+                                    <Button style={{ width: "100%" }} type="primary" onClick={handleSubmit}>
+                                        Submit
+                                    </Button>
+                                </Form.Item>
+                            </Form>
+                        </div>
+                    }
+                    style={{ background: "#222" }}
+                    title="Create Quiz"
+                    trigger="click"
+                    open={modalOpen}
+                    onOpenChange={handleOpenChange}
+                >
+                    <div onClick={handleAddClick} style={{ border: "1px dashed white", fontSize: "3rem", color: "white", minWidth: "40vh", height: "40vh", borderRadius: 8, cursor: "pointer", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                        <Add fontSize="inherit" />
+                    </div>
+                </Popover>
                 {quizzes.map((quiz, index) => (
                     <div key={quiz._id! + index} style={{ background: "#333", color: "white", minWidth: "40vh", position: "relative", padding: 20, boxShadow: "0 3px 6px rgba(0,0,0,0.19), 0 2px 2px rgba(0,0,0,0.23)", height: "40vh", borderRadius: 8, cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "center" }}>
                         <span style={{ fontSize: "3rem", color: "white" }}>{quiz.name}</span>

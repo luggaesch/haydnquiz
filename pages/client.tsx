@@ -3,8 +3,8 @@ import {GetServerSideProps} from "next";
 import clientPromise from "../lib/mongodb";
 import {getSession} from "next-auth/react";
 import styles from "../styles/question.module.css";
-import {Input} from "rsuite";
 import React, {useState} from "react";
+import {Input} from "antd";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     try {
@@ -68,7 +68,7 @@ export default function ClientPage({ isConnected }: { isConnected: boolean }) {
                 The disadvantage of <strong>useSession()</strong> is that it requires
                 client side JavaScript.
             </p>
-            <Input className={styles.input} value={value} onChange={(value) => setValue(value)} type="text"/>
+            <Input className={styles.input} value={value} onChange={(event) => setValue(event.target.value)} type="text"/>
             <div onClick={onClick} style={{ width: 300, height: 300, borderRadius: 8, background: "#222", color: "white", display: "flex", justifyContent: "center", alignItems: "center" }}>
                 Test
             </div>

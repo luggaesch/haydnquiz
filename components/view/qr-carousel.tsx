@@ -16,13 +16,9 @@ const contentStyle: React.CSSProperties = {
 
 export default function QrCarousel({ match, currentQuestion, setShowAnswerInput }: { match: Match, currentQuestion: Question, setShowAnswerInput: (value: boolean) => void }) {
 
-    const onChange = (currentSlide: number) => {
-        console.log(currentSlide);
-    };
-
     return (
         <div style={{ width: "100vw", height: "100vh" }}>
-            <Carousel afterChange={onChange} dots={{className: styles.dots}}>
+            <Carousel dots={{className: styles.dots}}>
                 {match.teams.map((team, index) => {
                     return (
                         <div key={index}>

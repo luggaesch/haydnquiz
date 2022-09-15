@@ -1,10 +1,10 @@
-import {MediaType} from "../../../data/questions";
+import {MediaTypes} from "../../../data/questions";
 import mongoose from "mongoose";
 
 const MediaSchema = new mongoose.Schema({
     type: {
         type: String,
-        enum: MediaType,
+        enum: MediaTypes,
         required: true
     },
     content: {

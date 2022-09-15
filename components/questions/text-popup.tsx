@@ -1,7 +1,6 @@
 import {WrapperChildProps} from "./wrapper";
 import React, {useState} from "react";
 import styles from "../../styles/question.module.css";
-import {IconButton} from "rsuite";
 import {EmojiObjects, ReadMore} from "@mui/icons-material";
 import PopupContainer from "../view/popup-container";
 import SolutionView from "../view/solution-view";
@@ -25,22 +24,26 @@ export default function TextPopupQuestion({ question, ...rest }: WrapperChildPro
             </div>
             <div>
                 <div className={styles.popupButtonContainer}>
-                    <IconButton className={styles.popupButton}
-                                icon={<ReadMore style={{ fontSize: "inherit" }} />} onClick={() => {
+                    <div className={styles.popupButton}
+                                onClick={() => {
                         setShowContent(true);
                         setIsInitialScreen(false);
-                    }} />
+                    }}>
+                        <ReadMore style={{ fontSize: "inherit" }} />
+                    </div>
                 </div>
                 <PopupContainer isInitialScreen={isInitialScreen} showContent={showContent} setShowContent={setShowContent}>
                     {question.media.content}
                 </PopupContainer>
             </div>
             {gameState === GameState.Solutions && <>
-                <IconButton className={styles.solutionButton}
-                            icon={<EmojiObjects style={{ fontSize: "inherit" }} />} onClick={() => {
+                <div className={styles.solutionButton}
+                            onClick={() => {
                     setShowSolution(true);
                     setIsInitialSolutionScreen(false);
-                }} />
+                }}>
+                    <EmojiObjects style={{ fontSize: "inherit" }} />
+                </div>
                 <SolutionView showSolution={showSolution} setShowSolution={setShowSolution} isInitialScreen={isInitialSolutionScreen}>
                     {question.solutionIsUrl ?
                         <div className={styles.popupContainerContent}>

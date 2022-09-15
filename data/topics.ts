@@ -6,10 +6,9 @@ import {
     Public as Globe,
     People,
     LocalDining,
-    AccountBalance, LibraryBooks, Translate, Sports
+    AccountBalance, LibraryBooks, Translate, Sports, QuestionMark
 } from "@mui/icons-material";
-import {Calendar} from "@rsuite/icons";
-import Question from "@rsuite/icons/legacy/Question";
+import {FaCalendar} from "react-icons/fa";
 
 export enum Topics {
     "Nature" = "Natur",
@@ -48,7 +47,7 @@ export function getIconByTopic(topic: Topics) {
         case Topics.Finance:
             return AccountBalance;
         case Topics.History:
-            return Calendar;
+            return FaCalendar;
         case Topics.Literature:
             return LibraryBooks;
         case Topics.Linguistics:
@@ -56,7 +55,7 @@ export function getIconByTopic(topic: Topics) {
         case Topics.Sports:
             return Sports;
         case Topics.Mystery:
-            return Question;
+            return QuestionMark;
     }
 }
 

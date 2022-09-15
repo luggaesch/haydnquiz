@@ -3,8 +3,8 @@ import {authOptions} from "./auth/[...nextauth]"
 import type {NextApiRequest, NextApiResponse} from "next";
 import connectMongo from "../../lib/db/connectMongo";
 import {Topics} from "../../data/topics";
-import {MediaType} from "../../data/questions";
-import Question, {QuestionTypes} from "../../types/question";
+import {MediaTypes} from "../../data/questions";
+import Question, {QuestionTypes, SolutionTypes} from "../../types/question";
 import Media from "../../types/media";
 import {MediaModel, QuestionModel, QuizModel} from "../../lib/db/models";
 
@@ -21,12 +21,13 @@ export default async function handler(
     topic: Topics.Mystery,
     timeInSeconds: 60,
     value: 2,
-    solution: "Auch Test"
+    solution: "Auch Test",
+    solutionType: SolutionTypes.Text
   }
   const q1 = await QuestionModel.create(question1);
 
   const media2: Media = {
-    type: MediaType.Image,
+    type: MediaTypes.Image,
     content: "/images/questions_resized/rolle.webp",
   }
 
@@ -39,6 +40,7 @@ export default async function handler(
     timeInSeconds: 90,
     value: 2,
     solution: "17",
+    solutionType: SolutionTypes.Text
   }
 
   const q2 = await QuestionModel.create({ ...question2, media: m2 });

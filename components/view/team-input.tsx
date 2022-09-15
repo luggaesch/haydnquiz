@@ -1,10 +1,10 @@
 import React, {useState} from "react";
-import {IconButton, Input} from "rsuite";
 import {Add, Person, PersonAdd} from "@mui/icons-material";
 import styles from "../../styles/team.module.css";
-import {CheckOutline} from "@rsuite/icons";
 import {useGameContext} from "../../contexts/GameContext";
 import Team from "../../types/team";
+import {Input} from "antd";
+import {CheckOutlined} from "@ant-design/icons";
 
 const teamColors = ["#d05151", "#51c5d0", "#51d053", "#7151d0", "#d0b751", "#b2c3c0"];
 
@@ -27,23 +27,30 @@ export default function TeamInput({ onSubmit }: { onSubmit: () => void }) {
             <div style={{ display: "grid", width: "80%", height: "80vh", gridTemplateColumns: "40% 40%", gridTemplateRows: "30% 30% 30%", gridGap: 10, justifyContent: "center"  }}>
                 {current.map((t, index) => (
                     <div key={index} style={{ backgroundColor: "var(--paper)", padding: 20, fontSize: "3rem", borderRadius: 12, border: `1px solid ${t.color}` }}>
-                        <Input placeholder={"Team " + (index+1)} style={{ height: "50%", fontSize: "3rem" }} value={t.name} onChange={(value) => handleTeamChange({ index, name: value })} />
+                        <Input placeholder={"Team " + (index+1)} style={{ height: "50%", fontSize: "3rem" }} value={t.name} onChange={(event) => handleTeamChange({ index, name: event.target.value })} />
                         <div style={{ display: "flex", flexDirection: "row", alignItems: "center", height: "50%" }}>
                             {[...Array(t.numOfPlayers)].map((e, index) => (
                                 <Person style={{ fontSize: "4rem", color: t.color }} key={"p_" + index} />
                             ))}
-                            <IconButton onClick={() => handleTeamChange({ index, numOfPlayers: current[index].numOfPlayers + 1 })} style={{ fontSize: "4rem", backgroundColor: "transparent", color: `${teamColors[index]}80`, width: "5vw", height: "5vw" }} icon={<PersonAdd style={{ fontSize: "inherit" }} />} />
+                            <div onClick={() => handleTeamChange({ index, numOfPlayers: current[index].numOfPlayers + 1 })} style={{ fontSize: "4rem", backgroundColor: "transparent", color: `${teamColors[index]}80`, width: "5vw", height: "5vw" }}>
+                                <PersonAdd style={{ fontSize: "inherit" }} />
+                            </div>
                         </div>
                     </div>
                 ))}
                 <div style={{ display: "flex", justifyContent: "center", alignItems: "center", border: `1px solid ${teamColors[current.length]}`, borderRadius: 12 }}>
-                    <IconButton onClick={() => addTeamSlot()} style={{ fontSize: "4rem", borderRadius: "50%", marginTop: 10, backgroundColor: teamColors[current.length] ?? "#000", color: "var(--text)", width: "8vw", height: "8vw" }} icon={<Add style={{ fontSize: "inherit" }} />} />
+                    <div onClick={() => addTeamSlot()} style={{ fontSize: "4rem", borderRadius: "50%", marginTop: 10, backgroundColor: teamColors[current.length] ?? "#000", color: "var(--text)", width: "8vw", height: "8vw" }}>
+                        <Add style={{ fontSize: "inherit" }} />
+                    </div>
                 </div>
             </div>
-            {current.length > 0 && <IconButton className={styles.submitButton} onClick={() => {
+            {current.length > 0 && <div className={styles.submitButton} onClick={() => {
                 setTeams(current);
                 onSubmit();
-            }} icon={<CheckOutline style={{ fontSize: "inherit" }} />} />}
+            }}>
+                <CheckOutlined style={{ fontSize: "inherit" }} />
+            </div>
+                }
         </div>
     )
 }

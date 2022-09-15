@@ -1,3 +1,7 @@
+:root {
+    --accent: #8EFFED;
+}
+
 /* width */
 ::-webkit-scrollbar {
     width: 8px;
@@ -75,4 +79,12 @@ input[type=number] {
 
 .slick-dots .slick-active button {
     background: var(--text) !important;
+}
+
+.anticon svg {
+    color: inherit;
+}
+
+label {
+    color: white !important;
 }

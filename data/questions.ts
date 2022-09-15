@@ -8,12 +8,12 @@ import intro_mixdown from "../assets/songs/intro_mixdown.mp3";
 import classic from "../assets/songs/classic.mp3";
 import {Hearing, Image, Numbers, Sort, TextSnippet, VideoLibrary} from "@mui/icons-material";
 import shuffle from "../lib/shuffle";
-import {List} from "@rsuite/icons";
-import {Joker} from "./jokers";
+import {Jokers} from "./jokers";
+import {List} from "antd";
 
 export const baseImagePath = "/images/questions_resized/";
 
-export enum MediaType {
+export enum MediaTypes {
     "Audio" = "Audio",
     "Video" = "Video",
     "Image" = "Image",
@@ -33,11 +33,11 @@ export function getIconByQuestionType(question: Question) {
         return Numbers;
     }
     switch (question.media?.type) {
-        case MediaType.Audio:
+        case MediaTypes.Audio:
             return Hearing;
-        case MediaType.Image:
+        case MediaTypes.Image:
             return Image;
-        case MediaType.Video:
+        case MediaTypes.Video:
             return VideoLibrary;
         default:
             return TextSnippet;
@@ -48,13 +48,13 @@ export type Question = {
     id: string,
     topic: Topics,
     caption: string,
-    media?: { type: MediaType, source?: string | string[], file?: string, content?: string, transparent?: boolean },
+    media?: { type: MediaTypes, source?: string | string[], file?: string, content?: string, transparent?: boolean },
     choices?: string[],
     items?: OrderElement[],
     unit?: string,
     solution: string | number | string[],
     solutionUrl?: string,
-    value: number | Joker,
+    value: number | Jokers,
     timeInSeconds: number
 }
 
@@ -63,7 +63,7 @@ const questions: Question[] = [
         id: v4(),
         topic: Topics.FoodAndDrinks,
         caption: "Wie viele Portionen befinden sich in einer handelsüblichen Packung dieses Produkts?",
-        media: {type: MediaType.Image, source: "rolle.webp"},
+        media: {type: MediaTypes.Image, source: "rolle.webp"},
         solution: "17",
         value: 2,
         timeInSeconds: 180
@@ -95,14 +95,14 @@ const questions: Question[] = [
         ]),
         unit: "€/kg",
         solution: -1,
-        value: Joker.Wikipedia,
+        value: Jokers.Wikipedia,
         timeInSeconds: -1,
     },
     {
         id: v4(),
         topic: Topics.Nature,
         caption: "Zu welcher Pflanze gehört dieses Blatt?",
-        media: {type: MediaType.Image, source: "leaf.jpg"},
+        media: {type: MediaTypes.Image, source: "leaf.jpg"},
         solution: "Apfelbaum",
         value: 2,
         timeInSeconds: 180
@@ -121,7 +121,7 @@ const questions: Question[] = [
         id: v4(),
         topic: Topics.Mystery,
         caption: "Wo findet man diese Zahlenfolge?",
-        media: { type: MediaType.Text, content: "20 1 18 4 13 6 10 15 2 17 3 19 7 16 8 11 14 9 12 5" },
+        media: { type: MediaTypes.Text, content: "20 1 18 4 13 6 10 15 2 17 3 19 7 16 8 11 14 9 12 5" },
         solution: "Dartscheibe",
         solutionUrl: `${baseImagePath}dart.png`,
         value: 2,
@@ -132,7 +132,7 @@ const questions: Question[] = [
         topic: Topics.Society,
         caption: "Wie viele Menschen sterben jährlich etwa in Folge eines Hundebisses?",
         solution: 25000,
-        value: Joker.VierGewinnt,
+        value: Jokers.VierGewinnt,
         timeInSeconds: 180
     },
     {
@@ -147,7 +147,7 @@ const questions: Question[] = [
         id: v4(),
         topic: Topics.Literature,
         caption: "Von welcher fiktionalen Figur stammt dieser Satz?",
-        media: { type: MediaType.Text, content: "„Bis zum Letzten ring ich mit dir, aus dem Herzen der Hölle stech ich nach dir, dem Haß zu liebe spei' ich meinen letzten Hauch nach dir.“" },
+        media: { type: MediaTypes.Text, content: "„Bis zum Letzten ring ich mit dir, aus dem Herzen der Hölle stech ich nach dir, dem Haß zu liebe spei' ich meinen letzten Hauch nach dir.“" },
         solution: "Kapitän Ahab (Moby Dick, Kapitel 135, S. 532)",
         value: 2,
         timeInSeconds: 150
@@ -186,14 +186,14 @@ const questions: Question[] = [
         ]),
         unit: "kcal",
         solution: -1,
-        value: Joker.Telefon,
+        value: Jokers.Telefon,
         timeInSeconds: -1
     },
     {
         id: v4(),
         topic: Topics.PopCulture,
         caption: "Aus welchen Medien, d.h. Filmen, Serien oder Videospielen, sind folgende Zehn Audiosequenzen entnommen?",
-        media: {type: MediaType.Audio, file: intro_mixdown},
+        media: {type: MediaTypes.Audio, file: intro_mixdown},
         solution: [
             "Findet Nemo", "Modern Family", "Digimon Tamers", "The Sopranos", "Yoshi's Story",
             "Der Herr der Ringe", "Grey's Anatomy", "Westworld", "Skyrim", "Chip und Chap"
@@ -214,7 +214,7 @@ const questions: Question[] = [
         id: v4(),
         topic: Topics.PopCulture,
         caption: "Aus welchem Film stammt dieser Ausschnitt?",
-        media: { type: MediaType.Video, source: "https://streamable.com/rp5g18" },
+        media: { type: MediaTypes.Video, source: "https://streamable.com/rp5g18" },
         solution: "The Shining",
         solutionUrl: `${baseImagePath}shining.jpg`,
         value: 2,
@@ -238,14 +238,14 @@ const questions: Question[] = [
         ]),
         unit: "Date",
         solution: -1,
-        value: Joker.Teamwork,
+        value: Jokers.Teamwork,
         timeInSeconds: -1
     },
     {
         id: v4(),
         topic: Topics.Music,
         caption: "Zu welchem Tanz gehört diese Schrittfolge?",
-        media: { type: MediaType.Image, source: "dance.png", transparent: true },
+        media: { type: MediaTypes.Image, source: "dance.png", transparent: true },
         solution: "Walzer, Rumba, Foxtrot - (Box Step)",
         value: 2,
         timeInSeconds: 150
@@ -264,7 +264,7 @@ const questions: Question[] = [
         topic: Topics.Nature,
         caption: "Wie lauten die deutschen Namen dieser Tierarten?",
         media: {
-            type: MediaType.Image, source: [
+            type: MediaTypes.Image, source: [
                 "a0.jpg", "a1.jpg", "a2.jpg", "a3.jpg", "a4.jpg", "a5.jpg", "a6.jpg", "a7.jpg"]
         },
         solution: ["Elefantenspitzmaus", "Saola", "Serval", "Malaienbär", "Inland Taipan", "Beluga Wal", "Goldfasan", "Mandrill"],
@@ -285,14 +285,14 @@ const questions: Question[] = [
         topic: Topics.Geography,
         caption: "Wie tief ist die tiefste menschliche Bohrung in der Geschichte?",
         solution: 12262,
-        value: Joker.DoubleDown,
+        value: Jokers.DoubleDown,
         timeInSeconds: 150
     },
     {
         id: v4(),
         topic: Topics.Music,
         caption: "Von welchem Komponisten stammt dieses Werk?",
-        media: { type: MediaType.Audio, file: classic },
+        media: { type: MediaTypes.Audio, file: classic },
         solution: "Die Hochzeit des Figaro - Wolfgang Amadeus Mozart",
         value: 2,
         timeInSeconds: 30
@@ -301,7 +301,7 @@ const questions: Question[] = [
         id: v4(),
         topic: Topics.FoodAndDrinks,
         caption: "Auf einer Seite im Rezeptbuch meiner Mama sind folgende Zutaten aufgelistet, doch einige Stellen sind wegen Schokoladenflecken nicht mehr lesbar. Wie lautet der Titel?",
-        media: {type: MediaType.Image, source: "recipe.jpg"},
+        media: {type: MediaTypes.Image, source: "recipe.jpg"},
         solution: "Bienenstich",
         solutionUrl: `${baseImagePath}bienenstich.jpg`,
         value: 2,
@@ -321,7 +321,7 @@ const questions: Question[] = [
         topic: Topics.Society,
         caption: "Wie heißen diese Personen des öffentlichen Lebens?",
         media: {
-            type: MediaType.Image,
+            type: MediaTypes.Image,
             source: ["p0.jpg", "p3.jpg", "p2.jpg", "p1.jpg", "p7.jpg", "p5.jpg", "p6.jpg", "p4.jpg"]
         },
         solution: [
@@ -369,7 +369,7 @@ const questions: Question[] = [
         ]),
         unit: "",
         solution: -1,
-        value: Joker.Ueberfall,
+        value: Jokers.Ueberfall,
         timeInSeconds: -1
     },
     {
@@ -393,7 +393,7 @@ const questions: Question[] = [
         id: v4(),
         topic: Topics.Geography,
         caption: "Die Umrisse welcher Länder sind hier dargestellt??",
-        media: { type: MediaType.Image, source: ["c0.jpg", "c1.jpg", "c2.jpg", "c3.jpg"] },
+        media: { type: MediaTypes.Image, source: ["c0.jpg", "c1.jpg", "c2.jpg", "c3.jpg"] },
         solution: ["Norwegen", "Peru", "Ägypten", "China"],
         value: 4,
         timeInSeconds: 240
@@ -424,7 +424,7 @@ const questions: Question[] = [
         id: v4(),
         topic: Topics.Finance,
         caption: "Die Aktienverläufe welcher drei Unternehmen sind hier zu sehen?",
-        media: {type: MediaType.Image, source: ["stock1.jpg", "stock2.jpg", "stock3.jpg"]},
+        media: {type: MediaTypes.Image, source: ["stock1.jpg", "stock2.jpg", "stock3.jpg"]},
         solution: [
             "Wirecard", "Tesla", "Netflix"
         ],
@@ -435,7 +435,7 @@ const questions: Question[] = [
         id: v4(),
         topic: Topics.Mystery,
         caption: 'Von folgender Darstellung wurde vollständig die Beschriftung entfernt. Was soll sie veranschaulichen?',
-        media: { type: MediaType.Image, source: "code.jpg" },
+        media: { type: MediaTypes.Image, source: "code.jpg" },
         solution: "Morse Code",
         solutionUrl: `${baseImagePath}morse_o.jpg`,
         value: 2,
@@ -445,7 +445,7 @@ const questions: Question[] = [
         id: v4(),
         topic: Topics.Music,
         caption: "Wie lauten die Titel dieser Zehn Songs und ihre Interpreten?",
-        media: {type: MediaType.Audio, file: mixdown},
+        media: {type: MediaTypes.Audio, file: mixdown},
         solution: ["Kryptonite - 3 Doors Down", "Rather Be - Clean Bandit",
             "What I've Done - Linkin Park", "Take Me Home Tonight - Eddie Money",
             "Sandstorm - Darude", "Rapper's Delight - Sugarhill Gang",

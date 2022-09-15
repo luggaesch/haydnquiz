@@ -1,5 +1,4 @@
 import {motion} from "framer-motion";
-import {IconButton} from "rsuite";
 import {PowerSettingsNew} from "@mui/icons-material";
 import styles from "../../styles/start.module.css";
 
@@ -8,7 +7,9 @@ export default function StartButton({ ...rest }: { [x:string]: any }) {
         <div {...rest} className={styles.container}>
             <div>
                 <div className={styles.buttonContainer}>
-                    <IconButton className={styles.power} icon={<PowerSettingsNew style={{ fontSize: "inherit" }} />} />
+                    <div className={styles.power}>
+                        <PowerSettingsNew style={{ fontSize: "inherit" }} />
+                    </div>
                 </div>
                 <motion.div
                     animate={{

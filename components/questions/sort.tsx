@@ -1,14 +1,12 @@
 import {WrapperChildProps} from "./wrapper";
 import styles from "../../styles/question.module.css";
-import {IconButton} from "rsuite";
 import {motion} from "framer-motion";
-import Down from "@rsuite/icons/legacy/Down";
 import React, {useEffect, useMemo, useState} from "react";
 import {OrderElement} from "../../data/questions";
-import Up from "@rsuite/icons/legacy/Up";
 import getAverageIndex from "../../lib/median";
-import {SortUp} from "@rsuite/icons";
 import PopupContainer from "../view/popup-container";
+import {FaSortUp} from "react-icons/fa";
+import {FcDown, FcUp} from "react-icons/fc";
 
 const successAnimation = {
     backgroundColor: ["#fff", "rgba(0,255,139,0.67)", "#fff"]
@@ -99,11 +97,13 @@ export default function SortQuestion({ question, ...rest }: WrapperChildProps) {
             </div>
             <div>
                 <div className={styles.popupButtonContainer}>
-                    <IconButton className={styles.popupButton}
-                                icon={<SortUp style={{ fontSize: "inherit" }} />} onClick={() => {
+                    <div className={styles.popupButton}
+                                onClick={() => {
                         setShowGame(true);
                         setIsInitialScreen(false);
-                    }} />
+                    }}>
+                        <FaSortUp style={{ fontSize: "inherit" }} />
+                    </div>
                 </div>
                 <PopupContainer isInitialScreen={isInitialScreen} showContent={showGame} setShowContent={setShowGame} backgroundColor={"#fff"}>
                     <div className={styles.sortColumnContainer}>
@@ -117,7 +117,7 @@ export default function SortQuestion({ question, ...rest }: WrapperChildProps) {
                                         repeat: 0
                                     }}
                                     className={styles.sortItem}
-                                    onClick={() => handleElementClick(index)} key={question._id + index} style={{ display: orderedItems.indexOf(e) !== -1 ? "none" : "flex" }}>
+                                    onClick={() => handleElementClick(index)} key={question._id! + index} style={{ display: orderedItems.indexOf(e) !== -1 ? "none" : "flex" }}>
                                     {e.name}
                                 </motion.div>
                             ))}
@@ -135,8 +135,12 @@ export default function SortQuestion({ question, ...rest }: WrapperChildProps) {
                                     {v.name}{isFinished && ` - ${question.unit! === "Date" ? new Date(v.value).toLocaleDateString() : (v.value + " " + question.unit!)}`}
                                     {selectedElementIndex !== -1 &&
                                         <>
-                                            <IconButton className={styles.sortButton} onClick={() => handleSortAttempt(orderedItems.indexOf(v), 1)} icon={<Up />} style={{ borderRadius: "4px 4px 0 0", top: 0, transform: "translateY(5px)" }} />
-                                            {index === arr.length -1 && <IconButton className={styles.sortButton} onClick={() => handleSortAttempt(orderedItems.indexOf(v), -1)} icon={<Down />} style={{ borderRadius: "0 0 4px 4px", bottom: 0, transform: "translateY(-5px)" }} />}
+                                            <div className={styles.sortButton} onClick={() => handleSortAttempt(orderedItems.indexOf(v), 1)} style={{ borderRadius: "4px 4px 0 0", top: 0, transform: "translateY(5px)" }}>
+                                                <FcUp />
+                                            </div>
+                                            {index === arr.length -1 && <div className={styles.sortButton} onClick={() => handleSortAttempt(orderedItems.indexOf(v), -1)} style={{ borderRadius: "0 0 4px 4px", bottom: 0, transform: "translateY(-5px)" }}>
+                                                <FcDown />
+                                            </div>}
                                         </>
                                     }
                                 </motion.div>

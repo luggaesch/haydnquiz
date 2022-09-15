@@ -1,9 +1,9 @@
 import {WrapperChildProps} from "./wrapper";
 import React, {useMemo, useState} from "react";
 import styles from "../../styles/question.module.css";
-import {IconButton, Input} from "rsuite";
-import {CheckOutline} from "@rsuite/icons";
 import {useGameContext} from "../../contexts/GameContext";
+import {Input} from "antd";
+import {CheckOutlined} from "@ant-design/icons";
 
 export default function GuesstimateQuestion({ question, ...rest }: WrapperChildProps) {
     const { teams } = useGameContext();
@@ -35,14 +35,16 @@ export default function GuesstimateQuestion({ question, ...rest }: WrapperChildP
                     <div className={styles.inputContainer} key={question._id + "_" + index}>
                         <Input className={styles.input} style={{ borderColor: c.color }}
                                inputMode="numeric" placeholder={`Team ${c.name}`}
-                               value={values[index]} onChange={(value) => handleValueChange(value, index)}
+                               value={values[index]} onChange={(event) => handleValueChange(event.target.value, index)}
                                type="number"
                         />
                         {results && <p style={{ fontSize: "2rem" }}>{results[index]}</p>}
                     </div>
                 ))}
             </div>
-            {values.indexOf("") === -1 && !isSubmitted && <IconButton className={styles.submitButton} onClick={() => setIsSubmitted(true)} icon={<CheckOutline style={{ fontSize: "inherit" }} />} />}
+            {values.indexOf("") === -1 && !isSubmitted && <div className={styles.submitButton} onClick={() => setIsSubmitted(true)}>
+                <CheckOutlined style={{ fontSize: "inherit" }} />
+            </div>}
         </div>
     )
 }

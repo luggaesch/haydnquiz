@@ -9,7 +9,12 @@
 
 module.exports = nextConfig;*/
 
-module.exports = {
+const withImages = require("next-images");
+
+module.exports = withImages({
+  images: {
+    domains: ["i.imgur.com"]
+  },
   webpack(config, options) {
     const { isServer } = options;
     config.optimization.minimize = false;
@@ -37,4 +42,4 @@ module.exports = {
     })
     return config;
   }
-}
+})

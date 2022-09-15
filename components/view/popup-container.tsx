@@ -1,8 +1,7 @@
 import React, {ReactNode, SetStateAction, useMemo} from "react";
 import styles from "../../styles/question.module.css";
-import {IconButton} from "rsuite";
-import Down from "@rsuite/icons/legacy/Down";
 import {motion} from "framer-motion";
+import {FcDown} from "react-icons/fc";
 
 export default function PopupContainer({ isInitialScreen, showContent, setShowContent, backgroundColor, children }: { isInitialScreen: boolean, showContent: boolean, setShowContent: React.Dispatch<SetStateAction<boolean>>, backgroundColor?: string, children: ReactNode }) {
     const animation = useMemo(() => {
@@ -30,7 +29,9 @@ export default function PopupContainer({ isInitialScreen, showContent, setShowCo
             <div className={styles.popupContainerText} style={{ backgroundColor: backgroundColor ?? "#ffffff" }}>
                 {children}
             </div>
-            <IconButton className={styles.popupContainerCollapse} icon={<Down style={{ fontSize: "inherit" }} />} onClick={() => {setShowContent(false);}} />
+            <div className={styles.popupContainerCollapse} onClick={() => {setShowContent(false);}}>
+                <FcDown style={{ fontSize: "inherit" }} />
+            </div>
         </motion.div>
     )
 }

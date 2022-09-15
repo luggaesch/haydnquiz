@@ -1,7 +1,6 @@
 import {WrapperChildProps} from "./wrapper";
 import styles from "../../styles/question.module.css";
 import React, {useEffect, useMemo, useState} from "react";
-import {IconButton, Progress} from "rsuite";
 import {EmojiObjects, PauseRounded, PlayArrowRounded, RestartAltRounded} from "@mui/icons-material";
 import useSound from "use-sound";
 // @ts-ignore
@@ -9,6 +8,7 @@ import songSfx from "../../assets/songs/song.mp3"
 import {useTimer} from "react-timer-hook";
 import SolutionView from "../view/solution-view";
 import {GameState, useGameContext} from "../../contexts/GameContext";
+import {Progress} from "antd";
 
 export default function AudioQuestion({ question, showtimer, ...rest }: WrapperChildProps) {
     if (!question.media) {
@@ -71,22 +71,26 @@ export default function AudioQuestion({ question, showtimer, ...rest }: WrapperC
                 <p>{question.caption}</p>
             </div>
             <div className={styles.audioPlayerContainer}>
-                <Progress.Circle trailColor="#11111180" strokeColor="rgb(0,255,139)" style={{ gridRow: 1, gridColumn: 1 }} percent={percent} showInfo={false}  />
-                <IconButton className={styles.popupButton}
-                            icon={<PlaybackIcon style={{ fontSize: "inherit" }} />} onClick={() => {
+                <Progress width={250} type={"circle"} trailColor="#11111180" strokeColor="rgb(0,255,139)" style={{ gridRow: 1, gridColumn: 1 }} percent={percent} showInfo={false}  />
+                <div className={styles.popupButton}
+                            onClick={() => {
                     if (isRunning) {
                         handlePause();
                     } else {
                         handlePlay();
                     }
-                }} />
+                }}>
+                    <PlaybackIcon style={{ fontSize: "inherit" }} />
+                </div>
             </div>
             {gameState === GameState.Solutions && <>
-                <IconButton className={styles.solutionButton}
-                            icon={<EmojiObjects style={{ fontSize: "inherit" }} />} onClick={() => {
+                <div className={styles.solutionButton}
+                            onClick={() => {
                     setShowSolution(true);
                     setIsInitialScreen(false);
-                }} />
+                }}>
+                    <EmojiObjects style={{ fontSize: "inherit" }} />
+                </div>
                 <SolutionView showSolution={showSolution} setShowSolution={setShowSolution} isInitialScreen={isInitialScreen}>
                     {question.solutionArray ?
                         <div style={{ width: "100%", height: "90%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", fontSize: "4rem" }}>

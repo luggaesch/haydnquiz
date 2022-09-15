@@ -45,9 +45,9 @@ function formatQuestionFromType(question: Question, showTimer: () => void) {
     }
 }
 
-export default function QuestionWrapper({ question, hideOverlay, ...rest }: { question: Question, hideOverlay?: boolean }) {
+export default function QuestionWrapper({ question, hideOverlay, hideTimer, ...rest }: { question: Question, hideOverlay?: boolean, hideTimer?: boolean }) {
     const {gameState} = useGameContext();
-    const [timerHidden, setTimerHidden] = useState(false /*question.media && (question.media.type === MediaType.Audio || question.media.type == MediaType.Video)*/)
+    const [timerHidden, setTimerHidden] = useState(hideTimer /*question.media && (question.media.type === MediaType.Audio || question.media.type == MediaType.Video)*/)
     const child = useMemo(() => {
         return formatQuestionFromType(question,() => setTimerHidden(false))
     }, [question]);

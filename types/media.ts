@@ -1,8 +1,8 @@
-import {MediaType} from "../data/questions";
+import {MediaTypes} from "../data/questions";
 
 type Media = {
     _id?: string,
-    type: MediaType,
+    type: MediaTypes,
     content?: string,
     sources?: string[]
 }

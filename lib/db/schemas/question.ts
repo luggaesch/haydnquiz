@@ -1,7 +1,8 @@
 import {Topics} from "../../../data/topics";
-import {Joker} from "../../../data/jokers";
+import {Jokers} from "../../../data/jokers";
 import mongoose from "mongoose";
-import {QuestionTypes} from "../../../types/question";
+import {QuestionTypes, SolutionTypes} from "../../../types/question";
+import {MediaTypes} from "../../../data/questions";
 
 const QuestionSchema = new mongoose.Schema({
     type: {
@@ -28,14 +29,16 @@ const QuestionSchema = new mongoose.Schema({
     },
     jokerReward: {
         type: String,
-        enum: Joker,
+        enum: Jokers,
     },
     solution: {
         type: String,
         required: true,
     },
-    solutionIsUrl: {
-        type: Boolean,
+    solutionType: {
+        type: String,
+        enum: SolutionTypes,
+        required: true
     },
     solutionArray: [
         {
@@ -43,8 +46,21 @@ const QuestionSchema = new mongoose.Schema({
         }
     ],
     media: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Media",
+        type: new mongoose.Schema({
+            type: {
+                type: String,
+                enum: MediaTypes,
+                required: true
+            },
+            content: {
+                type: String
+            },
+            sources: [
+                {
+                    type: String
+                }
+            ]
+        })
     },
     choices: [
         {

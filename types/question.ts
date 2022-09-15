@@ -1,8 +1,8 @@
 import {Topics} from "../data/topics";
-import {Joker} from "../data/jokers";
+import {Jokers} from "../data/jokers";
 import Media from "./media";
-import {FormatQuote, Hearing, Image, Numbers, Sort, TextSnippet, VideoLibrary} from "@mui/icons-material";
-import {List} from "@rsuite/icons";
+import {FormatQuote, Hearing, Image, ListAlt, Numbers, Sort, TextSnippet, VideoLibrary} from "@mui/icons-material";
+import {MediaTypes} from "../data/questions";
 
 export enum QuestionTypes {
     Basic = "Basic",
@@ -15,6 +15,12 @@ export enum QuestionTypes {
     Guesstimate = "Guesstimate"
 }
 
+export enum SolutionTypes {
+    Text = "Text",
+    Image = "Image",
+    List = "List"
+}
+
 type Question = {
     _id?: string;
     type: QuestionTypes;
@@ -22,10 +28,10 @@ type Question = {
     topic: Topics;
     timeInSeconds: number;
     value: number;
-    jokerReward?: Joker;
+    jokerReward?: Jokers;
     solution: string;
-    solutionIsUrl?: boolean;
-    solutionArray?: string[];
+    solutionType: SolutionTypes,
+    solutionArray?: string[],
     media?: Media;
     choices?: string[];
     sortElements?: { name: string, value: number }[];
@@ -47,10 +53,25 @@ export function getIconByQuestionType(type: QuestionTypes) {
         case QuestionTypes.Video:
             return VideoLibrary;
         case QuestionTypes.Choice:
-            return List;
+            return ListAlt;
         case QuestionTypes.Sort:
             return Sort;
         case QuestionTypes.Guesstimate:
             return Numbers;
+    }
+}
+
+export function getMediaTypeByQuestionType(type: QuestionTypes) {
+    switch (type) {
+        case QuestionTypes.Image:
+            return MediaTypes.Image;
+        case QuestionTypes.Hearing:
+            return MediaTypes.Audio;
+        case QuestionTypes.Video:
+            return MediaTypes.Video;
+        case QuestionTypes.Quote:
+            return MediaTypes.Text;
+        default:
+            return undefined;
     }
 }

@@ -1,8 +1,9 @@
 import {useEffect, useMemo, useState} from "react";
-import {PauseOutline, PlayOutline} from "@rsuite/icons";
 import {useTimer} from "react-timer-hook";
 import styles from "../../styles/timer.module.css";
 import {Progress} from "antd";
+import {PauseOutlined} from "@ant-design/icons";
+import {PlayArrowOutlined} from "@mui/icons-material";
 
 interface TimerProps {
     totalTime: number,
@@ -38,7 +39,7 @@ export default function TimerControl({ totalTime, playCountdown, ...rest}: Timer
                         } else {
                             pause();
                         }}}>
-                        {isRunning ? <PauseOutline style={{ fontSize: "inherit" }} /> : <PlayOutline style={{ fontSize: "inherit" }} />}
+                        {isRunning ? <PauseOutlined style={{ fontSize: "inherit" }} /> : <PlayArrowOutlined style={{ fontSize: "inherit" }} />}
                     </div>
                     : <div className={styles.secondDisplay}>
                         <p>{totalTime - currentTime}</p>
