@@ -1,0 +1,120 @@
+.root {
+    width: 100vw;
+    height: 100vh;
+    font-size: 16px;
+}
+
+.container {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+    grid-template-columns: 0.3fr 6fr 1fr;
+    grid-gap: 5px;
+    padding: 0.5em;
+}
+
+.metaContainer {
+    padding: 1em;
+    margin: 2em;
+    grid-column: 1;
+    grid-row-start: 1;
+    grid-row-end: 5;
+    border-right: 2px solid #282828;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.topic {
+    border-radius: 50%;
+    padding: 2em;
+    width: 10em;
+    height: 10em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--icon);
+}
+
+.topic * {
+    font-size: 4em;
+}
+
+.metaItem {
+    border-radius: 50%;
+    padding: 1em;
+    width: 7em;
+    height: 7em;
+    margin-top: 0.5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--paper);
+    color: var(--text);
+}
+
+.caption {
+    background: var(--question-item);
+    border-radius: 8px;
+    grid-column: 2;
+    grid-row-start: 1;
+    color: var(--text);
+    font-size: 3em;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.jokerDisplay {
+    padding: 15px;
+    font-size: 1em;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    text-align: center;
+    color: var(--text);
+    position: absolute;
+    top: 1vh;
+    width: 25vw;
+    background-color: var(--dark-paper);
+    border-radius: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    box-shadow: 0 3px 6px rgba(0,0,0,0.19), 0 2px 2px rgba(0,0,0,0.23);
+}
+
+.mediaContainer {
+    grid-column: 2;
+    grid-row-end: 4;
+    background: var(--question-item);
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.4s ease-in-out;
+}
+
+.mediaContainer:hover {
+    background-color: #333;
+}
+
+.singleContainer {
+    border-radius: 8px;
+    background: var(--question-item);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--text);
+    font-size: 4em;
+    cursor: pointer;
+    transition: background-color 0.4s ease-in-out;
+}
+
+.singleContainer:hover {
+    background-color: #333;
+}

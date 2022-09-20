@@ -1,5 +1,17 @@
 :root {
     --accent: #8EFFED;
+    --dark-background: #111111;
+    --dark-paper: #222222;
+    --dark-popup: #191919;
+    --question-item: #282828;
+    --paper: #333333;
+    --paper-highlight: #555555;
+    --accent-negative: rgb(255, 0, 89);
+    --input: #262626;
+    --text: #ffffff;
+    --icon: #222;
+    --text-transparent: #ffffff80;
+    --elevation-shadow: none;
 }
 
 /* width */

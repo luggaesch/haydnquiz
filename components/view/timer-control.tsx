@@ -33,7 +33,7 @@ export default function TimerControl({ totalTime, playCountdown, ...rest}: Timer
         <div {...rest}>
             <div className={styles.container} onMouseEnter={() => setShowControl(true)} onMouseLeave={() => setShowControl(false)}>
                 {showControl ?
-                    <div className={styles.iconButton} onClick={() => {
+                    <div className={styles.iconButton} style={{ zIndex: 2 }} onClick={() => {
                         if (!isRunning) {
                             resume();
                         } else {

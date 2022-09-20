@@ -20,17 +20,17 @@ export enum Jokers {
 export function getIconByJoker(joker: Jokers, color?: string, width?: number, height?: number) {
     switch (joker) {
         case Jokers.Wikipedia:
-            //return <Wikipedia width={width ?? 128} height={height ?? 128} style={{ fill: color ?? "white", marginRight: 15, width: width ?? "100%", height: height ?? "100%" }} />;
-            return <FontAwesomeIcon style={{ width: width ?? 128, height: height ?? 128 }} width={width ?? 128} height={height ?? 128} icon={["fab", "wikipedia-w"]} />
+            //return <Wikipedia width={width ?? 84} height={height ?? 84} style={{ fill: color ?? "white", marginRight: 15, width: width ?? "100%", height: height ?? "100%" }} />;
+            return <FontAwesomeIcon style={{ width: width ?? 84, height: height ?? 84 }} width={width ?? 84} height={height ?? 84} icon={["fab", "wikipedia-w"]} />
         case Jokers.Ueberfall:
-            return <FontAwesomeIcon style={{ width: width ?? 128, height: height ?? 128 }} width={width ?? 128} height={height ?? 128} icon="people-robbery" />
+            return <FontAwesomeIcon style={{ width: width ?? 84, height: height ?? 84 }} width={width ?? 84} height={height ?? 84} icon="people-robbery" />
         case Jokers.Teamwork:
-            return <FontAwesomeIcon style={{ width: width ?? 128, height: height ?? 128 }} width={width ?? 128} height={height ?? 128} icon="eye" />
+            return <FontAwesomeIcon style={{ width: width ?? 84, height: height ?? 84 }} width={width ?? 84} height={height ?? 84} icon="eye" />
         case Jokers.VierGewinnt:
-            return <FontAwesomeIcon style={{ width: width ?? 128, height: height ?? 128 }} width={width ?? 128} height={height ?? 128} icon="star-half-stroke" />
+            return <FontAwesomeIcon style={{ width: width ?? 84, height: height ?? 84 }} width={width ?? 84} height={height ?? 84} icon="star-half-stroke" />
         case Jokers.DoubleDown:
-            return <FontAwesomeIcon style={{ width: width ?? 128, height: height ?? 128 }} width={width ?? 128} height={height ?? 128} icon="angles-up" />
+            return <FontAwesomeIcon style={{ width: width ?? 84, height: height ?? 84 }} width={width ?? 84} height={height ?? 84} icon="angles-up" />
         case Jokers.Telefon:
-            return <FontAwesomeIcon style={{ width: width ?? 128, height: height ?? 128 }} width={width ?? 128} height={height ?? 128} icon="phone" />
-    }   
+            return <FontAwesomeIcon style={{ width: width ?? 84, height: height ?? 84 }} width={width ?? 84} height={height ?? 84} icon="phone" />
+    }
 }
