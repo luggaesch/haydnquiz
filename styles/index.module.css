@@ -1,6 +1,6 @@
 .root {
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     font-size: 16px;
 }
 
@@ -20,7 +20,7 @@
     grid-column: 1;
     grid-row-start: 1;
     grid-row-end: 5;
-    border-right: 2px solid #282828;
+    border-right: 2px solid var(--question-item);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -36,6 +36,7 @@
     align-items: center;
     justify-content: center;
     color: var(--icon);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.19), 0 3px 3px rgba(0,0,0,0.23);
 }
 
 .topic * {
@@ -53,6 +54,7 @@
     justify-content: center;
     background-color: var(--paper);
     color: var(--text);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.10), 0 3px 3px rgba(0,0,0,0.15);
 }
 
 .caption {
@@ -61,12 +63,13 @@
     grid-column: 2;
     grid-row-start: 1;
     color: var(--text);
-    font-size: 3em;
+    font-size: 5em;
     text-align: center;
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.10), 0 3px 3px rgba(0,0,0,0.15);
 }
 
 .jokerDisplay {
@@ -89,7 +92,7 @@
 
 .mediaContainer {
     grid-column: 2;
-    grid-row-end: 4;
+    grid-row-end: 5;
     background: var(--question-item);
     border-radius: 8px;
     display: flex;
@@ -97,13 +100,15 @@
     align-items: center;
     cursor: pointer;
     transition: background-color 0.4s ease-in-out;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.10), 0 3px 3px rgba(0,0,0,0.15);
 }
 
 .mediaContainer:hover {
-    background-color: #333;
+    background-color: var(--question-item-highlight);
 }
 
 .singleContainer {
+    min-width: 200px;
     border-radius: 8px;
     background: var(--question-item);
     display: flex;
@@ -113,8 +118,9 @@
     font-size: 4em;
     cursor: pointer;
     transition: background-color 0.4s ease-in-out;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.10), 0 3px 3px rgba(0,0,0,0.15);
 }
 
 .singleContainer:hover {
-    background-color: #333;
+    background-color: var(--question-item-highlight);
 }

@@ -1,9 +1,12 @@
 :root {
     --dark-background: #fff;
     --dark-paper: #fefefe;
+    --dark-paper-transparent: #ffffff40;
     --dark-popup: #f9f9f9;
     --paper: #fefefe;
     --paper-highlight: #ddd;
+    --question-item: #fff;
+    --question-item-highlight: #eee;
     --accent: #8EFFED;
     --accent-negative: rgb(255, 0, 89);
     --input: #f9f9f9;

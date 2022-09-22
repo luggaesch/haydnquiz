@@ -3,7 +3,7 @@ import {useEffect, useMemo, useState} from "react";
 import TeamInput from "../view/team-input";
 import Slideshow from "../viewgroup/slideshow";
 import QuestionWrapper from "./wrapper";
-import {QuestionTypes} from "../../types/question";
+import {QuestionTypes, SolutionTypes} from "../../types/question";
 import {getColorByTopic, Topics as TopicList} from "../../data/topics";
 import StartButton from "../view/start-button";
 import ParticleWrapper from "../view/particle-wrapper";
@@ -48,7 +48,7 @@ export default function MatchView({ match }: { match: Match }) {
                 )
             case GameState.Example:
                 return (
-                    <Slideshow currentIndex={currentQuestionNum} setCurrentIndex={setCurrentQuestionNum} nodes={[<QuestionWrapper key={0} question={{ type: QuestionTypes.Basic, topic: TopicList.Music, caption: "Wer ist das größte musikalische Genie unserer Zeit?", solution: "Haftbefehl", value: 2, timeInSeconds: 30 }} />]}/>
+                    <Slideshow currentIndex={currentQuestionNum} setCurrentIndex={setCurrentQuestionNum} nodes={[<QuestionWrapper key={0} question={{ solutionType: SolutionTypes.Text, type: QuestionTypes.Basic, topic: TopicList.Music, caption: "Wer ist das größte musikalische Genie unserer Zeit?", solution: "Haftbefehl", value: 2, timeInSeconds: 30 }} />]}/>
                 )
             case GameState.Before:
                 return (

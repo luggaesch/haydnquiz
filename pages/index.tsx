@@ -6,14 +6,29 @@ import TimerControl from "../components/view/timer-control";
 import useSound from "use-sound";
 // @ts-ignore
 import countdownSfx from "../assets/sounds/countdown.mp3";
-import {getIconByJoker, Jokers} from "../data/jokers";
-import {FaArrowUp, FaLightbulb} from "react-icons/fa";
-import {MdQuestionAnswer} from "react-icons/md";
-import {MediaTypes} from "../data/questions";
-import AudioPlayer from "../components/questions/parts/audio-player";
+import {getIconByJoker} from "../data/jokers";
+import {FaLightbulb} from "react-icons/fa";
+import Answer from "../types/answer";
+import MediaContent from "../components/questions/parts/media-content";
+import PopupContainer from "../components/questions/parts/popup-container";
+import SolutionContent from "../components/questions/parts/solution-content";
+import HideOverlay from "../components/questions/parts/hide-overlay";
 
-export default function Index({ showSolution, showTeamAnswers }: { showSolution: boolean, showTeamAnswers: boolean }) {
-    const [question] = useState<Question>({ topic: Topics.History, type: QuestionTypes.Hearing, media: { type: MediaTypes.Video }, value: -1, jokerReward: Jokers.Telefon, caption: "Welches Land?", solution: "Deutschland", timeInSeconds: 60, solutionType: SolutionTypes.Text });
+export default function Index({ answers }: { answers: Answer[] }) {
+    const [question] = useState<Question>({ topic: Topics.History, type: QuestionTypes.Sort,
+        sortElements: [
+            { name: "Der König der Löwen", value: 8.5 },
+            { name: "Aladdin", value: 8.00 },
+            { name: "Dschungelbuch", value: 7.6 },
+            { name: "Frozen", value: 7.4 },
+            { name: "Lilo und Stich", value: 7.3 },
+            { name: "Pocahontas", value: 6.7 },
+            { name: "Der Glöckner v. Notre Dame", value: 7 },
+            { name: "Toy Story", value: 8.3 },
+            { name: "WALL-E", value: 8.4 },
+            { name: "Findet Nemo", value: 8.2 },
+        ], unit: "",
+        value: 2, caption: "Welches Land?", solution: "Deutschland", timeInSeconds: -1, solutionType: SolutionTypes.Text });
     const { TopicIcon, TypeIcon } = useMemo(() => {
         return {
             TopicIcon: getIconByTopic(question.topic),
@@ -21,6 +36,8 @@ export default function Index({ showSolution, showTeamAnswers }: { showSolution:
         }
     }, [question]);
     const [play] = useSound(countdownSfx, { volume: 1});
+    const [solutionOpen, setSolutionOpen] = useState(false);
+    const [hideVisible, setHideVisible] = useState(true);
 
     function getCaptionRowEnd() {
         switch (question.type) {
@@ -36,6 +53,7 @@ export default function Index({ showSolution, showTeamAnswers }: { showSolution:
 
     return (
         <div className={styles.root}>
+            <HideOverlay visible={hideVisible} setVisible={setHideVisible} />
             <div className={styles.container}>
                 <div className={styles.metaContainer}>
                     <div className={styles.topic} style={{ backgroundColor: getColorByTopic(question.topic) }}>
@@ -45,7 +63,7 @@ export default function Index({ showSolution, showTeamAnswers }: { showSolution:
                         <TypeIcon style={{ fontSize: "3em" }} />
                     </div>
                     {question.value !== -1 && <div className={styles.metaItem}>
-                        <p>{question.value}</p>
+                        <div style={{ fontSize: "3em" }}>{question.value}</div>
                     </div>}
                 </div>
                 <div className={styles.caption} style={{ gridRowEnd: getCaptionRowEnd() }}>
@@ -54,22 +72,17 @@ export default function Index({ showSolution, showTeamAnswers }: { showSolution:
                     </div>}
                     {question.caption}
                 </div>
-                {question.media && <div className={styles.mediaContainer} style={{ gridRowStart: getCaptionRowEnd() }}>
-                    {question.media.type === MediaTypes.Audio ?
-                        <AudioPlayer audio={question.media.content!} onFinished={() => {}} />
-                        :
-
-                        <FaArrowUp style={{ fontSize: "2em", color: "white" }} />
-                    }
-                </div>}
-                <div className={styles.singleContainer} style={{ gridColumn: 3, gridRow: 1 }}>
+                {question.type !== QuestionTypes.Basic && <MediaContent question={question} rowEnd={getCaptionRowEnd()} />}
+                {(!hideVisible && question.timeInSeconds !== -1) && <div className={styles.singleContainer} style={{ gridColumn: 3, gridRow: 1 }}>
                     <TimerControl totalTime={question.timeInSeconds} playCountdown={play} />
-                </div>
-                {showSolution && <div className={styles.singleContainer} style={{ gridColumn: 3, gridRow: 3,  }}>
-                    <FaLightbulb className={styles.icon} />
                 </div>}
-                {showTeamAnswers && <div className={styles.singleContainer} style={{ gridColumn: 3, gridRow: 4 }}>
-                    <MdQuestionAnswer className={styles.icon}/>
+                {answers && <div className={styles.singleContainer} style={{ gridColumn: 3, gridRow: 4 }}>
+                    <div style={{ width: "100%", height: "100%", display: "flex", justifyContent: "center", alignItems: "center" }} onClick={() => setSolutionOpen(!solutionOpen)}>
+                        <FaLightbulb className={styles.icon} />
+                    </div>
+                    <PopupContainer open={solutionOpen} setOpen={setSolutionOpen}>
+                        <SolutionContent type={question.solutionType} text={question.solution} array={question.solutionArray} />
+                    </PopupContainer>
                 </div>}
             </div>
         </div>

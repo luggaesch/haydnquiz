@@ -21,6 +21,11 @@ export enum SolutionTypes {
     List = "List"
 }
 
+export type SortElement = {
+    name: string;
+    value: number;
+}
+
 type Question = {
     _id?: string;
     type: QuestionTypes;
@@ -34,7 +39,7 @@ type Question = {
     solutionArray?: string[],
     media?: Media;
     choices?: string[];
-    sortElements?: { name: string, value: number }[];
+    sortElements?: SortElement[];
     unit?: string;
 }
 

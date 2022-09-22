@@ -2,10 +2,15 @@
     --accent: #8EFFED;
     --dark-background: #111111;
     --dark-paper: #222222;
+    --dark-paper-transparent: #22222240;
+    --dark-paper-highlight: #444444;
+    --dark-paper-highlight-intermediate: #333333;
     --dark-popup: #191919;
     --question-item: #282828;
+    --question-item-highlight: #333;
     --paper: #333333;
     --paper-highlight: #555555;
+    --paper-highlight-intermediate: #444444;
     --accent-negative: rgb(255, 0, 89);
     --input: #262626;
     --text: #ffffff;

@@ -13,7 +13,7 @@ const withImages = require("next-images");
 
 module.exports = withImages({
   images: {
-    domains: ["i.imgur.com"]
+    domains: ["i.imgur.com", "imgur.com"]
   },
   webpack(config, options) {
     const { isServer } = options;
