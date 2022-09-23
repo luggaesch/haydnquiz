@@ -14,6 +14,7 @@ import styles from "../../../../styles/form.module.css";
 import QuestionWrapper from "../../../../components/questions/wrapper";
 import {GameProvider} from "../../../../contexts/GameContext";
 import {MediaTypes} from "../../../../data/questions";
+import {useRouter} from "next/router";
 
 const { Option } = Select;
 
@@ -38,6 +39,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 }
 
 export default function AddQuestion({ quizId }: { quizId: string }) {
+    const { push } = useRouter();
     const [topic, setTopic] = useState<Topics>(Topics.Mystery);
     const [questionType, setQuestionType] = useState<QuestionTypes>(QuestionTypes.Basic);
     const [caption, setCaption] = useState("");
@@ -87,7 +89,7 @@ export default function AddQuestion({ quizId }: { quizId: string }) {
             timeInSeconds: time,
             value: hasJokerValue ? -1 : questionValue,
             jokerReward: hasJokerValue ? joker : undefined,
-            solution: solutionContent,
+            solution: solutionContent !== "" ? solutionContent : "...",
             solutionType,
             solutionArray: solutionType === SolutionTypes.List ? solutionList : undefined,
             media,
@@ -98,11 +100,14 @@ export default function AddQuestion({ quizId }: { quizId: string }) {
         console.log(question);
         const res = await axios.post(`/api/quiz/${quizId}/addQuestion`, question);
         console.log(res);
+        if (res.status === 200) {
+            push("/quiz/" + quizId);
+        }
     }
 
     // @ts-ignore
     return (
-        <div style={{ background: "#222", width: "100vw", height: "100vh", color: "white", display: "flex", alignItems: "center", gridTemplateColumns: "60% 40%" }}>
+        <div style={{ background: "#222", width: "100vw", height: "100vh", color: "white", display: "flex", alignItems: "center", gridTemplateColumns: "60% 40%", overflow: "hidden" }}>
             <Form name="Add Question" style={{ padding: 10, color: "white", fontSize: "2rem", width: "60%" }} {...formItemLayout}>
                 <Form.Item label="Topic" className={styles.form}>
                     <Select defaultValue={topic} onChange={(nextValue) => setTopic(nextValue)}>
@@ -292,13 +297,13 @@ export default function AddQuestion({ quizId }: { quizId: string }) {
                 </Form.Item>
             </Form>
             <div style={{ width: "40%", display: "flex", justifyContent: "center", alignItems: "center", height: "100%" }}>
-                <div style={{ display: "grid", gridTemplateRows: "1fr 10fr", width: "80%", height: 600, transform: "translateY(-5%)" }}>
-                    <div style={{ width: "30%", transform: "translateY(1%)", background: "var(--accent)", borderRadius: "4px 4px 0 0", color: "#111", padding: 20, fontSize: "1.4em", fontStyle: "bold" }}>
+                <div style={{ display: "grid", gridTemplateRows: "1fr 10fr", width: "80%", height: 600 }}>
+                    <div style={{ width: "100%", borderBottom: "1px solid #222", background: "#333", borderRadius: "4px 4px 0 0", color: "var(--text)", padding: 20, fontSize: "1.4em", fontStyle: "bold" }}>
                         Preview
                     </div>
                     <div style={{ background: "#333" }}>
                         <GameProvider>
-                            <QuestionWrapper hideTimer={true} hideOverlay={true} question={{ jokerReward: hasJokerValue ? joker : undefined, media: { type: getMediaTypeByQuestionType(questionType) ?? MediaTypes.Text, content: mediaContent !== "" ? "." : mediaContent, sources: solutionList.length > 0 ? solutionList : [] } , topic, type: questionType, caption, timeInSeconds: time, value: hasJokerValue ? -1 : questionValue, solutionType, solution: solutionContent }} />
+                            <QuestionWrapper fontSize={8} hideTimer={true} hideOverlay={true} question={{ unit, sortElements: sortItems, choices, jokerReward: hasJokerValue ? joker : undefined, media: { type: getMediaTypeByQuestionType(questionType) ?? MediaTypes.Text, content: mediaContent !== "" ? mediaContent :  ".", sources: solutionList.length > 0 ? solutionList : [] } , topic, type: questionType, caption, timeInSeconds: time, value: hasJokerValue ? -1 : questionValue, solutionType, solution: solutionContent }} />
                         </GameProvider>
                     </div>
                 </div>

@@ -1,0 +1,68 @@
+.root {
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    grid-gap: 20px;
+    background-color: var(--dark-background);
+    color: var(--text);
+}
+
+.sidebar {
+    font-size: 1em;
+    margin: 0;
+    background-color: var(--dark-paper);
+    display: grid;
+    grid-template-rows: 0.6fr 2fr 5fr;
+    padding: 20px;
+    grid-gap: 20px;
+}
+
+.sidebarTitle {
+    background-color: var(--question-item);
+    border-radius: 30px;
+    display: grid;
+    grid-template-columns: 1fr 5fr;
+    grid-gap: 10px;
+    font-size: 1.8em;
+}
+
+.sidebarTitle * {
+    display: flex;
+    align-items: center;
+    margin: 0;
+}
+
+.sidebarTitle div {
+    background-color: #444444;
+    border-radius: 50%;
+    font-size: 1.5em;
+    justify-content: center;
+}
+
+.sidebarUser {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--question-item);
+    border-radius: 20px;
+    padding: 10px;
+}
+
+.sideMenu {
+    display: grid;
+    background-color: var(--question-item);
+    border-radius: 20px;
+    grid-template-rows: repeat(8, 1fr);
+    font-size: 0.7em;
+}
+
+.sideMenu > div {
+    border-bottom: 2px solid var(--dark-paper);
+    display: grid;
+    align-items: center;
+    grid-template-columns: 1fr 8fr;
+    font-size: 2em;
+    padding: 0 1em;
+}

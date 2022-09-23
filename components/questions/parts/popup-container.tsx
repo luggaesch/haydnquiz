@@ -20,7 +20,7 @@ export default function PopupContainer({ children, open, setOpen }: { open: bool
                             repeatDelay: 0
                         }}
                         style={{
-                            width: "100vw", height: "100vh", position: "fixed", zIndex: 100, top: 0, left: 0, display: "flex", justifyContent: "center", alignItems: "center"
+                            width: "100vw", height: "100vh", position: "absolute", zIndex: 100, top: "0vh", left: "0vw", display: "flex", justifyContent: "center", alignItems: "center"
                         }}
                     >
                         <div style={{ background: "var(--dark-paper)", width: "98%", height: "98%", borderRadius: 8 }}>

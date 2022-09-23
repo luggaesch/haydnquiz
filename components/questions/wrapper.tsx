@@ -14,7 +14,7 @@ import MediaContent from "./parts/media-content";
 import SolutionContent from "./parts/solution-content";
 import Answer from "../../types/answer";
 
-export default function QuestionWrapper({ question, answers, hideTimer }: { question: Question, answers?: Answer[], hideTimer?: boolean }) {
+export default function QuestionWrapper({ question, answers, hideTimer, hideOverlay, fontSize }: { question: Question, answers?: Answer[], hideTimer?: boolean, hideOverlay?: boolean, fontSize?: number }) {
     const { TopicIcon, TypeIcon } = useMemo(() => {
         return {
             TopicIcon: getIconByTopic(question.topic),
@@ -38,8 +38,8 @@ export default function QuestionWrapper({ question, answers, hideTimer }: { ques
     }
 
     return (
-        <div className={styles.root}>
-            <HideOverlay visible={hideVisible} setVisible={setHideVisible} />
+        <div className={styles.root} style={{ fontSize: fontSize ?? 16  }}>
+            {!hideOverlay && <HideOverlay visible={hideVisible} setVisible={setHideVisible} />}
             <div className={styles.container}>
                 <div className={styles.metaContainer}>
                     <div className={styles.topic} style={{ backgroundColor: getColorByTopic(question.topic) }}>
@@ -54,7 +54,7 @@ export default function QuestionWrapper({ question, answers, hideTimer }: { ques
                 </div>
                 <div className={styles.caption} style={{ gridRowEnd: getCaptionRowEnd() }}>
                     {question.jokerReward && <div className={styles.jokerDisplay} style={{}} >
-                        {getIconByJoker(question.jokerReward)} {question.jokerReward}
+                        {getIconByJoker(question.jokerReward, "var(--text)", 50, 50)} {question.jokerReward}
                     </div>}
                     {question.caption}
                 </div>

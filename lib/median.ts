@@ -4,5 +4,5 @@ export default function getAverageIndex(array: number[]) {
     values.sort(function (a, b) {
         return a - b;
     });
-    return array.indexOf(values[values.length / 2]);
+    return array.indexOf(values[Math.floor(values.length / 2)]);
 }

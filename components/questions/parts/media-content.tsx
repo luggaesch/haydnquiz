@@ -119,7 +119,7 @@ export default function MediaContent({ question, rowEnd }: { question: Question,
                 return <AudioPlayer audio={question.media!.content!} onFinished={() => {}} />
             case QuestionTypes.Choice:
                 return (
-                    <div style={{ background: "var(--dark-popup)", width: "100%", height: "100%", display: "grid", gridTemplateRows: "1fr 1fr", gridTemplateColumns: "1fr 1fr", gridGap: 5 }}>
+                    <div style={{ width: "100%", height: "100%", display: "grid", gridTemplateRows: "1fr 1fr", gridTemplateColumns: "1fr 1fr", gridGap: 5 }}>
                         {question.choices!.map((choice, index) => (
                             <div style={{  borderRadius: 8, background: "#282828", display: "grid", gridTemplateColumns: "1fr 3fr", alignItems: "center", color: "var(--text)", fontSize: "1.5em" }} key={index}>
                                 <div style={{ textAlign: "center" }}>{["A", "B", "C", "D"][index]}.</div>
@@ -140,7 +140,7 @@ export default function MediaContent({ question, rowEnd }: { question: Question,
     }
 
     return (
-        <div className={styles.mediaContainer} style={{ gridRowStart: rowEnd }}>
+        <div className={styles.mediaContainer} style={{ gridRowStart: rowEnd, background: question.type === QuestionTypes.Choice ? "transparent" : "var(--question-item)" }}>
             {getBoxContentByQuestionType()}
             <PopupContainer open={mediaOpen} setOpen={setMediaOpen}>
                 {getPopupContentByQuestionType(question)}
