@@ -11,7 +11,7 @@ type Match = {
     answers: Answer[],
     state: GameState,
     currentQuestionIndex: number,
-    startTime: Date,
+    startTime: string,
     finished: boolean,
 }
 

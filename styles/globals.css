@@ -1,5 +1,6 @@
 :root {
-    --accent: #8EFFED;
+    --accent: rgb(0,255,139);
+    --accent-hover: rgb(122, 250, 191);
     --dark-background: #111111;
     --dark-paper: #222222;
     --dark-paper-transparent: #22222240;
@@ -102,6 +103,15 @@ input[type=number] {
     color: inherit;
 }
 
+.ant-empty-image svg {
+    width: 30em;
+    height: 30em;
+}
+
 label {
     color: white !important;
+}
+
+.MuiPopover-root div {
+    background-color: transparent;
 }

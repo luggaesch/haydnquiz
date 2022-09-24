@@ -1,30 +1,28 @@
 import {NextApiRequest, NextApiResponse} from "next";
 import connectMongo from "../../../../lib/db/connectMongo";
 import {QuestionModel, QuizModel} from "../../../../lib/db/models";
-import Question from "../../../../types/question";
 
 export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
     if (req.method === "POST") {
-        const {question} = req.body;
-        if (!question) {
+        const {questionId} = req.body;
+        console.log(questionId);
+        if (!questionId) {
             res.status(500).send("No Question provided.");
             return;
         }
         const { quizId } = req.query;
         await connectMongo;
         const queriedQuiz = await QuizModel.findOne({ _id: quizId }).populate({ path: "questions", model: QuestionModel });
-        console.log(queriedQuiz);
         if (!queriedQuiz) {
             res.status(500).send("Quiz with ID does not exist.");
             return;
         }
-        const questionFromModel = await QuestionModel.create(question);
-        console.log(questionFromModel);
-        queriedQuiz.questions.push(questionFromModel);
-        queriedQuiz.save();
+        await queriedQuiz.questions.pull({ _id: questionId });
+        await queriedQuiz.save();
+        //TODO: Delete Question from DB?
         res.send(JSON.stringify(queriedQuiz));
     } else {
         res.status(404).send({});

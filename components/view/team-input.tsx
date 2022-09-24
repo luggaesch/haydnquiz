@@ -1,56 +1,26 @@
 import React, {useState} from "react";
-import {Add, Person, PersonAdd} from "@mui/icons-material";
-import styles from "../../styles/team.module.css";
-import {useGameContext} from "../../contexts/GameContext";
-import Team from "../../types/team";
+import {Person, PersonAdd} from "@mui/icons-material";
 import {Input} from "antd";
-import {CheckOutlined} from "@ant-design/icons";
 
 const teamColors = ["#d05151", "#51c5d0", "#51d053", "#7151d0", "#d0b751", "#b2c3c0"];
 
-export default function TeamInput({ onSubmit }: { onSubmit: () => void }) {
-    const { teams, setTeams } = useGameContext();
-    const [current, setCurrentCurrent] = useState<Team[]>(teams);
-
-    function addTeamSlot() {
-        setCurrentCurrent([...current, { name: "", numOfPlayers: 0, color: teamColors[current.length] }])
-    }
-
-    function handleTeamChange({index, name, numOfPlayers}: {index: number, name?: string, numOfPlayers?: number}) {
-        current[index].name = name ?? current[index].name;
-        current[index].numOfPlayers = numOfPlayers ?? current[index].numOfPlayers;
-        setCurrentCurrent([...current]);
-    }
+export default function TeamInput({ onSubmit }: { onSubmit: (name: string, numOfMembers: number, color: string) => void }) {
+    const [name, setName] = useState("");
+    const [numOfMembers, setNumOfMembers] = useState(1);
+    const [color] = useState(teamColors[Math.floor(Math.random() * teamColors.length)]);
 
     return (
-        <div style={{ width: "100vw", height: "100vh", position: "relative", justifyContent: "center", alignItems: "center", flexDirection: "column", display: "flex" }}>
-            <div style={{ display: "grid", width: "80%", height: "80vh", gridTemplateColumns: "40% 40%", gridTemplateRows: "30% 30% 30%", gridGap: 10, justifyContent: "center"  }}>
-                {current.map((t, index) => (
-                    <div key={index} style={{ backgroundColor: "var(--paper)", padding: 20, fontSize: "3rem", borderRadius: 12, border: `1px solid ${t.color}` }}>
-                        <Input placeholder={"Team " + (index+1)} style={{ height: "50%", fontSize: "3rem" }} value={t.name} onChange={(event) => handleTeamChange({ index, name: event.target.value })} />
-                        <div style={{ display: "flex", flexDirection: "row", alignItems: "center", height: "50%" }}>
-                            {[...Array(t.numOfPlayers)].map((e, index) => (
-                                <Person style={{ fontSize: "4rem", color: t.color }} key={"p_" + index} />
-                            ))}
-                            <div onClick={() => handleTeamChange({ index, numOfPlayers: current[index].numOfPlayers + 1 })} style={{ fontSize: "4rem", backgroundColor: "transparent", color: `${teamColors[index]}80`, width: "5vw", height: "5vw" }}>
-                                <PersonAdd style={{ fontSize: "inherit" }} />
-                            </div>
-                        </div>
-                    </div>
+        <div style={{ display: "grid", gridTemplateRows: "1fr 3fr 1fr", padding: 10, height: "100%" }}>
+            <Input type={"text"} placeholder={"Name"} style={{ color: "var(--text)", fontSize: "1.5rem", width: "100%", backgroundColor: "transparent", margin: 0, border: "1px solid " + color, boxShadow: "none" }} value={name} onChange={(event) => setName(event.target.value)} />
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)" }}>
+                {[...Array(numOfMembers)].map((e, index) => (
+                    <Person onClick={() => setNumOfMembers(numOfMembers - 1)} style={{ cursor: "pointer", fontSize: "4rem", color: color }} key={"p_" + index} />
                 ))}
-                <div style={{ display: "flex", justifyContent: "center", alignItems: "center", border: `1px solid ${teamColors[current.length]}`, borderRadius: 12 }}>
-                    <div onClick={() => addTeamSlot()} style={{ fontSize: "4rem", borderRadius: "50%", marginTop: 10, backgroundColor: teamColors[current.length] ?? "#000", color: "var(--text)", width: "8vw", height: "8vw" }}>
-                        <Add style={{ fontSize: "inherit" }} />
-                    </div>
-                </div>
+                {numOfMembers <= 7 && <div onClick={() => setNumOfMembers(numOfMembers + 1)} style={{ cursor: "pointer", fontSize: "4rem", backgroundColor: "transparent", color: `${color}80` }}>
+                    <PersonAdd style={{ fontSize: "inherit" }} />
+                </div>}
             </div>
-            {current.length > 0 && <div className={styles.submitButton} onClick={() => {
-                setTeams(current);
-                onSubmit();
-            }}>
-                <CheckOutlined style={{ fontSize: "inherit" }} />
-            </div>
-                }
+            <div onClick={() => onSubmit(name, numOfMembers, color)} style={{ backgroundColor: "var(--accent)", color: "#222", display: "flex", justifyContent: "center", alignItems: "center", borderRadius: 12 }}>Submit</div>
         </div>
     )
 }

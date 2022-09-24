@@ -10,9 +10,9 @@ export default async function handler(
     res: NextApiResponse
 ) {
     if (req.method === "POST") {
-        const { quizId } = req.body;
-        if (!quizId) {
-            res.status(500).send("No Quiz provided.");
+        const { quizId, teamIds } = req.body;
+        if (!quizId || !teamIds) {
+            res.status(500).send("No Quiz or Teams provided.");
             return;
         }
         const session = await unstable_getServerSession(req, res, authOptions);
@@ -24,7 +24,7 @@ export default async function handler(
         const match = await MatchModel.create({
             user: session.user.id,
             quiz: quizId,
-            teams: [],
+            teams: teamIds,
             state: GameState.Intro,
             currentQuestionIndex: 0
         });

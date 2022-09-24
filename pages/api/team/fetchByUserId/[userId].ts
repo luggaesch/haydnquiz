@@ -1,5 +1,5 @@
 import {NextApiRequest, NextApiResponse} from "next";
-import {MatchModel, QuestionModel, QuizModel, TeamModel} from "../../../../lib/db/models";
+import {TeamModel} from "../../../../lib/db/models";
 import connectMongo from "../../../../lib/db/connectMongo";
 
 export default async function handler(
@@ -12,6 +12,6 @@ export default async function handler(
         return;
     }
     await connectMongo;
-    const matches = await MatchModel.find({ user: userId, finished: false }).populate({ path: "quiz", model: QuizModel, populate: { path: "questions", model: QuestionModel } }).populate({ path: "teams", model: TeamModel });
-    res.send(JSON.stringify(matches));
+    const teams = await TeamModel.find({ user: userId });
+    res.send(JSON.stringify(teams));
 }

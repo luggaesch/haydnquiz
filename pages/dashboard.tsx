@@ -10,6 +10,14 @@ import {User} from "next-auth";
 import {VscDebugContinue} from "react-icons/vsc";
 import {TeamOutlined} from "@ant-design/icons";
 import styles from "../styles/dashboard.module.css";
+import {useState} from "react";
+import ResumeTab from "../components/dashboard/resume-tab";
+import {motion} from "framer-motion";
+import NewGameTab from "../components/dashboard/start-game-tab";
+import TeamTab from "../components/dashboard/team-tab";
+import Team from "../types/team";
+import QuizzesTab from "../components/dashboard/quizzes-tab";
+import {useRouter} from "next/router";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const session = await getSession(context);
@@ -17,12 +25,57 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const quizzes = result.data;
     const matchQueryRes = await axios.get(`${process.env.SERVER_URL}/api/match/fetchOngoingForUserId/${session?.user.id}`);
     const matches = matchQueryRes.data;
+    const teamQueryRes = await axios.get(`${process.env.SERVER_URL}/api/team/fetchByUserId/${session?.user.id}`)
+    const teams = teamQueryRes.data;
     return {
-        props: { user: session.user, quizzes: JSON.parse(JSON.stringify(quizzes)), unfinishedMatches: JSON.parse(JSON.stringify(matches)) }
+        props: { user: session.user, quizzes: JSON.parse(JSON.stringify(quizzes)), unfinishedMatches: JSON.parse(JSON.stringify(matches)), teams: JSON.parse(JSON.stringify(teams)) }
     }
 }
 
-export default function Dashboard({ user, quizzes, unfinishedMatches }: { user: User, quizzes: Quiz[], unfinishedMatches: Match[] }) {
+export enum DashboardTabs {
+    Resume,
+    New,
+    Quizzes,
+    Teams,
+    Previous
+}
+
+export default function Dashboard({ user, quizzes, unfinishedMatches, teams }: { user: User, quizzes: Quiz[], unfinishedMatches: Match[], teams: Team[] }) {
+    const { push } = useRouter();
+    const [currentQuizzes, setCurrentQuizzes] = useState(quizzes);
+    const [currentTeams, setCurrentTeams] = useState(teams);
+    const [tab, setTab] = useState<DashboardTabs>(DashboardTabs.Resume);
+    const [selectedQuizId, setSelectedQuizId] = useState(quizzes[0]._id ?? undefined);
+
+    async function updateTeams(name: string, numOfMembers: number, color: string) {
+        const res = await axios.post("/api/team/create", { team: { user: user.id, name, numOfPlayers: numOfMembers, color } });
+        const team = res.data;
+        console.log(team);
+        setCurrentTeams([...currentTeams, team]);
+    }
+
+    async function updateQuizzes(name: string) {
+        const res = await axios.post("/api/quiz/create", { quizName: name });
+        const quiz = res.data;
+        console.log(quiz);
+        setCurrentQuizzes([...currentQuizzes, quiz]);
+        push("/quiz/" + quiz._id);
+    }
+
+    function getComponentByTab() {
+        switch (tab) {
+            case DashboardTabs.Resume:
+                return <ResumeTab matches={unfinishedMatches} setTab={setTab} />
+            case DashboardTabs.New:
+                return <NewGameTab selectedQuizId={selectedQuizId} setSelectedQuizId={setSelectedQuizId} quizzes={quizzes} teams={currentTeams} setTab={setTab} />
+            case DashboardTabs.Teams:
+                return <TeamTab teams={currentTeams} updateTeams={updateTeams} />
+            case DashboardTabs.Quizzes:
+                return <QuizzesTab setTab={setTab} setSelectedQuizId={setSelectedQuizId} quizzes={currentQuizzes} updateQuizzes={updateQuizzes} />
+            default:
+                return <div>Test</div>
+        }
+    }
 
     return (
         <div className={styles.root}>
@@ -36,30 +89,31 @@ export default function Dashboard({ user, quizzes, unfinishedMatches }: { user: 
                     <div style={{ fontSize: "1.5em" }}>{user.name}</div>
                 </div>
                 <div className={styles.sideMenu}>
-                    <div>
+                    <div onClick={() => setTab(DashboardTabs.Resume)}>
                         <div style={{ display: "flex", justifyContent: "center", alignItems: "center", fontSize: "0.8em" }}><VscDebugContinue /></div>
                         <div>Resume</div>
                     </div>
-                    <div>
+                    <div onClick={() => setTab(DashboardTabs.New)}>
                         <div style={{ display: "flex", justifyContent: "center", alignItems: "center", fontSize: "0.8em" }}><PlayArrowOutlined /></div>
                         <div>Start new Game</div>
                     </div>
-                    <div>
+                    <div onClick={() => setTab(DashboardTabs.Quizzes)}>
                         <div style={{ display: "flex", justifyContent: "center", alignItems: "center", fontSize: "0.8em" }}><ListAltOutlined /></div>
                         <div>Quizzes</div>
                     </div>
-                    <div>
+                    <div onClick={() => setTab(DashboardTabs.Teams)}>
                         <div style={{ display: "flex", justifyContent: "center", alignItems: "center", fontSize: "0.8em" }}><TeamOutlined /></div>
                         <div>Teams</div>
                     </div>
-                    <div>
+                    <div onClick={() => setTab(DashboardTabs.Previous)}>
                         <div style={{ display: "flex", justifyContent: "center", alignItems: "center", fontSize: "0.8em" }}><History /></div>
                         <div>Previous Games</div>
                     </div>
+                    <motion.span initial={{ top: 0 }} animate={{ top: tab * 12.5 + "%" }} style={{ position: "absolute", top: 0, left: 2, width: 4, height: "10%", background: "var(--accent)", borderRadius: 10, transform: "translateY(12.5%)" }}></motion.span>
                 </div>
             </div>
-            <div>
-
+            <div style={{ overflow: "hidden" }}>
+                {getComponentByTab()}
             </div>
         </div>
     )

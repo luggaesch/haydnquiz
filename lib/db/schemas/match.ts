@@ -14,7 +14,8 @@ const MatchSchema = new mongoose.Schema({
     },
     teams: [
         {
-            type: new mongoose.Schema({ name: { type: String, required: true }, numOfPlayers: { type: Number, required: true }, color: { type: String, required: true } }),
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Team",
             default: []
         }
     ],

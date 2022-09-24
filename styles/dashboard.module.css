@@ -4,8 +4,9 @@
     display: grid;
     grid-template-columns: 1fr 3fr;
     grid-gap: 20px;
-    background-color: var(--dark-background);
+    background-color: var(--dark-popup);
     color: var(--text);
+    overflow: hidden;
 }
 
 .sidebar {
@@ -16,15 +17,17 @@
     grid-template-rows: 0.6fr 2fr 5fr;
     padding: 20px;
     grid-gap: 20px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.19), 0 3px 3px rgba(0,0,0,0.23);
 }
 
 .sidebarTitle {
     background-color: var(--question-item);
-    border-radius: 30px;
+    border-radius: 50px;
     display: grid;
     grid-template-columns: 1fr 5fr;
     grid-gap: 10px;
     font-size: 1.8em;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.19), 0 3px 3px rgba(0,0,0,0.23);
 }
 
 .sidebarTitle * {
@@ -34,10 +37,19 @@
 }
 
 .sidebarTitle div {
-    background-color: #444444;
+    background-color: var(--accent);
     border-radius: 50%;
     font-size: 1.5em;
     justify-content: center;
+    color: #222;
+    height: 100%;
+    width: 100px;
+    cursor: pointer;
+    transition: background-color 0.4s ease-in-out;
+}
+
+.sidebarTitle div:hover {
+    background-color: var(--accent-hover);
 }
 
 .sidebarUser {
@@ -48,6 +60,7 @@
     background-color: var(--question-item);
     border-radius: 20px;
     padding: 10px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.19), 0 3px 3px rgba(0,0,0,0.23);
 }
 
 .sideMenu {
@@ -56,6 +69,8 @@
     border-radius: 20px;
     grid-template-rows: repeat(8, 1fr);
     font-size: 0.7em;
+    position: relative;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.19), 0 3px 3px rgba(0,0,0,0.23);
 }
 
 .sideMenu > div {
@@ -65,4 +80,44 @@
     grid-template-columns: 1fr 8fr;
     font-size: 2em;
     padding: 0 1em;
+    transition: background-color 0.4s ease-in-out;
+    cursor: pointer;
+}
+
+.sideMenu > div:nth-child(1) {
+    border-radius: 20px 20px 0 0;
+}
+
+.sideMenu > div:hover {
+    background-color: var(--dark-paper-highlight);
+}
+
+.dashboardTab {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-y: auto;
+}
+
+.tabContainer {
+    font-size: 2em;
+    background-color: var(--question-item);
+    color: var(--text);
+    padding: 20px;
+    display: grid;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.19), 0 3px 3px rgba(0,0,0,0.23);
+}
+
+.tabSubmit {
+    width: 100%;
+    border-radius: 20px;
+    color: #222;
+    background-color: var(--accent);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.19), 0 3px 3px rgba(0,0,0,0.23);
 }

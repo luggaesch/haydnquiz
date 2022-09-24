@@ -3,6 +3,7 @@ import MatchSchema from "./schemas/match";
 import MediaSchema from "./schemas/media";
 import QuestionSchema from "./schemas/question";
 import QuizSchema from "./schemas/quiz";
+import TeamSchema from "./schemas/team";
 
 let MediaModel: mongoose.Model<any>;
 try {
@@ -25,6 +26,13 @@ try {
     QuizModel = mongoose.model("quiz", QuizSchema);
 }
 
+let TeamModel: mongoose.Model<any>;
+try {
+    TeamModel = mongoose.model("team");
+} catch (err) {
+    TeamModel = mongoose.model("team", TeamSchema);
+}
+
 let MatchModel: mongoose.Model<any>;
 try {
     MatchModel = mongoose.model("match");
@@ -32,4 +40,4 @@ try {
     MatchModel = mongoose.model("match", MatchSchema);
 }
 
-export {MatchModel, MediaModel, QuestionModel, QuizModel};
+export {MatchModel, MediaModel, QuestionModel, TeamModel, QuizModel};

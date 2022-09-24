@@ -10,7 +10,7 @@ import TopicQueue from "../../../components/view/topic-queue";
 import ProgressControl from "../../../components/view/progress-control";
 import RightDrawer from "../../../components/view/right-drawer";
 import {useState} from "react";
-import {GameProvider, useGameContext} from "../../../contexts/GameContext";
+import {GameProvider, GameState, useGameContext} from "../../../contexts/GameContext";
 import {FaAlignJustify} from "react-icons/fa";
 import Topics from "../../../components/view/topics";
 import PopupContainer from "../../../components/view/popup-container";
@@ -36,10 +36,19 @@ export default function MatchWrapper({ match }: { match: Match }) {
 }
 
 function MatchPage({ match }: { match: Match }) {
-    const { currentQuestionNum, setCurrentQuestionNum } = useGameContext();
+    const { gameState, setGameState, currentQuestionNum, setCurrentQuestionNum } = useGameContext();
     const [open, setOpen] = useState(false);
     const [showOverlay, setShowOverlay] = useState(false);
     const [isInitialScreen, setIsInitialScreen] = useState(true);
+
+    function handleQueueItemClick(index: number) {
+        if (gameState < GameState.Playing) {
+            setGameState(GameState.Playing);
+        } else if (gameState < GameState.Solutions && gameState > GameState.Playing) {
+            setGameState(GameState.Solutions);
+        }
+        setCurrentQuestionNum(index);
+    }
 
     return (
         <ThemeSwitcherProvider defaultTheme="light" themeMap={themes}>

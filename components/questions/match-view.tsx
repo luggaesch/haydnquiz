@@ -33,23 +33,6 @@ export default function MatchView({ match }: { match: Match }) {
 
     function getComponent() {
         switch (gameState) {
-            case GameState.Intro:
-                return (
-                    <div style={{ overflow: "hidden", position: "absolute", top: "0", width: "100vw", height: "100vh", display: "grid", gridTemplateRows: "50% 20%", gridTemplateColumns: "70%", textAlign: "center", justifyContent: "center", alignItems: "center", fontSize: "10rem" }}>
-                        <div style={{ height: "100%", zIndex: 5, padding: 50, textAlign: "center", alignItems: "center", display: "flex", justifyContent: "center" }}>Haydnquiz</div>
-                        <Button onClick={() => setGameState(GameState.EnterTeams)} style={{ fontSize: "3rem", background: "var(--accent)", color: "var(--text)", height: "20vh", width: "100%", padding: 20 }}>
-                            Teams eintragen
-                        </Button>
-                    </div>
-                )
-            case GameState.EnterTeams:
-                return (
-                    <TeamInput onSubmit={() => setGameState(GameState.Example)} />
-                )
-            case GameState.Example:
-                return (
-                    <Slideshow currentIndex={currentQuestionNum} setCurrentIndex={setCurrentQuestionNum} nodes={[<QuestionWrapper key={0} question={{ solutionType: SolutionTypes.Text, type: QuestionTypes.Basic, topic: TopicList.Music, caption: "Wer ist das größte musikalische Genie unserer Zeit?", solution: "Haftbefehl", value: 2, timeInSeconds: 30 }} />]}/>
-                )
             case GameState.Before:
                 return (
                     <StartButton onClick={() => setGameState(GameState.Playing)}/>

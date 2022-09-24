@@ -4,9 +4,6 @@ import Match from "../types/match";
 import axios from "axios";
 
 export enum GameState {
-    Intro,
-    EnterTeams,
-    Example,
     Before,
     Playing,
     Transition,
@@ -40,7 +37,7 @@ export const GameProvider = ({ children }: { children: ReactNode } ) => {
     const maxQuestionNum = useMemo(() => {
         return match?.quiz.questions.length || 0;
     }, [match]);
-    const [gameState, setGameState] = useState(GameState.Intro);
+    const [gameState, setGameState] = useState(GameState.Before);
     const [currentQuestionNum, setCurrentQuestionNum] = useState(0);
     const [teams, setTeams] = useState<Team[]>([]);
 
