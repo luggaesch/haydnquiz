@@ -17,9 +17,6 @@
 .metaContainer {
     padding: 1em;
     margin: 2em;
-    grid-column: 1;
-    grid-row-start: 1;
-    grid-row-end: 5;
     border-right: 2px solid var(--question-item);
     display: flex;
     flex-direction: column;

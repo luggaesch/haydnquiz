@@ -21,35 +21,41 @@
 }
 
 .sidebarTitle {
-    background-color: var(--question-item);
-    border-radius: 50px;
+    align-items: center;
     display: grid;
     grid-template-columns: 1fr 5fr;
     grid-gap: 10px;
     font-size: 1.8em;
-    box-shadow: 0 8px 16px rgba(0,0,0,0.19), 0 3px 3px rgba(0,0,0,0.23);
-}
-
-.sidebarTitle * {
-    display: flex;
-    align-items: center;
-    margin: 0;
 }
 
 .sidebarTitle div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.19), 0 3px 3px rgba(0,0,0,0.23);
+}
+
+.sidebarTitle .navigation {
     background-color: var(--accent);
     border-radius: 50%;
     font-size: 1.5em;
     justify-content: center;
     color: #222;
-    height: 100%;
+    height: 100px;
     width: 100px;
     cursor: pointer;
     transition: background-color 0.4s ease-in-out;
 }
 
-.sidebarTitle div:hover {
+.sidebarTitle .navigation:hover {
     background-color: var(--accent-hover);
+}
+
+.sidebarTitle > .title {
+    border-radius: 30px;
+    background-color: var(--question-item);
+    height: 70%;
 }
 
 .sidebarUser {

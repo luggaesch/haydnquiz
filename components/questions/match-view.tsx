@@ -1,10 +1,8 @@
 import {GameState, useGameContext} from "../../contexts/GameContext";
 import {useEffect, useMemo, useState} from "react";
-import TeamInput from "../view/team-input";
 import Slideshow from "../viewgroup/slideshow";
 import QuestionWrapper from "./wrapper";
-import {QuestionTypes, SolutionTypes} from "../../types/question";
-import {getColorByTopic, Topics as TopicList} from "../../data/topics";
+import {getColorByTopic} from "../../data/topics";
 import StartButton from "../view/start-button";
 import ParticleWrapper from "../view/particle-wrapper";
 import Match from "../../types/match";
@@ -26,10 +24,10 @@ export default function MatchView({ match }: { match: Match }) {
     }, [match]);
 
     useEffect(() => {
-        if (currentQuestionNum === Math.ceil(questions.length / 2)) {
+        if (match.quiz.stops.includes(currentQuestionNum) && !match.pastUploadRounds.includes(match.quiz.stops.indexOf(currentQuestionNum))) {
             setShowAnswerInput(true);
         }
-    }, [currentQuestionNum, questions]);
+    }, [match, currentQuestionNum, questions]);
 
     function getComponent() {
         switch (gameState) {
@@ -40,7 +38,7 @@ export default function MatchView({ match }: { match: Match }) {
             case GameState.Playing:
                 if (showAnswerInput) {
                     return (
-                        <QrCarousel match={match} currentQuestion={currentQuestion} setShowAnswerInput={setShowAnswerInput} />
+                        <QrCarousel match={match} uploadRound={match.quiz.stops.indexOf(currentQuestionNum)} setShowAnswerInput={setShowAnswerInput} />
                     )
                 }
                 return (

@@ -76,7 +76,7 @@ export default function QuestionForm({ question, addQuestion }: { question?: Que
             topic,
             type: questionType,
             caption,
-            timeInSeconds: time,
+            timeInSeconds: questionType === QuestionTypes.Sort ? -1 : time,
             value: hasJokerValue ? -1 : questionValue,
             jokerReward: hasJokerValue ? joker : undefined,
             solution: solutionContent !== "" ? solutionContent : "...",
@@ -93,7 +93,7 @@ export default function QuestionForm({ question, addQuestion }: { question?: Que
     // @ts-ignore
     return (
         <div style={{ background: "#222", width: "100vw", height: "100vh", color: "white", display: "flex", alignItems: "center", gridTemplateColumns: "60% 40%", overflow: "hidden" }}>
-            <Form name="Add Question" style={{ padding: 10, color: "white", fontSize: "2rem", width: "60%" }} {...formItemLayout}>
+            <Form name="Add Question" style={{ height: "100%", padding: 10, color: "white", fontSize: "2rem", width: "60%" }} {...formItemLayout}>
                 <Form.Item label="Topic" className={styles.form}>
                     <Select defaultValue={topic} onChange={(nextValue) => setTopic(nextValue)}>
                         {Object.values(Topics).map((value, index) => (
@@ -115,12 +115,12 @@ export default function QuestionForm({ question, addQuestion }: { question?: Que
                 <Form.Item name="caption" label="Caption" className={styles.form}>
                     <Input.TextArea onChange={(event) => setCaption(event.target.value)} value={caption} maxLength={100} />
                 </Form.Item>
-                <Form.Item label="Time" className={styles.form}>
+                {questionType !== QuestionTypes.Sort && <Form.Item label="Time" className={styles.form}>
                     <Form.Item name="time">
                         <InputNumber defaultValue={time} value={time} onChange={(value) => setTime(value)} style={{ width: "30%" }} min={30} max={300} />
                         <span className="ant-form-text"> seconds</span>
                     </Form.Item>
-                </Form.Item>
+                </Form.Item>}
                 <Form.Item label="Value" className={styles.form}>
                     <Form.Item name="switch" label="Joker" valuePropName="checked">
                         <Switch defaultChecked={false} onChange={(value) => setHasJokerValue(value)} />
@@ -276,7 +276,7 @@ export default function QuestionForm({ question, addQuestion }: { question?: Que
                             }
                         </Form.Item>}
                 <Form.Item wrapperCol={{ span: 12, offset: 6 }}>
-                    <Button style={{ background: "var(--accent)", width: "100%" }} onClick={handleSubmit}>
+                    <Button style={{ background: "var(--accent)", width: "100%", border: "none" }} onClick={handleSubmit}>
                         Submit
                     </Button>
                 </Form.Item>

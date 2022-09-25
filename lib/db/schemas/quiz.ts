@@ -15,6 +15,12 @@ const QuizSchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: "Question"
         }
+    ],
+    stops: [
+        {
+            type: Number,
+            default: []
+        }
     ]
 });
 

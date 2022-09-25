@@ -1,9 +1,12 @@
-import {Carousel} from "antd";
+import {Carousel, Progress} from "antd";
 import {QRCodeCanvas} from "qrcode.react";
 import Match from "../../types/match";
-import Question from "../../types/question";
 import 'antd/dist/antd.css';
 import styles from "../../styles/question.module.css";
+import axios from "axios";
+import PopupContainer from "../questions/parts/popup-container";
+import {useEffect, useMemo, useState} from "react";
+import Link from "next/link";
 
 
 const contentStyle: React.CSSProperties = {
@@ -14,7 +17,53 @@ const contentStyle: React.CSSProperties = {
     textAlign: 'center',
 };
 
-export default function QrCarousel({ match, currentQuestion, setShowAnswerInput }: { match: Match, currentQuestion: Question, setShowAnswerInput: (value: boolean) => void }) {
+export default function QrCarousel({ match, uploadRound, setShowAnswerInput }: { match: Match, uploadRound: number, setShowAnswerInput: (value: boolean) => void }) {
+    const [currentMatch, setCurrentMatch] = useState(match);
+    const [uploadRunning, setUploadRunning] = useState(false);
+    const [open, setOpen] = useState(false);
+    const [intervalId, setIntervalId] = useState<NodeJS.Timer | null>(null);
+    const targetQuestions = useMemo(() => {
+        const startIndex = uploadRound === 0 ? 0 : currentMatch.quiz.stops[uploadRound - 1];
+        const endIndex = currentMatch.quiz.stops[uploadRound];
+        return currentMatch.quiz.questions.slice(startIndex, endIndex).filter((q) => q.value !== -1);
+    }, [currentMatch, uploadRound]);
+
+    useEffect(() => {
+        if (uploadRunning) {
+            if (!intervalId) {
+                const id = setInterval(async () => {
+                    const res = await axios.get(`/api/match/fetchById/` + currentMatch._id);
+                    const match = res.data as Match;
+                    console.log(match);
+                    if (match.answers.length !== currentMatch.answers.length) {
+                        setCurrentMatch(match);
+                    }
+                }, 3000);
+                setIntervalId(id);
+            }
+        } else {
+            intervalId && clearInterval(intervalId);
+        }
+    }, [uploadRunning])
+
+    async function activateUploadRound() {
+        const res = await axios.post("/api/match/enableUpload", { matchId: match._id, uploadRound });
+        console.log(res);
+        setOpen(true);
+        setUploadRunning(true);
+    }
+
+    async function closeRound() {
+        const res = await axios.post("/api/match/disableUpload", { matchId: match._id, uploadRound });
+        console.log(res);
+        setOpen(false);
+        setUploadRunning(false);
+    }
+
+    function calculateAnswerPercentage() {
+        const currentAnswers = currentMatch.answers.filter((a) => targetQuestions.findIndex((q) => a.questionId === q._id) !== -1);
+        return (currentAnswers.length / (targetQuestions.length * currentMatch.teams.length)) * 100;
+    }
 
     return (
         <div style={{ width: "100vw", height: "100vh" }}>
@@ -24,16 +73,27 @@ export default function QrCarousel({ match, currentQuestion, setShowAnswerInput 
                         <div key={index}>
                             <div style={contentStyle}>
                                 <div style={{ height: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                                    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", border: `2px dashed ${team.color}`, borderRadius: 8, padding: 100 }}>
-                                        <QRCodeCanvas style={{ border: "20px solid white" }} size={512} value={`http://192.168.178.30:3000/quiz/play/${match._id}/${match.quiz.questions[0]._id}/${currentQuestion._id}/${team._id}`} />
-                                    </div>
+                                    <Link href={`http://192.168.178.30:3000/quiz/play/${match._id}/${uploadRound}/${team._id}`}>
+                                        <a>
+                                            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", border: `2px dashed ${team.color}`, borderRadius: 8, padding: 100 }}>
+                                                <QRCodeCanvas style={{ border: "20px solid white" }} size={512} value={`http://192.168.178.30:3000/quiz/play/${match._id}/${uploadRound}/${team._id}`} />
+                                            </div>
+                                        </a>
+                                    </Link>
                                 </div>
                             </div>
                         </div>
                     )
                 })}
             </Carousel>
+            <div style={{ color: "black", position: "absolute", bottom: 10, right: 100 }} onClick={activateUploadRound}>Enable Upload</div>
             <div style={{ color: "black", position: "absolute", bottom: 10, right: 20 }} onClick={() => setShowAnswerInput(false)}>Weiter</div>
+            <PopupContainer open={open} setOpen={setOpen}>
+                <div style={{ position: "relative", width: "100%", height: "100%", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column" }}>
+                    <Progress showInfo={false} strokeColor={"var(--accent)"} trailColor={"var(--dark-background)"} strokeWidth={30} style={{ width: "70%" }} percent={calculateAnswerPercentage()} />
+                    <span onClick={closeRound} style={{ position: "absolute", bottom: "10%", display: "flex", justifyContent: "center", alignItems: "center", width: "50%", height: 100, backgroundColor: "#111", borderRadius: 20, border: "2px dashed var(--accent)", color: "var(--accent)", fontSize: "3em", }}>Close Input</span>
+                </div>
+            </PopupContainer>
         </div>
     )
 }

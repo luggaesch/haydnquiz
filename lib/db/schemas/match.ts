@@ -23,7 +23,7 @@ const MatchSchema = new mongoose.Schema({
         {
             type: new mongoose.Schema({
                 teamId: { type: String, required: true },
-                question: { type: mongoose.Schema.Types.ObjectId, ref: "Question", required: true },
+                questionId: { type: String, required: true },
                 values: [{ type: String }]
             }),
             default: []
@@ -45,7 +45,15 @@ const MatchSchema = new mongoose.Schema({
     finished: {
         type: Boolean,
         default: false
-    }
+    },
+    currentlyOpenUploadRound: {
+        type: Number,
+        default: -1
+    },
+    pastUploadRounds: [{
+        type: Number,
+        default: []
+    }]
 });
 
 export default MatchSchema;

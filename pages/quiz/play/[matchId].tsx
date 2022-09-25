@@ -59,7 +59,7 @@ function MatchPage({ match }: { match: Match }) {
                 </div>
                 <TeamDisplay teams={match.teams} />
                 <div style={{ display: "grid", gridTemplateRows: "2fr 3fr" }}>
-                    <TopicQueue currentQuestionIndex={currentQuestionNum} questions={match.quiz.questions} />
+                    <TopicQueue handleQueueItemClick={handleQueueItemClick} currentQuestionIndex={currentQuestionNum} questions={match.quiz.questions} />
                     <ProgressControl currentIndex={currentQuestionNum} maxIndex={match.quiz.questions.length - 1}  onTransition={(modifier) => setCurrentQuestionNum(currentQuestionNum + modifier)} />
                 </div>
             </RightDrawer>

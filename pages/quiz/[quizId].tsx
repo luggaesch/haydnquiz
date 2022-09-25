@@ -3,12 +3,24 @@ import connectMongo from "../../lib/db/connectMongo";
 import Quiz from "../../types/quiz";
 import axios from "axios";
 import React, {useState} from "react";
-import {Close, DeleteOutline, EditOutlined, Stop, StopOutlined} from "@mui/icons-material";
+import {Close, DeleteOutline, EditOutlined, StopOutlined} from "@mui/icons-material";
 import QuestionWrapper from "../../components/questions/wrapper";
 import {FaPlus} from "react-icons/fa";
 import PopupContainer from "../../components/questions/parts/popup-container";
 import QuestionForm from "../../components/dashboard/question-form";
 import Question from "../../types/question";
+import {
+    DragDropContext,
+    Draggable,
+    Droppable,
+    DroppableProvided,
+    DroppableStateSnapshot,
+    DropResult,
+    resetServerContext
+} from "react-beautiful-dnd";
+import {Empty} from "antd";
+import styles from "../../styles/dashboard.module.css";
+import Link from "next/link";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     await connectMongo;
@@ -21,10 +33,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     }
 }
 
+resetServerContext();
+
 export default function QuizPage({ quiz }: { quiz: Quiz }) {
     const [currentQuiz, setCurrentQuiz] = useState(quiz);
     const [questionToEdit, setQuestionToEdit] = useState<Question | undefined>(undefined);
-    const [stops, setStops] = useState<string[]>([]);
     const [open, setOpen] = useState(false);
 
     async function addQuestion(question: Question) {
@@ -44,83 +57,140 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
         }
     }
 
-    // TODO: Stops to DB, Drag and Drop Question Order, Fix Editing and add update API
+    async function updateStops(questionIndex: number) {
+        const stops = [...(currentQuiz.stops ?? [])];
+        if (!stops.includes(questionIndex)) {
+            stops.push(questionIndex);
+        } else {
+            stops.splice(stops.indexOf(questionIndex), 1);
+        }
+        currentQuiz.stops = stops;
+        setCurrentQuiz({...currentQuiz});
+        const res = await axios.post(`/api/quiz/update`, { quiz: currentQuiz });
+        console.log(res);
+    }
+
+    const onDragEnd = async (result: DropResult) => {
+        const { destination, source } = result;
+        if (!destination) return;
+        if (destination.droppableId === source.droppableId && destination.index === source.index) return;
+        const questions = [...currentQuiz.questions];
+        const reorderedQuestion = questions.splice(source.index, 1)[0];
+        questions.splice(destination.index, 0, reorderedQuestion);
+        currentQuiz.questions = questions;
+        setCurrentQuiz({...currentQuiz});
+        const res = await axios.post(`/api/quiz/update`, { quiz: currentQuiz });
+        console.log(res);
+    }
+
+    // TODO: Fix Editing
+
+    const InnerList = React.memo(function InnerList(props: { questions: Question[]}) {
+        return (
+            <>
+                {props.questions.map((question, index) => (
+                    <Draggable
+                        key={question._id}
+                        draggableId={question._id!}
+                        index={index}
+                    >
+                        {(provided, snapshot) => (
+                            <div ref={provided.innerRef}
+                                 {...provided.draggableProps}
+                                 {...provided.dragHandleProps}>
+                                <div key={index} style={{ borderBottom: index !== props.questions.length - 1 ?  "2px solid #333" : "none", display: "grid", gridTemplateColumns: "7fr 1fr", height: "100%", padding: 10 }}
+                                >
+                                    <QuestionWrapper question={question} fontSize={12} hideTimer={true} hideOverlay={true} />
+                                    <div style={{ borderLeft: "2px solid #333", display: "flex", alignItems: "center", justifyContent: "center", gap: 10, flexDirection: "column" }}>
+                                        <div onClick={() => {
+                                            setQuestionToEdit(question);
+                                            setOpen(true);
+                                        }} style={{ width: 100, height: 100, display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "var(--question-item)", borderRadius: "50%", boxShadow: "0 8px 16px rgba(0,0,0,0.19), 0 3px 3px rgba(0,0,0,0.23)" }}>
+                                            <EditOutlined />
+                                        </div>
+                                        {index !== 0 && <div onClick={() => updateStops(index)} style={{ width: 100, height: 100, display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: currentQuiz.stops?.includes(index) ? "var(--accent-negative)" : "var(--question-item)", borderRadius: "50%", boxShadow: "0 8px 16px rgba(0,0,0,0.19), 0 3px 3px rgba(0,0,0,0.23)" }}>
+                                            <StopOutlined />
+                                        </div>}
+                                        <div onClick={() => deleteQuestion(question._id!)} style={{ width: 100, height: 100, display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "var(--question-item)", borderRadius: "50%", boxShadow: "0 8px 16px rgba(0,0,0,0.19), 0 3px 3px rgba(0,0,0,0.23)" }}>
+                                            <DeleteOutline />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                    </Draggable>
+                ))}
+            </>
+        )
+    })
 
     return (
-        <div style={{ position: "relative", color: "var(--text)", height: "100vh", width: "100vw", margin: 0}}>
-            <div style={{ position: "absolute", top: "1em", left: "2em", width: "30em", display: "grid", gridTemplateColumns: "1fr 4fr", gridGap: 10 }}>
-                <div style={{ display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "var(--accent)", color: "#222", borderRadius: "50%", boxShadow: "0 8px 16px rgba(0,0,0,0.19), 0 3px 3px rgba(0,0,0,0.23)" }}><Close /></div>
-                <div style={{ display: "flex", justifyContent: "center", padding: 10, backgroundColor: "var(--question-item)", borderRadius: 40, margin: 0, fontSize: "2.5em", boxShadow: "0 8px 16px rgba(0,0,0,0.19), 0 3px 3px rgba(0,0,0,0.23)" }}>{quiz.name}</div>
-            </div>
-            <div style={{ height: "100%", width: "100%", display: "grid", gridTemplateRows: "1fr", gridTemplateColumns: "1fr 2fr", overflowY: "hidden" }}>
-                <div style={{ backgroundColor: "var(--dark-paper)", boxShadow: "0 8px 16px rgba(0,0,0,0.19), 0 3px 3px rgba(0,0,0,0.23)", paddingTop: 150 }}>
-                    <div>Stops: {stops.map((s) => s)}</div>
+        <div className={styles.root}>
+            <div className={styles.sidebar}>
+                <div className={styles.sidebarTitle}>
+                    <Link href={"/dashboard"}>
+                        <a>
+                            <div className={styles.navigation}><Close /></div>
+                        </a>
+                    </Link>
+                    <div className={styles.title}>Manage Quiz</div>
                 </div>
-                <div style={{ alignItems: "center", gridRowStart: 1, gridRowEnd: 3, gridColumn: 2, display: "grid", gridAutoRows: 500, padding: 10, overflowY: "auto" }}>
-                    <div style={{ display: "flex", justifyContent: "center", height: "100%" }}>
-                        <div onClick={() => setOpen(true)} style={{ height: "100%", width: "50%", border: "2px dashed var(--text)", borderRadius: 12, display: "flex", justifyContent: "center", alignItems: "center", fontSize: "2em" }}>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gridAutoRows: 80, fontSize: 22, gridRowStart: 2, gridRowEnd: 4, backgroundColor: "var(--question-item)", borderRadius: 12, boxShadow: "0 8px 16px rgba(0,0,0,0.19), 0 3px 3px rgba(0,0,0,0.23)", padding: 20 }}>
+                    <div>Name</div>
+                    <div>{currentQuiz.name}</div>
+                    <div>Pauses at</div>
+                    <div style={{ display: "flex", flexDirection: "row", gap: 5  }}>
+                        {currentQuiz.stops.map((s) => (
+                            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: 40, height: 40, borderRadius: 8, backgroundColor: "var(--accent-negative)", color: "#111", fontSize: "1.3em", fontWeight: "bold" }} key={s}>{s}</div>
+                        ))}
+                    </div>
+                    <div>Number of Questions</div>
+                    <div>{currentQuiz.questions.length}</div>
+                    <div>Total Points</div>
+                    <div>{currentQuiz.questions.map((q) => q.value !== -1 ? q.value : 0).reduce((partialSum, a) => partialSum + a, 0)}</div>
+                    <div>Total Duration</div>
+                    <div>{Math.round(currentQuiz.questions.map((q) => q.timeInSeconds !== -1 ? q.timeInSeconds : 0).reduce((partialSum, a) => partialSum + a, 0) / 60)} Minutes</div>
+                </div>
+            </div>
+            <div style={{ overflow: "hidden" }}>
+                <div style={{ position: "relative", alignItems: "center", gridRowStart: 1, gridRowEnd: 3, gridColumn: 2, height: "100%" }}>
+                    <div style={{ position: "absolute", bottom: 20, right: 20, display: "flex", justifyContent: "center", height: 100, width: 100 }}>
+                        <div onClick={() => setOpen(true)} style={{ cursor: "pointer", boxShadow: "0 8px 16px rgba(0,0,0,0.19), 0 3px 3px rgba(0,0,0,0.23)", backgroundColor: "var(--accent)", color: "#222", zIndex: 5, height: "100%", width: "100%", borderRadius: "50%", display: "flex", justifyContent: "center", alignItems: "center", fontSize: "2em" }}>
                             <FaPlus />
                         </div>
                     </div>
-                    {currentQuiz.questions.map((question, index) => (
-                        <div key={index} style={{ borderBottom: "2px solid #333", display: "grid", gridTemplateColumns: "7fr 1fr", height: "100%", padding: 10 }}>
-                            <QuestionWrapper question={question} fontSize={12} hideTimer={true} hideOverlay={true} />
-                            <div style={{ borderLeft: "2px solid #333", display: "flex", alignItems: "center", justifyContent: "space-evenly", flexDirection: "column" }}>
-                                <div onClick={() => {
-                                    setQuestionToEdit(question);
-                                    setOpen(true);
-                                }} style={{ width: 100, height: 100, display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "var(--question-item)", borderRadius: "50%", boxShadow: "0 8px 16px rgba(0,0,0,0.19), 0 3px 3px rgba(0,0,0,0.23)" }}>
-                                    <EditOutlined />
-                                </div>
-                                <div onClick={() => {
-                                    if (!stops.includes(question._id!)) {
-                                        setStops([...stops, question._id!])
-                                    } else {
-                                        setStops([...stops.filter((s) => s !== question._id)])
-                                    }
-                                }} style={{ width: 100, height: 100, display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: stops.includes(question._id!) ? "var(--accent-negative)" : "var(--question-item)", borderRadius: "50%", boxShadow: "0 8px 16px rgba(0,0,0,0.19), 0 3px 3px rgba(0,0,0,0.23)" }}>
-                                    <StopOutlined />
-                                </div>
-                                <div onClick={() => deleteQuestion(question._id!)} style={{ width: 100, height: 100, display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "var(--question-item)", borderRadius: "50%", boxShadow: "0 8px 16px rgba(0,0,0,0.19), 0 3px 3px rgba(0,0,0,0.23)" }}>
-                                    <DeleteOutline />
-                                </div>
+                    {currentQuiz.questions.length > 0 ?
+                        <DragDropContext onDragEnd={onDragEnd}>
+                            <Droppable droppableId={"list"}>
+                                {(provided: DroppableProvided, snapshot: DroppableStateSnapshot) => (
+                                    <div
+                                        ref={provided.innerRef}
+                                        style={{
+                                            backgroundColor: snapshot.isDraggingOver ? '#33333380' : 'transparent',
+                                            display: "grid", gridAutoRows: 500, padding: 10, overflowY: "auto",
+                                            height: "100%"
+                                        }}
+                                        {...provided.droppableProps}
+                                    >
+                                        <InnerList questions={currentQuiz.questions} />
+                                        {provided.placeholder}
+                                    </div>
+                                )}
+                            </Droppable>
+                        </DragDropContext>
+                        :
+                        <div style={{ width: "100%", height: "100%", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", }}>
+                            <Empty imageStyle={{ width: 400, height: 400 }} description={false} />
+                            <div style={{ width: "100%", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", fontSize: "3em" }}>
+                                <p style={{ margin: "0 0 1em 0" }}>No Questions yet!</p>
                             </div>
                         </div>
-                    ))}
+                    }
                 </div>
                 <PopupContainer open={open} setOpen={setOpen}>
                     <QuestionForm question={questionToEdit} addQuestion={addQuestion} />
                 </PopupContainer>
             </div>
-            {/*<div style={{ position: "absolute", bottom: 10, display: "grid", gridAutoFlow: "column", overflow: "auto", width: "100%", whiteSpace: "nowrap", gridGap: 10, padding: 10 }}>
-                <Link href={`/quiz/${quiz._id}/question/add`}>
-                    <a style={{ border: "1px dashed white", fontSize: "3rem", color: "white", width: "100%", minWidth: "60vh", height: "40vh", borderRadius: 8, cursor: "pointer", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                        <Add fontSize="inherit" />
-                    </a>
-                </Link>
-                {quiz.questions.map((question) => {
-                    return (
-                        <div key={question._id} style={{ background: "#333", color: "white", width: "100%", minWidth: "60vh", position: "relative", padding: 20, boxShadow: "0 3px 6px rgba(0,0,0,0.19), 0 2px 2px rgba(0,0,0,0.23)", height: "40vh", borderRadius: 8, cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "center" }}>
-                            <span style={{ fontSize: "3rem", color: "white" }}>{question.topic}</span>
-                            <span>{question.type}</span>
-                            <span>{question.value}</span>
-                            <span>{question.caption}</span>
-                            <div style={{ display: "flex", flexDirection: "row", position: "absolute", bottom: 10 }}>
-                                <IconButton style={{ fontSize: "4rem" }} onClick={async () => {}}>
-                                    <PlayCircle fontSize="inherit" />
-                                </IconButton>
-                                <Link href={`/quiz/${quiz._id}`}>
-                                    <a>
-                                        <IconButton style={{ fontSize: "4rem" }}>
-                                            <Edit fontSize="inherit" />
-                                        </IconButton>
-                                    </a>
-                                </Link>
-                            </div>
-                        </div>
-                    )
-                })}
-            </div>*/}
         </div>
     )
 }

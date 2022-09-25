@@ -31,7 +31,8 @@ function getPopupContentByQuestionType(question: Question) {
             <SortMiniGameView sortElements={shuffle(question.sortElements!)} unit={question.unit!} />
         )
     } else {
-        const media = question.media!;
+        const media = question.media;
+        if (!media) return <div>No Media</div>
         switch (media.type) {
             case MediaTypes.Text:
                 return (

@@ -13,6 +13,8 @@ type Match = {
     currentQuestionIndex: number,
     startTime: string,
     finished: boolean,
+    currentlyOpenUploadRound: number,
+    pastUploadRounds: number[]
 }
 
 export function isMatch(match: Match | any): match is Match {

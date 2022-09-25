@@ -41,5 +41,6 @@ module.exports = withImages({
       use: ["@svgr/webpack"]
     })
     return config;
-  }
+  },
+  experimental: { esmExternals: true }
 })

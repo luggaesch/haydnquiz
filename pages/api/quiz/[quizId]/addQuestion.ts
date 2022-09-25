@@ -24,7 +24,7 @@ export default async function handler(
         const questionFromModel = await QuestionModel.create(question);
         console.log(questionFromModel);
         queriedQuiz.questions.push(questionFromModel);
-        queriedQuiz.save();
+        await queriedQuiz.save();
         res.send(JSON.stringify(queriedQuiz));
     } else {
         res.status(404).send({});

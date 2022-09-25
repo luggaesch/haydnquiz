@@ -13,14 +13,9 @@ import PopupContainer from "./parts/popup-container";
 import MediaContent from "./parts/media-content";
 import SolutionContent from "./parts/solution-content";
 import Answer from "../../types/answer";
+import MetaContainer from "./parts/meta-container";
 
 export default function QuestionWrapper({ question, answers, hideTimer, hideOverlay, fontSize }: { question: Question, answers?: Answer[], hideTimer?: boolean, hideOverlay?: boolean, fontSize?: number }) {
-    const { TopicIcon, TypeIcon } = useMemo(() => {
-        return {
-            TopicIcon: getIconByTopic(question.topic),
-            TypeIcon: getIconByQuestionType(question.type)
-        }
-    }, [question]);
     const [play] = useSound(countdownSfx, { volume: 1});
     const [solutionOpen, setSolutionOpen] = useState(false);
     const [hideVisible, setHideVisible] = useState(true);
@@ -41,17 +36,7 @@ export default function QuestionWrapper({ question, answers, hideTimer, hideOver
         <div className={styles.root} style={{ fontSize: fontSize ?? 16  }}>
             {!hideOverlay && <HideOverlay visible={hideVisible} setVisible={setHideVisible} />}
             <div className={styles.container}>
-                <div className={styles.metaContainer}>
-                    <div className={styles.topic} style={{ backgroundColor: getColorByTopic(question.topic) }}>
-                        <TopicIcon style={{ fontSize: "4em" }}/>
-                    </div>
-                    <div className={styles.metaItem}>
-                        <TypeIcon style={{ fontSize: "3em" }} />
-                    </div>
-                    {question.value !== -1 && <div className={styles.metaItem}>
-                        <div style={{ fontSize: "3em" }}>{question.value}</div>
-                    </div>}
-                </div>
+                <MetaContainer question={question} styles={{ gridColumn: 1, gridRowStart: 1, gridRowEnd: 5 }} />
                 <div className={styles.caption} style={{ gridRowEnd: getCaptionRowEnd() }}>
                     {question.jokerReward && <div className={styles.jokerDisplay} style={{}} >
                         {getIconByJoker(question.jokerReward, "var(--text)", 50, 50)} {question.jokerReward}
