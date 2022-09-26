@@ -1,13 +1,18 @@
 :root {
   --dark-background: #111111;
   --dark-paper: #222222;
+  --dark-paper-transparent: #22222240;
+  --dark-paper-highlight: #444444;
+  --dark-paper-highlight-intermediate: #333333;
   --dark-popup: #191919;
+  --question-item: #282828;
+  --question-item-highlight: #333;
   --paper: #333333;
   --paper-highlight: #555555;
-  --accent: #8EFFED;
-  --accent-negative: rgb(255, 0, 89);
+  --paper-highlight-intermediate: #444444;
   --input: #262626;
   --text: #ffffff;
+  --icon: #222;
   --text-transparent: #ffffff80;
   --elevation-shadow: none;
 }

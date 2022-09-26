@@ -36,7 +36,7 @@ export default function QuestionWrapper({ question, answers, hideTimer, hideOver
         <div className={styles.root} style={{ fontSize: fontSize ?? 16  }}>
             {!hideOverlay && <HideOverlay visible={hideVisible} setVisible={setHideVisible} />}
             <div className={styles.container}>
-                <MetaContainer question={question} styles={{ gridColumn: 1, gridRowStart: 1, gridRowEnd: 5 }} />
+                <MetaContainer question={question} style={{ gridColumn: 1, gridRowStart: 1, gridRowEnd: 5 }} />
                 <div className={styles.caption} style={{ gridRowEnd: getCaptionRowEnd() }}>
                     {question.jokerReward && <div className={styles.jokerDisplay} style={{}} >
                         {getIconByJoker(question.jokerReward, "var(--text)", 50, 50)} {question.jokerReward}

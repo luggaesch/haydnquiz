@@ -296,7 +296,7 @@
 .sortColumnContainer {
     width: 100%;
     height: 100%;
-    background-color: var(--dark-background);
+    background-color: var(--background);
     display: grid;
     justify-content: center;grid-template-columns: 40% 40%;
     grid-gap: 20px;

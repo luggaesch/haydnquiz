@@ -4,6 +4,7 @@ import React, {useEffect, useMemo, useState} from "react";
 import {Input} from "@mui/material";
 import MetaContainer from "../../../../../components/questions/parts/meta-container";
 import Match from "../../../../../types/match";
+import InputWaiting from "../../../../../components/view/input-waiting";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const { uploadRound, teamId, matchId } = context.query;
@@ -49,7 +50,7 @@ export default function AnswerInput({ match, uploadRound, teamId }: { match: Mat
     }, [inputOpen]);
 
     if (currentMatch.pastUploadRounds.includes(uploadRound)) return <div style={{ color: "white" }}>This round is already closed.</div>
-    if (!inputOpen) return <div style={{ color: "white" }}>Please wait until Input is opened.</div>
+    if (!inputOpen) return <InputWaiting />
 
     function handleValueChanged(nextValue: string, index: number, innerIndex?: number) {
         values[index][innerIndex || 0] = nextValue;

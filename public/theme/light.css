@@ -2,15 +2,16 @@
     --dark-background: #fff;
     --dark-paper: #fefefe;
     --dark-paper-transparent: #ffffff40;
+    --dark-paper-highlight: #eeeeee;
+    --dark-paper-highlight-intermediate: #f6f6f6;
     --dark-popup: #f9f9f9;
-    --paper: #fefefe;
-    --paper-highlight: #ddd;
     --question-item: #fff;
     --question-item-highlight: #eee;
-    --accent: #8EFFED;
-    --accent-negative: rgb(255, 0, 89);
+    --paper: #fff;
+    --paper-highlight: #eee;
+    --paper-highlight-intermediate: #e8a8a8;
     --input: #f9f9f9;
-    --text: #222;
-    --text-transparent: #22222280;
+    --text: #151515;
+    --text-transparent: #15151580;
     --elevation-shadow: 0 3px 6px rgba(0,0,0,0.19), 0 2px 2px rgba(0,0,0,0.23);
 }

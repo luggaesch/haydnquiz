@@ -73,10 +73,10 @@ export default function QrCarousel({ match, uploadRound, setShowAnswerInput }: {
                         <div key={index}>
                             <div style={contentStyle}>
                                 <div style={{ height: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                                    <Link href={`http://192.168.178.30:3000/quiz/play/${match._id}/${uploadRound}/${team._id}`}>
+                                    <Link href={`http://192.168.44.110:3000/quiz/play/${match._id}/${uploadRound}/${team._id}`}>
                                         <a>
                                             <div style={{ display: "flex", justifyContent: "center", alignItems: "center", border: `2px dashed ${team.color}`, borderRadius: 8, padding: 100 }}>
-                                                <QRCodeCanvas style={{ border: "20px solid white" }} size={512} value={`http://192.168.178.30:3000/quiz/play/${match._id}/${uploadRound}/${team._id}`} />
+                                                <QRCodeCanvas style={{ border: "20px solid white" }} size={512} value={`http://192.168.44.110:3000/quiz/play/${match._id}/${uploadRound}/${team._id}`} />
                                             </div>
                                         </a>
                                     </Link>

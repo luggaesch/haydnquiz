@@ -51,7 +51,7 @@ function MatchPage({ match }: { match: Match }) {
     }
 
     return (
-        <ThemeSwitcherProvider defaultTheme="light" themeMap={themes}>
+        <ThemeSwitcherProvider defaultTheme="dark" themeMap={themes}>
             <RightDrawer open={open} setOpen={setOpen}>
                 <div style={{ width: "100%", display: "grid", height: 80, gridTemplateColumns: "1fr 1fr 1fr 2fr", gridGap: 10 }}>
                     <Soundcheck open={open} />
