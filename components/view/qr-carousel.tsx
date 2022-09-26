@@ -62,7 +62,7 @@ export default function QrCarousel({ match, uploadRound, setShowAnswerInput }: {
 
     function calculateAnswerPercentage() {
         const currentAnswers = currentMatch.answers.filter((a) => targetQuestions.findIndex((q) => a.questionId === q._id) !== -1);
-        return (currentAnswers.length / (targetQuestions.length * currentMatch.teams.length)) * 100;
+        return currentAnswers.length / (targetQuestions.length * currentMatch.teams.length);
     }
 
     return (
@@ -73,10 +73,10 @@ export default function QrCarousel({ match, uploadRound, setShowAnswerInput }: {
                         <div key={index}>
                             <div style={contentStyle}>
                                 <div style={{ height: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                                    <Link href={`http://192.168.44.110:3000/quiz/play/${match._id}/${uploadRound}/${team._id}`}>
+                                    <Link href={`http://${process.env.NEXT_PUBLIC_IP_ADDR}:3000/quiz/play/${match._id}/${uploadRound}/${team._id}`}>
                                         <a>
                                             <div style={{ display: "flex", justifyContent: "center", alignItems: "center", border: `2px dashed ${team.color}`, borderRadius: 8, padding: 100 }}>
-                                                <QRCodeCanvas style={{ border: "20px solid white" }} size={512} value={`http://192.168.44.110:3000/quiz/play/${match._id}/${uploadRound}/${team._id}`} />
+                                                <QRCodeCanvas style={{ border: "20px solid white" }} size={512} value={`http://${process.env.NEXT_PUBLIC_IP_ADDR}:3000/quiz/play/${match._id}/${uploadRound}/${team._id}`} />
                                             </div>
                                         </a>
                                     </Link>
@@ -86,11 +86,13 @@ export default function QrCarousel({ match, uploadRound, setShowAnswerInput }: {
                     )
                 })}
             </Carousel>
-            <div style={{ color: "black", position: "absolute", bottom: 10, right: 100 }} onClick={activateUploadRound}>Enable Upload</div>
-            <div style={{ color: "black", position: "absolute", bottom: 10, right: 20 }} onClick={() => setShowAnswerInput(false)}>Weiter</div>
+            <div style={{ width: "100%", position: "absolute", bottom: 20, display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", gap: 20, textAlign: "center", fontSize: "2em" }}>
+                <div style={{ width: "25%", backgroundColor: "var(--accent)", color: "#222", borderRadius: 40, cursor: "pointer", padding: 20 }} onClick={activateUploadRound}>Unlock Upload</div>
+                <div style={{ width: "25%", backgroundColor: calculateAnswerPercentage() === 1 ? "var(--accent)" : "var(--accent-negative)", color: calculateAnswerPercentage() === 1 ? "#222" : "white", borderRadius: 40, cursor: "pointer", padding: 20 }} onClick={() => setShowAnswerInput(false)}>Done</div>
+            </div>
             <PopupContainer open={open} setOpen={setOpen}>
                 <div style={{ position: "relative", width: "100%", height: "100%", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column" }}>
-                    <Progress showInfo={false} strokeColor={"var(--accent)"} trailColor={"var(--dark-background)"} strokeWidth={30} style={{ width: "70%" }} percent={calculateAnswerPercentage()} />
+                    <Progress showInfo={false} strokeColor={"var(--accent)"} trailColor={"var(--dark-background)"} strokeWidth={30} style={{ width: "70%" }} percent={calculateAnswerPercentage() * 100} />
                     <span onClick={closeRound} style={{ position: "absolute", bottom: "10%", display: "flex", justifyContent: "center", alignItems: "center", width: "50%", height: 100, backgroundColor: "#111", borderRadius: 20, border: "2px dashed var(--accent)", color: "var(--accent)", fontSize: "3em", }}>Close Input</span>
                 </div>
             </PopupContainer>

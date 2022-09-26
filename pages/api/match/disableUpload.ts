@@ -15,7 +15,7 @@ export default async function handler(
         }
         await connectMongo;
         const queriedMatch = await MatchModel.findOne({ _id: matchId });
-        const result = await queriedMatch.update({ currentlyOpenUploadRound: -1, pastUploadRounds: [queriedMatch.pastUploadRounds, uploadRound] })
+        const result = await queriedMatch.update({ currentlyOpenUploadRound: -1, pastUploadRounds: [...queriedMatch.pastUploadRounds, uploadRound] })
         res.send(JSON.stringify(result));
     } else {
         res.status(404).send({});

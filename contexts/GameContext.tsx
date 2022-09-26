@@ -12,6 +12,7 @@ export enum GameState {
 }
 
 interface GameValue {
+    match: Match | undefined,
     setMatch: React.Dispatch<SetStateAction<Match | undefined>>,
     gameState: GameState,
     setGameState: React.Dispatch<SetStateAction<GameState>>,
@@ -46,7 +47,14 @@ export const GameProvider = ({ children }: { children: ReactNode } ) => {
             match.state = gameState;
             match.teams = teams;
             match.currentQuestionIndex = currentQuestionNum;
-            axios.post("/api/match/update", { match }).then((res) => console.log(res));
+            axios.post("/api/match/updateState", { match }).then((res) => {
+                console.log(res);
+                if (res.status === 200) {
+                    if (res.data.answers.length > match.answers.length) {
+                        setMatch(res.data);
+                    }
+                }
+            }).catch((err) => console.error(err));
         }
     }, [gameState, currentQuestionNum, teams]);
 
@@ -59,6 +67,7 @@ export const GameProvider = ({ children }: { children: ReactNode } ) => {
     }, [match]);
 
     const value = {
+        match,
         setMatch,
         gameState,
         setGameState,

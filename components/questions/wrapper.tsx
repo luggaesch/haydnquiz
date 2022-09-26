@@ -15,7 +15,7 @@ import SolutionContent from "./parts/solution-content";
 import Answer from "../../types/answer";
 import MetaContainer from "./parts/meta-container";
 
-export default function QuestionWrapper({ question, answers, hideTimer, hideOverlay, fontSize }: { question: Question, answers?: Answer[], hideTimer?: boolean, hideOverlay?: boolean, fontSize?: number }) {
+export default function QuestionWrapper({ index, question, answers, hideTimer, hideOverlay, fontSize }: { index?: number, question: Question, answers?: Answer[], hideTimer?: boolean, hideOverlay?: boolean, fontSize?: number }) {
     const [play] = useSound(countdownSfx, { volume: 1});
     const [solutionOpen, setSolutionOpen] = useState(false);
     const [hideVisible, setHideVisible] = useState(true);
@@ -39,8 +39,9 @@ export default function QuestionWrapper({ question, answers, hideTimer, hideOver
                 <MetaContainer question={question} style={{ gridColumn: 1, gridRowStart: 1, gridRowEnd: 5 }} />
                 <div className={styles.caption} style={{ gridRowEnd: getCaptionRowEnd() }}>
                     {question.jokerReward && <div className={styles.jokerDisplay} style={{}} >
-                        {getIconByJoker(question.jokerReward, "var(--text)", 50, 50)} {question.jokerReward}
+                        {getIconByJoker(question.jokerReward, "var(--text)", 60, 60)} {question.jokerReward}
                     </div>}
+                    {index !== undefined && <div style={{ fontSize: "0.6em", position: "absolute", top: 5, left: 10, width: "2.8em", height: "2.8em", display: "flex", justifyContent: "center", alignItems: "center", background: "#222", boxShadow: "0 8px 16px rgba(0,0,0,0.10), 0 3px 3px rgba(0,0,0,0.15)", borderRadius: "50%"}}>#{index + 1}</div>}
                     {question.caption}
                 </div>
                 {question.type !== QuestionTypes.Basic && <MediaContent question={question} rowEnd={getCaptionRowEnd()} />}
@@ -52,6 +53,7 @@ export default function QuestionWrapper({ question, answers, hideTimer, hideOver
                         <FaLightbulb className={styles.icon} />
                     </div>
                     <PopupContainer open={solutionOpen} setOpen={setSolutionOpen}>
+                        <div>{answers.map((a) => a.values).join(", ")}</div>
                         <SolutionContent type={question.solutionType} text={question.solution} array={question.solutionArray} />
                     </PopupContainer>
                 </div>}

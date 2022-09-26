@@ -40,7 +40,7 @@ export default function RightDrawer({ open, setOpen, children }: { open: boolean
             </Space>
             }
         >
-            <div style={{ height: "100%", overflowY: "hidden", background: "#222222", display: "grid", gridTemplateRows: "1fr 10fr 2fr" }}>
+            <div style={{ height: "100%", overflowY: "hidden", background: "#222222", display: "grid", gridTemplateRows: "1fr 10fr 2fr", gridGap: 20 }}>
                 {children}
             </div>
         </Drawer>

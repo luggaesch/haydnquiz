@@ -8,23 +8,25 @@ import ParticleWrapper from "../view/particle-wrapper";
 import Match from "../../types/match";
 import QrCarousel from "../view/qr-carousel";
 import {Button} from "antd";
+import axios from "axios";
 
-export default function MatchView({ match }: { match: Match }) {
-    const { gameState, setGameState, currentQuestionNum, setCurrentQuestionNum, setMatch } = useGameContext();
+export default function MatchView({ propMatch }: { propMatch: Match }) {
+    const { gameState, setGameState, currentQuestionNum, setCurrentQuestionNum, setMatch, match } = useGameContext();
     const questions = useMemo(() => {
-        return match.quiz.questions;
-    }, [match]);
+        return match ? match.quiz.questions : propMatch.quiz.questions;
+    }, [propMatch, match]);
     const currentQuestion = useMemo(() => {
         return questions[currentQuestionNum];
     }, [questions, currentQuestionNum]);
     const [showAnswerInput, setShowAnswerInput] = useState(currentQuestionNum === Math.ceil(questions.length / 2));
 
     useEffect(() => {
-        setMatch(match);
-    }, [match]);
+        setMatch(propMatch);
+    }, [propMatch]);
 
     useEffect(() => {
-        if (match.quiz.stops.includes(currentQuestionNum) && !match.pastUploadRounds.includes(match.quiz.stops.indexOf(currentQuestionNum))) {
+        const currentMatch = match ?? propMatch;
+        if (currentMatch.quiz.stops.includes(currentQuestionNum) && !currentMatch.pastUploadRounds.includes(currentMatch.quiz.stops.indexOf(currentQuestionNum))) {
             setShowAnswerInput(true);
         }
     }, [match, currentQuestionNum, questions]);
@@ -38,12 +40,12 @@ export default function MatchView({ match }: { match: Match }) {
             case GameState.Playing:
                 if (showAnswerInput) {
                     return (
-                        <QrCarousel match={match} uploadRound={match.quiz.stops.indexOf(currentQuestionNum)} setShowAnswerInput={setShowAnswerInput} />
+                        <QrCarousel match={propMatch} uploadRound={propMatch.quiz.stops.indexOf(currentQuestionNum)} setShowAnswerInput={setShowAnswerInput} />
                     )
                 }
                 return (
                     <Slideshow currentIndex={currentQuestionNum} setCurrentIndex={setCurrentQuestionNum} nodes={questions.map((q) => (
-                        <QuestionWrapper question={q} key={q._id} />
+                        <QuestionWrapper index={currentQuestionNum} question={q} key={q._id} />
                     ))} />
                 )
             case GameState.Transition:
@@ -60,7 +62,7 @@ export default function MatchView({ match }: { match: Match }) {
             case GameState.Solutions:
                 return (
                     <Slideshow currentIndex={currentQuestionNum} setCurrentIndex={setCurrentQuestionNum} nodes={questions.map((q) => (
-                        <QuestionWrapper question={q} key={q._id} />
+                        <QuestionWrapper hideOverlay={true} hideTimer={true} answers={match!.answers.filter((a) => a.questionId === currentQuestion._id)} index={currentQuestionNum} question={q} key={q._id} />
                     ))} />
                 )
             case GameState.End:

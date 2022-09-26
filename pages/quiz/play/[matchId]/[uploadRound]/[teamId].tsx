@@ -5,6 +5,8 @@ import {Input} from "@mui/material";
 import MetaContainer from "../../../../../components/questions/parts/meta-container";
 import Match from "../../../../../types/match";
 import InputWaiting from "../../../../../components/view/input-waiting";
+import InputSuccess from "../../../../../components/view/input-success";
+import InputError from "../../../../../components/view/input-error";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const { uploadRound, teamId, matchId } = context.query;
@@ -31,6 +33,7 @@ export default function AnswerInput({ match, uploadRound, teamId }: { match: Mat
         return currentMatch.currentlyOpenUploadRound === uploadRound;
     }, [currentMatch, uploadRound]);
     const [intervalId, setIntervalId] = useState<NodeJS.Timer | null>(null);
+    const [success, setSuccess] = useState<boolean | null>(null);
 
     useEffect(() => {
         if (!inputOpen) {
@@ -50,14 +53,14 @@ export default function AnswerInput({ match, uploadRound, teamId }: { match: Mat
     }, [inputOpen]);
 
     if (currentMatch.pastUploadRounds.includes(uploadRound)) return <div style={{ color: "white" }}>This round is already closed.</div>
-    if (!inputOpen) return <InputWaiting />
+    if (!inputOpen) return <InputWaiting uploadRound={uploadRound} />
 
     function handleValueChanged(nextValue: string, index: number, innerIndex?: number) {
         values[index][innerIndex || 0] = nextValue;
         setValues([...values]);
     }
 
-    function handleSubmit() {
+    async function handleSubmit() {
         values.forEach((v, index) => {
             const i = currentMatch.answers.findIndex((a) => a.teamId === teamId && a.questionId === questions[index]._id);
             if (i !== -1) {
@@ -66,10 +69,20 @@ export default function AnswerInput({ match, uploadRound, teamId }: { match: Mat
                 currentMatch.answers.push({ teamId, questionId: questions[index]._id!, values: v });
             }
         });
-        axios.post("/api/match/update", { match: currentMatch }).then((res) => console.log(res));
+        try {
+            const res = await axios.post("/api/match/updateAnswers", { matchId: currentMatch._id, answers: currentMatch.answers, uploadRound });
+            console.log(res);
+            if (res.status === 200) {
+                setSuccess(true);
+            } else {
+                setSuccess(false);
+            }
+        } catch (err) {
+            setSuccess(false)
+        }
     }
 
-    return (
+    return success === null ? (
         <div style={{ padding: 20, width: "100vw", color: "var(--text)", display: "flex", flexDirection: "column" }}>
             <div style={{ width: "100%", display: "flex", justifyContent: "center", fontSize: 24, marginBottom: "0.5em" }}>Team {currentMatch.teams.find((t) => t._id === teamId)?.name}, Round: {uploadRound + 1}</div>
             <div style={{ width: "100%", display: "grid", gridAutoRows: 500, gridGap: "1em" }}>
@@ -97,5 +110,6 @@ export default function AnswerInput({ match, uploadRound, teamId }: { match: Mat
             </div>
             <div style={{ margin: "3vh 0", color: "#111", height: 60, width: "100%", borderRadius: 20, backgroundColor: "var(--accent)", display: "flex", justifyContent: "center", alignItems: "center", fontSize: "2em", cursor: "pointer" }} onClick={handleSubmit}>Submit</div>
         </div>
-    )
+    ) :
+        success ? <InputSuccess uploadRound={uploadRound} /> : <InputError uploadRound={uploadRound} />
 }

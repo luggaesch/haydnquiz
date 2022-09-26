@@ -1,11 +1,11 @@
 # Roadmap
 
-- Manage Quiz fertig bekommen
+- Upload Round from last Stop to End (At Last Index)
+- Display Answers Ordered By Team in Table?
+- Set Points per Answer
 - Guesstimate Layout
-- Intermediate Questions in Quiz (When to input Answers)
 - 
 - Auswertung mit digitalen Nutzerantworten
-- Input für Bereich schließen/öffnen
 
 - Inline Styles aufräumen
 - Custom Login Page (Maybe)

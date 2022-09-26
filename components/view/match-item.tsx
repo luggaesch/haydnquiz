@@ -2,6 +2,7 @@ import Match from "../../types/match";
 import {FaPlay} from "react-icons/fa";
 import TeamDisplay from "./team-display";
 import QuestionWrapper from "../questions/wrapper";
+import Link from "next/link";
 
 export default function MatchItem({ match }: { match: Match }) {
     console.log(match);
@@ -23,7 +24,11 @@ export default function MatchItem({ match }: { match: Match }) {
             </div>
             <div style={{ borderTop: "1px solid var(--dark-background)", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column",  fontSize: "2em" }}>
                 <FaPlay style={{ color: "var(--text)" }} />
-                <div style={{ fontSize: "1em", color: "var(--text)" }}>Resume</div>
+                <Link href={"/quiz/play/" + match._id}>
+                    <a>
+                        <div style={{ fontSize: "1em", color: "var(--text)", cursor: "pointer" }}>Resume</div>
+                    </a>
+                </Link>
             </div>
         </div>
     )

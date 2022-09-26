@@ -13,7 +13,7 @@ import {useState} from "react";
 import {GameProvider, GameState, useGameContext} from "../../../contexts/GameContext";
 import {FaAlignJustify} from "react-icons/fa";
 import Topics from "../../../components/view/topics";
-import PopupContainer from "../../../components/view/popup-container";
+import PopupContainer from "../../../components/questions/parts/popup-container";
 
 const themes = {
     light: '/theme/light.css',
@@ -57,7 +57,9 @@ function MatchPage({ match }: { match: Match }) {
                     <Soundcheck open={open} />
                     <TopicOverlayToggle setShowOverlay={setShowOverlay} setIsInitialScreen={setIsInitialScreen} />
                 </div>
-                <TeamDisplay teams={match.teams} />
+                <div style={{ backgroundColor: "var(--question-item)", padding: 10, borderRadius: 12 }}>
+                    <TeamDisplay teams={match.teams} />
+                </div>
                 <div style={{ display: "grid", gridTemplateRows: "2fr 3fr" }}>
                     <TopicQueue handleQueueItemClick={handleQueueItemClick} currentQuestionIndex={currentQuestionNum} questions={match.quiz.questions} />
                     <ProgressControl currentIndex={currentQuestionNum} maxIndex={match.quiz.questions.length - 1}  onTransition={(modifier) => setCurrentQuestionNum(currentQuestionNum + modifier)} />
@@ -66,10 +68,10 @@ function MatchPage({ match }: { match: Match }) {
             <div style={{ width: 35, height: 35, display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "50%", position: "absolute", top: 10, right: 5, zIndex: 10, color: "var(--text)", backgroundColor: "transparent", boxShadow: "0 3px 6px rgba(0,0,0,0.19), 0 2px 2px rgba(0,0,0,0.23)" }} onClick={() => setOpen(!open)}>
                 <FaAlignJustify />
             </div>
-            <PopupContainer isInitialScreen={isInitialScreen} showContent={showOverlay} setShowContent={setShowOverlay}>
+            <PopupContainer open={showOverlay} setOpen={setShowOverlay} >
                 <Topics />
             </PopupContainer>
-            <MatchView match={match} />
+            <MatchView propMatch={match} />
         </ThemeSwitcherProvider>
     )
 }
