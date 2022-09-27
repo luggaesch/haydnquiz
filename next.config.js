@@ -15,6 +15,7 @@ module.exports = withImages({
   images: {
     domains: ["i.imgur.com", "imgur.com"]
   },
+  experimental: { esmExternals: true },
   webpack(config, options) {
     const { isServer } = options;
     config.optimization.minimize = false;
@@ -42,5 +43,4 @@ module.exports = withImages({
     })
     return config;
   },
-  experimental: { esmExternals: true }
 })

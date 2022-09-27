@@ -57,7 +57,7 @@ function MatchPage({ match }: { match: Match }) {
                     <Soundcheck open={open} />
                     <TopicOverlayToggle setShowOverlay={setShowOverlay} setIsInitialScreen={setIsInitialScreen} />
                 </div>
-                <div style={{ backgroundColor: "var(--question-item)", padding: 10, borderRadius: 12 }}>
+                <div style={{ backgroundColor: "#282828", padding: 10, borderRadius: 12 }}>
                     <TeamDisplay teams={match.teams} />
                 </div>
                 <div style={{ display: "grid", gridTemplateRows: "2fr 3fr" }}>

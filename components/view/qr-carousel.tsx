@@ -7,6 +7,9 @@ import axios from "axios";
 import PopupContainer from "../questions/parts/popup-container";
 import {useEffect, useMemo, useState} from "react";
 import Link from "next/link";
+import {LockOutlined, UnlockOutlined} from "@ant-design/icons";
+import {Done} from "@mui/icons-material";
+import LoadingOverlay from "./loading-overlay";
 
 
 const contentStyle: React.CSSProperties = {
@@ -17,16 +20,17 @@ const contentStyle: React.CSSProperties = {
     textAlign: 'center',
 };
 
-export default function QrCarousel({ match, uploadRound, setShowAnswerInput }: { match: Match, uploadRound: number, setShowAnswerInput: (value: boolean) => void }) {
+export default function QrCarousel({ match, uploadRound, onUploadFinished }: { match: Match, uploadRound: number, onUploadFinished: () => void }) {
     const [currentMatch, setCurrentMatch] = useState(match);
     const [uploadRunning, setUploadRunning] = useState(false);
     const [open, setOpen] = useState(false);
     const [intervalId, setIntervalId] = useState<NodeJS.Timer | null>(null);
     const targetQuestions = useMemo(() => {
         const startIndex = uploadRound === 0 ? 0 : currentMatch.quiz.stops[uploadRound - 1];
-        const endIndex = currentMatch.quiz.stops[uploadRound];
+        const endIndex = uploadRound === currentMatch.quiz.stops.length ? currentMatch.quiz.questions.length : currentMatch.quiz.stops[uploadRound];
         return currentMatch.quiz.questions.slice(startIndex, endIndex).filter((q) => q.value !== -1);
     }, [currentMatch, uploadRound]);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         if (uploadRunning) {
@@ -47,14 +51,20 @@ export default function QrCarousel({ match, uploadRound, setShowAnswerInput }: {
     }, [uploadRunning])
 
     async function activateUploadRound() {
-        const res = await axios.post("/api/match/enableUpload", { matchId: match._id, uploadRound });
-        console.log(res);
+        if (!uploadRunning) {
+            setLoading(true);
+            const res = await axios.post("/api/match/enableUpload", { matchId: match._id, uploadRound });
+            setLoading(false);
+            console.log(res);
+            setUploadRunning(true);
+        }
         setOpen(true);
-        setUploadRunning(true);
     }
 
     async function closeRound() {
+        setLoading(true);
         const res = await axios.post("/api/match/disableUpload", { matchId: match._id, uploadRound });
+        setLoading(false);
         console.log(res);
         setOpen(false);
         setUploadRunning(false);
@@ -66,7 +76,8 @@ export default function QrCarousel({ match, uploadRound, setShowAnswerInput }: {
     }
 
     return (
-        <div style={{ width: "100vw", height: "100vh" }}>
+        <div style={{ position: "relative", width: "100vw", height: "100vh" }}>
+            {loading && <LoadingOverlay />}
             <Carousel dots={{className: styles.dots}}>
                 {match.teams.map((team, index) => {
                     return (
@@ -86,14 +97,14 @@ export default function QrCarousel({ match, uploadRound, setShowAnswerInput }: {
                     )
                 })}
             </Carousel>
-            <div style={{ width: "100%", position: "absolute", bottom: 20, display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", gap: 20, textAlign: "center", fontSize: "2em" }}>
-                <div style={{ width: "25%", backgroundColor: "var(--accent)", color: "#222", borderRadius: 40, cursor: "pointer", padding: 20 }} onClick={activateUploadRound}>Unlock Upload</div>
-                <div style={{ width: "25%", backgroundColor: calculateAnswerPercentage() === 1 ? "var(--accent)" : "var(--accent-negative)", color: calculateAnswerPercentage() === 1 ? "#222" : "white", borderRadius: 40, cursor: "pointer", padding: 20 }} onClick={() => setShowAnswerInput(false)}>Done</div>
+            <div style={{ position: "absolute", right: 20, bottom: 20, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: 10, textAlign: "center", fontSize: "2em" }}>
+                <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: 80, height: 80, backgroundColor: "var(--accent)", color: "#222", borderRadius: 40, cursor: "pointer", padding: 20 }} onClick={activateUploadRound}><UnlockOutlined /> </div>
+                <div style={{ width: 80, height: 80, backgroundColor: calculateAnswerPercentage() === 1 ? "var(--accent)" : "var(--accent-negative)", color: calculateAnswerPercentage() === 1 ? "#222" : "white", borderRadius: 40, cursor: "pointer", padding: 20 }} onClick={() => onUploadFinished()}><Done /> </div>
             </div>
             <PopupContainer open={open} setOpen={setOpen}>
                 <div style={{ position: "relative", width: "100%", height: "100%", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column" }}>
                     <Progress showInfo={false} strokeColor={"var(--accent)"} trailColor={"var(--dark-background)"} strokeWidth={30} style={{ width: "70%" }} percent={calculateAnswerPercentage() * 100} />
-                    <span onClick={closeRound} style={{ position: "absolute", bottom: "10%", display: "flex", justifyContent: "center", alignItems: "center", width: "50%", height: 100, backgroundColor: "#111", borderRadius: 20, border: "2px dashed var(--accent)", color: "var(--accent)", fontSize: "3em", }}>Close Input</span>
+                    <span onClick={closeRound} style={{ cursor: "pointer", position: "absolute", bottom: "10%", display: "flex", justifyContent: "center", alignItems: "center", width: 150, height: 150, backgroundColor: calculateAnswerPercentage() === 1 ? "var(--accent)" : "var(--accent-negative)", color: calculateAnswerPercentage() === 1 ? "#222" : "white", borderRadius: 20, fontSize: "3em", }}><LockOutlined /></span>
                 </div>
             </PopupContainer>
         </div>

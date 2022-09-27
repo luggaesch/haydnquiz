@@ -7,6 +7,10 @@ import Match from "../../../../../types/match";
 import InputWaiting from "../../../../../components/view/input-waiting";
 import InputSuccess from "../../../../../components/view/input-success";
 import InputError from "../../../../../components/view/input-error";
+import {Spin} from "antd";
+import {LoadingOutlined} from "@ant-design/icons";
+import {motion} from "framer-motion";
+import LoadingOverlay from "../../../../../components/view/loading-overlay";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const { uploadRound, teamId, matchId } = context.query;
@@ -20,7 +24,7 @@ export default function AnswerInput({ match, uploadRound, teamId }: { match: Mat
     const [currentMatch, setCurrentMatch] = useState(match);
     const questions = useMemo(() => {
         const startIndex = uploadRound === 0 ? 0 : currentMatch.quiz.stops[uploadRound - 1];
-        const endIndex = currentMatch.quiz.stops[uploadRound];
+        const endIndex = uploadRound === currentMatch.quiz.stops.length ? currentMatch.quiz.questions.length : currentMatch.quiz.stops[uploadRound];
         return currentMatch.quiz.questions.slice(startIndex, endIndex).filter((q) => q.value !== -1);
     }, [currentMatch, uploadRound]);
     const [values, setValues] = useState<Array<string[]>>(questions.map((q) => {
@@ -34,12 +38,14 @@ export default function AnswerInput({ match, uploadRound, teamId }: { match: Mat
     }, [currentMatch, uploadRound]);
     const [intervalId, setIntervalId] = useState<NodeJS.Timer | null>(null);
     const [success, setSuccess] = useState<boolean | null>(null);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         if (!inputOpen) {
             if (!intervalId) {
                 const id = setInterval(async () => {
                     const res = await axios.get(`/api/match/fetchById/` + currentMatch._id);
+                    console.log(res);
                     const match = res.data as Match;
                     if (match.currentlyOpenUploadRound !== currentMatch.currentlyOpenUploadRound) {
                         setCurrentMatch(match);
@@ -70,7 +76,9 @@ export default function AnswerInput({ match, uploadRound, teamId }: { match: Mat
             }
         });
         try {
+            setLoading(true);
             const res = await axios.post("/api/match/updateAnswers", { matchId: currentMatch._id, answers: currentMatch.answers, uploadRound });
+            setLoading(false);
             console.log(res);
             if (res.status === 200) {
                 setSuccess(true);
@@ -78,14 +86,17 @@ export default function AnswerInput({ match, uploadRound, teamId }: { match: Mat
                 setSuccess(false);
             }
         } catch (err) {
-            setSuccess(false)
+            setSuccess(false);
         }
     }
 
     return success === null ? (
-        <div style={{ padding: 20, width: "100vw", color: "var(--text)", display: "flex", flexDirection: "column" }}>
+        <div style={{ padding: 20, width: "100vw", color: "var(--text)", display: "flex", flexDirection: "column", maxHeight: "100vh", overflow: "auto" }}>
             <div style={{ width: "100%", display: "flex", justifyContent: "center", fontSize: 24, marginBottom: "0.5em" }}>Team {currentMatch.teams.find((t) => t._id === teamId)?.name}, Round: {uploadRound + 1}</div>
-            <div style={{ width: "100%", display: "grid", gridAutoRows: 500, gridGap: "1em" }}>
+            <div style={{ position: "relative", width: "100%", display: "grid", gridAutoRows: 500, gridGap: "1em" }}>
+                {loading &&
+                    <LoadingOverlay />
+                }
                 {questions.map((q, index) => (
                     <div key={index} style={{ display: "grid", gridTemplateRows: "1fr 5fr", backgroundColor: "var(--question-item)", fontSize: 8, borderRadius: 12, boxShadow: "0 8px 16px rgba(0,0,0,0.19), 0 3px 3px rgba(0,0,0,0.23)" }}>
                         <div style={{ width: "100%", display: "flex", justifyContent: "center", alignItems: "center", fontSize: "3em" }}>{match.quiz.questions.findIndex((e) => e._id === q._id) + 1}. {q.caption}</div>

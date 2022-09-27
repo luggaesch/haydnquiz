@@ -20,20 +20,20 @@ export default function PopupContainer({ children, open, setOpen }: { open: bool
                             repeatDelay: 0
                         }}
                         style={{
-                            width: "100vw", height: "100vh", position: "absolute", zIndex: 100, top: "0vh", left: "0vw", display: "flex", justifyContent: "center", alignItems: "center"
+                            width: "100vw", height: "100vh", position: "absolute", zIndex: 100, top: "0vh", left: "0vw", display: "flex", justifyContent: "center", alignItems: "center", overflow: "hidden"
                         }}
                     >
-                        <div style={{ background: "var(--dark-paper)", width: "98%", height: "98%", borderRadius: 8 }}>
+                        <div style={{ background: "var(--dark-paper)", width: "98%", height: "98%", borderRadius: 8, overflow: "hidden" }}>
                             {children}
                         </div>
-                        <div style={{ borderRadius: 8, display: "flex", justifyContent: "center", alignItems: "center", position: "absolute", bottom: "1.2%", left: "50%", transform: "translateX(-50%)", color: "var(--text)", width: 50, height: 50, backgroundColor: "#22222220" }}
+                        <div style={{ cursor: "pointer", borderRadius: 8, display: "flex", justifyContent: "center", alignItems: "center", position: "absolute", bottom: "1.2%", left: "50%", transform: "translateX(-50%)", color: "var(--text)", width: 50, height: 50, backgroundColor: "#11111160" }}
                              onClick={() => setOpen(false)}
                         >
                             <FaArrowDown />
                         </div>
                     </motion.div>}
             </AnimatePresence>
-            {open && <div style={{ width: "100vw", height: "100vh", background: "var(--dark-paper-transparent)", position: "fixed", zIndex: 99, top: 0, left: 0 }}></div>}
+            {open && <div style={{ width: "100vw", height: "100vh", background: "var(--dark-paper-transparent)", position: "fixed", zIndex: 99, top: 0, left: 0, overflow: "hidden" }}></div>}
         </>
     )
 }

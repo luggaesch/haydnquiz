@@ -14,8 +14,8 @@ export default async function handler(
             return;
         }
         await connectMongo;
-        const queriedMatch = await MatchModel.findOne({ _id: match._id }).populate({ path: "quiz", model: QuizModel })
-            .populate({ path: "quiz.questions", model: QuestionModel })
+        const queriedMatch = await MatchModel.findOne({ _id: match._id })
+            .populate({ path: "quiz", model: QuizModel, populate: { path: "questions", model: QuestionModel } })
             .populate({ path: "teams", model: TeamModel });
         queriedMatch.currentQuestionIndex = match.currentQuestionIndex;
         queriedMatch.state = match.state;
