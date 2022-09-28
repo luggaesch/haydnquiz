@@ -1,8 +1,7 @@
 import {Topics} from "../data/topics";
 import {Jokers} from "../data/jokers";
-import Media from "./media";
+import Media, {MediaTypes} from "./media";
 import {FormatQuote, Hearing, Image, ListAlt, Numbers, Sort, TextSnippet, VideoLibrary} from "@mui/icons-material";
-import {MediaTypes} from "../data/questions";
 
 export enum QuestionTypes {
     Basic = "Basic",
