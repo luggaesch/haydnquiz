@@ -22,16 +22,29 @@ import Header from "../components/layout/header";
 import Layout from "../components/layout";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    const session = await getSession(context);
-    const result = await axios.get(`${process.env.SERVER_URL}/api/quiz/fetchForUserId/${session?.user.id}`);
-    const quizzes = result.data;
-    const matchQueryRes = await axios.get(`${process.env.SERVER_URL}/api/match/fetchOngoingForUserId/${session?.user.id}`);
-    const matches = matchQueryRes.data;
-    const teamQueryRes = await axios.get(`${process.env.SERVER_URL}/api/team/fetchByUserId/${session?.user.id}`)
-    const teams = teamQueryRes.data;
-    return {
-        props: { user: session!.user, quizzes: JSON.parse(JSON.stringify(quizzes)), unfinishedMatches: JSON.parse(JSON.stringify(matches)), teams: JSON.parse(JSON.stringify(teams)) }
+    try {
+        const session = await getSession(context);
+        const result = await axios.get(`${process.env.SERVER_URL}/api/quiz/fetchForUserId/${session?.user.id}`).catch((err) => {
+            throw err
+        });
+        const quizzes = result.data;
+        const matchQueryRes = await axios.get(`${process.env.SERVER_URL}/api/match/fetchOngoingForUserId/${session?.user.id}`).catch((err) => {
+            throw err
+        });
+        const matches = matchQueryRes.data;
+        const teamQueryRes = await axios.get(`${process.env.SERVER_URL}/api/team/fetchByUserId/${session?.user.id}`).catch((err) => {
+            throw err
+        });
+        const teams = teamQueryRes.data;
+        return {
+            props: { data: { user: session!.user, quizzes: JSON.parse(JSON.stringify(quizzes)), unfinishedMatches: JSON.parse(JSON.stringify(matches)), teams: JSON.parse(JSON.stringify(teams)) }}
+        }
+    } catch (err) {
+        return {
+            props: { err }
+        }
     }
+
 }
 
 export enum DashboardTabs {
@@ -42,7 +55,16 @@ export enum DashboardTabs {
     Previous
 }
 
-export default function Dashboard({ user, quizzes, unfinishedMatches, teams }: { user: User, quizzes: Quiz[], unfinishedMatches: Match[], teams: Team[] }) {
+export default function DashboardWrapper({ err, data }: { err?: any, data?: { user: User, quizzes: Quiz[], unfinishedMatches: Match[], teams: Team[] } }) {
+    if (data) {
+        const { user, quizzes, unfinishedMatches, teams } = data;
+        return <DashboardComponent user={user} quizzes={quizzes} unfinishedMatches={unfinishedMatches} teams={teams} />
+    }
+    return <div>{err}</div>
+}
+
+
+function DashboardComponent({ user, quizzes, unfinishedMatches, teams }: { user: User, quizzes: Quiz[], unfinishedMatches: Match[], teams: Team[] }) {
     const { push } = useRouter();
     const [currentQuizzes, setCurrentQuizzes] = useState(quizzes);
     const [currentTeams, setCurrentTeams] = useState(teams);
