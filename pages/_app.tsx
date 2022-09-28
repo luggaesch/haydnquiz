@@ -7,6 +7,7 @@ import {Router} from "next/router";
 import {Spin} from "antd";
 import {motion} from 'framer-motion';
 import {LoadingOutlined} from "@ant-design/icons";
+import axios from "axios";
 
 function MyApp({ Component, pageProps }: AppProps) {
     const [loading, setLoading] = useState(false);
@@ -29,6 +30,13 @@ function MyApp({ Component, pageProps }: AppProps) {
             Router.events.off("routeChangeError", end);
         }
     }, []);
+
+    useEffect(() => {
+        if (pageProps.session) axios.get(`${process.env.SERVER_URL}/api/quiz/fetchForUserId/${pageProps.session.user.id}`).then((res) => {
+            console.log(res);
+        }).catch((err) => console.error(err));
+        else console.error(pageProps)
+    })
 
   return (
       <SessionProvider session={pageProps.session} refetchInterval={0}>
