@@ -1,6 +1,6 @@
 import {getIconByJoker, Jokers} from "../data/jokers";
 
-export default function Jokers() {
+export default function JokerPage() {
 
     return (
         <div style={{ justifyContent: "center", padding: 10, width: "100vw", height: "100vh", background: "white", color: "#222222280", fontSize: "1.9rem", display: "grid", gridTemplateColumns: "31% 31% 31%", gridTemplateRows: "40% 40%", gridGap: 10 }}>
