@@ -109,17 +109,18 @@ export default function Header() {
                                             </div>
                                             <div style={{ fontSize: "1.3rem", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
                                                 <span>Not you?</span>
-                                                <a
-                                                    href={`/api/auth/signout`}
-                                                    className={styles.button}
-                                                    style={{ boxShadow: "var(--elevation-shadow)", marginTop: 10, textAlign: "center", width: "80%", fontSize: "1.1rem", borderRadius: 20, backgroundColor: "var(--paper)", color: "white", padding: "10px 15px" }}
-                                                    onClick={(e) => {
-                                                        e.preventDefault()
-                                                        signOut()
-                                                    }}
-                                                >
-                                                    Sign out
-                                                </a>
+                                                <Link href={`/api/auth/signout`}>
+                                                    <a
+                                                        className={styles.button}
+                                                        style={{ boxShadow: "var(--elevation-shadow)", marginTop: 10, textAlign: "center", width: "80%", fontSize: "1.1rem", borderRadius: 20, backgroundColor: "var(--paper)", color: "white", padding: "10px 15px" }}
+                                                        onClick={(e) => {
+                                                            e.preventDefault()
+                                                            signOut()
+                                                        }}
+                                                    >
+                                                        Sign out
+                                                    </a>
+                                                </Link>
                                             </div>
                                         </div>
                                     </div>
@@ -129,8 +130,9 @@ export default function Header() {
                     </PopupState>
                     :
                     <span style={{ width: "10rem", height: "100%",  boxShadow: "var(--elevation-shadow)", textAlign: "center", fontSize: "1.2rem", borderRadius: 8, backgroundColor: "var(--accent)", color: "#111", padding: "8px 20px" }}>
+                        <Link href={`/api/auth/signin`}>
+
                         <a
-                            href={`/api/auth/signin`}
                             style={{ color: "inherit" }}
                             onClick={(e) => {
                                 e.preventDefault()
@@ -139,6 +141,7 @@ export default function Header() {
                         >
                                 Sign in
                             </a>
+                        </Link>
                     </span>
                 }
             </div>
