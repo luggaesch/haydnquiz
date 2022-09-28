@@ -1,5 +1,5 @@
-import {MediaTypes} from "../../../data/questions";
 import mongoose from "mongoose";
+import {MediaTypes} from "../../../types/media";
 
 const MediaSchema = new mongoose.Schema({
     type: {
