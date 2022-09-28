@@ -1,12 +1,11 @@
-import {WrapperChildProps} from "./wrapper";
 import React, {useMemo, useState} from "react";
 import styles from "../../styles/question.module.css";
 import {useGameContext} from "../../contexts/GameContext";
 import {Input} from "antd";
 import {CheckOutlined} from "@ant-design/icons";
 
-export default function GuesstimateQuestion({ question, ...rest }: WrapperChildProps) {
-    const { teams } = useGameContext();
+export default function GuesstimateQuestion() {
+    /*const { teams } = useGameContext();
     const [values, setValues] = useState<string[]>(teams.map(() => ""));
     const [isSubmitted, setIsSubmitted] = useState(false);
     const results = useMemo(() => {
@@ -46,5 +45,8 @@ export default function GuesstimateQuestion({ question, ...rest }: WrapperChildP
                 <CheckOutlined style={{ fontSize: "inherit" }} />
             </div>}
         </div>
+    )*/
+    return (
+        <div></div>
     )
 }
