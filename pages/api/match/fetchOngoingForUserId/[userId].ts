@@ -11,7 +11,11 @@ export default async function handler(
         res.status(500).send("No User Id provided.");
         return;
     }
-    await connectMongo;
-    const matches = await MatchModel.find({ user: userId, finished: false }).populate({ path: "quiz", model: QuizModel, populate: { path: "questions", model: QuestionModel } }).populate({ path: "teams", model: TeamModel });
-    res.send(JSON.stringify(matches));
+    try {
+        await connectMongo;
+        const matches = await MatchModel.find({ user: userId, finished: false }).populate({ path: "quiz", model: QuizModel, populate: { path: "questions", model: QuestionModel } }).populate({ path: "teams", model: TeamModel });
+        res.send(JSON.stringify(matches));
+    } catch (err) {
+        res.status(500).send(JSON.stringify(err));
+    }
 }

@@ -11,7 +11,11 @@ export default async function handler(
         res.status(500).send("No User Id provided.");
         return;
     }
-    await connectMongo;
-    const teams = await TeamModel.find({ user: userId });
-    res.send(JSON.stringify(teams));
+    try {
+        await connectMongo;
+        const teams = await TeamModel.find({ user: userId });
+        res.send(JSON.stringify(teams));
+    } catch(err) {
+        res.status(500).send(JSON.stringify(err));
+    }
 }

@@ -22,8 +22,11 @@ import Header from "../components/layout/header";
 import Layout from "../components/layout";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+    const session = await getSession(context);
+    if (!session || !session.user) {
+        return { props: { err: "No User" } }
+    }
     try {
-        const session = await getSession(context);
         const result = await axios.get(`${process.env.SERVER_URL}/api/quiz/fetchForUserId/${session?.user.id}`).catch((err) => {
             throw err
         });
