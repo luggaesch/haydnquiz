@@ -76,14 +76,12 @@ function DashboardComponent({ user, quizzes, unfinishedMatches, teams }: { user:
     async function updateTeams(name: string, numOfMembers: number, color: string) {
         const res = await axios.post("/api/team/create", { team: { user: user.id, name, numOfPlayers: numOfMembers, color } });
         const team = res.data;
-        console.log(team);
         setCurrentTeams([...currentTeams, team]);
     }
 
     async function updateQuizzes(name: string) {
         const res = await axios.post("/api/quiz/create", { quizName: name });
         const quiz = res.data;
-        console.log(quiz);
         setCurrentQuizzes([...currentQuizzes, quiz]);
         push("/quiz/" + quiz._id);
     }

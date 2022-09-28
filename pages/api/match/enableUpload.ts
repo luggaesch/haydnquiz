@@ -8,7 +8,6 @@ export default async function handler(
 ) {
     if (req.method === "POST") {
         const { matchId, uploadRound } = req.body;
-        console.log(uploadRound);
         if (!matchId || uploadRound === undefined) {
             res.status(500).send("No Match or Round provided.");
             return;

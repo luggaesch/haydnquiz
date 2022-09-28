@@ -8,7 +8,6 @@ export default async function handler(
 ) {
     if (req.method === "POST") {
         const {questionId} = req.body;
-        console.log(questionId);
         if (!questionId) {
             res.status(500).send("No Question provided.");
             return;

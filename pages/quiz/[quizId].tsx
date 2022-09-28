@@ -42,16 +42,25 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
 
     async function addQuestion(question: Question) {
         const res = await axios.post(`/api/quiz/${quiz._id}/addQuestion`, {question});
-        console.log(res);
         if (res.status === 200) {
             setCurrentQuiz(res.data);
             setOpen(false);
         }
     }
 
+    async function updateQuestion(question: Question) {
+        if (!questionToEdit) return;
+        question._id = questionToEdit._id;
+        const res = await axios.post(`/api/quiz/${quiz._id}/updateQuestion`, { question });
+        if (res.status === 200) {
+            setOpen(false);
+            setCurrentQuiz(res.data);
+        }
+        setQuestionToEdit(undefined);
+    }
+
     async function deleteQuestion(questionId: string) {
         const res = await axios.post(`/api/quiz/${quiz._id}/deleteQuestion`, { questionId });
-        console.log(res);
         if (res.status === 200) {
             setCurrentQuiz(res.data);
         }
@@ -188,7 +197,7 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
                     }
                 </div>
                 <PopupContainer open={open} setOpen={setOpen}>
-                    <QuestionForm question={questionToEdit} addQuestion={addQuestion} />
+                    <QuestionForm question={questionToEdit} onSubmit={(question) => questionToEdit ? updateQuestion(question) : addQuestion(question)} />
                 </PopupContainer>
             </div>
         </div>

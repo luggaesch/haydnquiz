@@ -12,12 +12,10 @@ function MyApp({ Component, pageProps }: AppProps) {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        function start(event: any) {
-            console.log(event);
+        function start() {
             setLoading(true)
         }
-        function end(event: any) {
-            console.log(event);
+        function end() {
             setLoading(false);
         }
         Router.events.on("routeChangeStart", start);

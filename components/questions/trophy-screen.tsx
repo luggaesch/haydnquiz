@@ -14,7 +14,7 @@ export default function TrophyScreen({ match }: { match: Match }) {
             if (a.points > b.points) return 1;
             else if (a.points < b.points) return -1;
             return 0;
-        })
+        }).reverse();
     }, [match]);
 
     if (teamResults.length === 0) {

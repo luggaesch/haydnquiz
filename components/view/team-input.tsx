@@ -2,7 +2,9 @@ import React, {useState} from "react";
 import {Person, PersonAdd} from "@mui/icons-material";
 import {Input} from "antd";
 
-const teamColors = ["#d05151", "#51c5d0", "#51d053", "#7151d0", "#d0b751", "#b2c3c0"];
+const teamColors = ["#d09151", "#5175d0", "#c855ef", "#64926e",
+    "#d0b751", "#b2c3c0", "#d05151", "#51c5d0",
+    "#51d053", "#7151d0", "#7adf3f", "#92aae6"];
 
 export default function TeamInput({ onSubmit }: { onSubmit: (name: string, numOfMembers: number, color: string) => void }) {
     const [name, setName] = useState("");

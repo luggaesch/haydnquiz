@@ -15,10 +15,9 @@ const {Option} = Select;
 
 export default function NewGameTab({ selectedQuizId, setSelectedQuizId, quizzes, teams, setTab }: { selectedQuizId: string | undefined, setSelectedQuizId: Dispatch<SetStateAction<string | undefined>>, quizzes: Quiz[], teams: Team[], setTab: Dispatch<SetStateAction<DashboardTabs>> }) {
     const { push } = useRouter();
-    const [currentlySelectedTeamId, setCurrentlySelectedTeamId] = useState(teams[0]._id);
+    const [currentlySelectedTeamId, setCurrentlySelectedTeamId] = useState(teams.length > 0 ? teams[0]._id : "");
     const [selectedTeamIds, setSelectedTeamIds] = useState<string[]>([]);
     const selectedTeams = useMemo(() => {
-        console.log(selectedTeamIds);
         return teams.filter((t) => selectedTeamIds.includes(t._id!))
     }, [teams, selectedTeamIds]);
 

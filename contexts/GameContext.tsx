@@ -60,6 +60,10 @@ export const GameProvider = (props: { match: Match, children: ReactNode } ) => {
             }
             match.phase = nextPhase;
             match.finished = nextPhase === GamePhases.End;
+            if (updateInterval) {
+                clearInterval(updateInterval);
+                setUpdateInterval(null);
+            }
             setMatch({...match});
             uploadState();
         }

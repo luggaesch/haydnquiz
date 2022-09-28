@@ -27,7 +27,7 @@ const getBase64 = (file: RcFile): Promise<string> =>
         reader.onerror = error => reject(error);
     });
 
-export default function QuestionForm({ question, addQuestion }: { question?: Question, addQuestion: (question: Question) => void }) {
+export default function QuestionForm({ question, onSubmit }: { question?: Question, onSubmit: (question: Question) => void }) {
     const [topic, setTopic] = useState<Topics>(question ? question.topic : Topics.Nature);
     const [questionType, setQuestionType] = useState<QuestionTypes>(question ? question.type : QuestionTypes.Basic);
     const [caption, setCaption] = useState(question ? question.caption : "");
@@ -85,7 +85,7 @@ export default function QuestionForm({ question, addQuestion }: { question?: Que
             sortElements: questionType === QuestionTypes.Sort ? sortItems : undefined,
             unit: questionType === QuestionTypes.Sort ? unit : undefined
         }
-        addQuestion(question);
+        onSubmit(question);
     }
 
     // @ts-ignore
@@ -141,7 +141,7 @@ export default function QuestionForm({ question, addQuestion }: { question?: Que
                         {questionType === QuestionTypes.Quote ?
                             <Input.TextArea value={mediaContent} onChange={(event) => setMediaContent(event.target.value)} placeholder={"Rosen sind rot..."} maxLength={100} />
                             : questionType === QuestionTypes.Video || questionType === QuestionTypes.Hearing ?
-                                <Input value={mediaContent} onChange={(event) => setMediaContent(event.target.value)} placeholder={"Enter a URL to a Video or Audio File"} />
+                                <Input value={mediaContent} onChange={(event) => setMediaContent(event.target.value)} placeholder={"Enter a URL to a Video or Number of Audio File (Upload currently not supported)"} />
                                 :
                                 <Form.Item>
                                     <>

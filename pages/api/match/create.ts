@@ -25,7 +25,7 @@ export default async function handler(
             user: session.user.id,
             quiz: quizId,
             teams: teamIds,
-            phase: GamePhases.Before,
+            phase: GamePhases.Playing,
             currentQuestionIndex: 0
         });
         res.send(JSON.stringify(match));

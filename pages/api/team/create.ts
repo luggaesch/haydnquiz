@@ -8,7 +8,6 @@ export default async function handler(
 ) {
     if (req.method === "POST") {
         const { team } = req.body;
-        console.log(team);
         if (!team || !team.user || !team.name || team.numOfPlayers === undefined || !team.color) {
             res.status(500).send("No Team provided or malformed.");
             return;

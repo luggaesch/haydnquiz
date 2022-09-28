@@ -4,10 +4,20 @@ import React, {useEffect, useMemo, useState} from "react";
 import {PauseRounded, PlayArrowRounded, RestartAltRounded} from "@mui/icons-material";
 import useSound from "use-sound";
 import {useTimer} from "react-timer-hook";
+// @ts-ignore
+import s0 from "../../../assets/songs/s0.mp3"
+// @ts-ignore
+import s1 from "../../../assets/songs/s1.mp3"
+// @ts-ignore
+import s2 from "../../../assets/songs/s2.mp3"
+// @ts-ignore
+import s3 from "../../../assets/songs/s3.mp3"
 
-export default function AudioPlayer({ audio, onFinished }: { audio: any, onFinished: () => void }) {
+const sounds = [s0, s1, s2, s3];
+
+export default function AudioPlayer({ audio, onFinished, shrink }: { audio: number, shrink?: boolean, onFinished: () => void }) {
     const [hasFinished, setHasFinished] = useState(false);
-    const [play, { pause, stop, duration }] = useSound(audio, {volume: 1});
+    const [play, { pause, stop, duration }] = useSound(sounds[audio], {volume: 1});
     const [currentTime, setCurrentTime] = useState<number>(0);
     const expiryTimestamp = new Date(new Date().getTime() + 100000000000000);
     const { seconds, isRunning, start: startSeeker, pause: pauseSeeker, restart: restartSeeker } = useTimer({ expiryTimestamp, autoStart: false });
@@ -55,7 +65,7 @@ export default function AudioPlayer({ audio, onFinished }: { audio: any, onFinis
 
     return (
         <div className={styles.audioPlayerContainer}>
-            <Progress width={200} type={"circle"} trailColor="#11111180" strokeColor="rgb(0,255,139)" style={{ gridRow: 1, gridColumn: 1 }} percent={percent} showInfo={false}  />
+            <Progress width={shrink ? 50 : 200} type={"circle"} trailColor="#11111180" strokeColor="rgb(0,255,139)" style={{ gridRow: 1, gridColumn: 1 }} percent={percent} showInfo={false}  />
             <div className={styles.popupButton}
                  onClick={() => {
                      if (isRunning) {

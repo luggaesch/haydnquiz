@@ -16,13 +16,11 @@ export default async function handler(
         const { quizId } = req.query;
         await connectMongo;
         const queriedQuiz = await QuizModel.findOne({ _id: quizId }).populate({ path: "questions", model: QuestionModel });
-        console.log(queriedQuiz);
         if (!queriedQuiz) {
             res.status(500).send("Quiz with ID does not exist.");
             return;
         }
         const questionFromModel = await QuestionModel.create(question);
-        console.log(questionFromModel);
         queriedQuiz.questions.push(questionFromModel);
         await queriedQuiz.save();
         res.send(JSON.stringify(queriedQuiz));

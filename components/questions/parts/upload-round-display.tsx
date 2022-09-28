@@ -29,8 +29,6 @@ export default function UploadRoundDisplay({ onUploadFinished }: { onUploadFinis
         return match.quiz.questions.slice(startIndex, endIndex).filter((q) => q.value !== -1);
     }, [match, targetUploadRound]);
 
-    console.log(targetQuestions);
-
     async function activateUploadRound() {
         unlockUploadRound();
         setOpen(true);

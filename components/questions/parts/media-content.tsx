@@ -28,7 +28,11 @@ function getBorderRadiusByImageIndex(index: number) {
 function getPopupContentByQuestionType(question: Question) {
     if (question.type === QuestionTypes.Sort) {
         return (
-            <SortMiniGameView sortElements={shuffle(question.sortElements!)} unit={question.unit!} />
+            <SortMiniGameView sortElements={shuffle(question.sortElements!)} unit={question.unit!}/>
+        )
+    } else if (question.type === QuestionTypes.Guesstimate) {
+        return (
+            <></>
         )
     } else {
         const media = question.media;
@@ -111,13 +115,13 @@ function getPopupContentByQuestionType(question: Question) {
     }
 }
 
-export default function MediaContent({ question, rowEnd }: { question: Question, rowEnd: number }) {
+export default function MediaContent({ question, rowEnd, shrink }: { question: Question, rowEnd: number, shrink?: boolean }) {
     const [mediaOpen, setMediaOpen] = useState(false);
 
     function getBoxContentByQuestionType() {
         switch (question.type) {
             case QuestionTypes.Hearing:
-                return <AudioPlayer audio={question.media!.content!} onFinished={() => {}} />
+                return <AudioPlayer shrink={shrink} audio={Number(question.media!.content!)} onFinished={() => {}} />
             case QuestionTypes.Choice:
                 return (
                     <div style={{ width: "100%", height: "100%", display: "grid", gridTemplateRows: "1fr 1fr", gridTemplateColumns: "1fr 1fr", gridGap: 5 }}>
@@ -129,8 +133,6 @@ export default function MediaContent({ question, rowEnd }: { question: Question,
                         ))}
                     </div>
                 )
-            case QuestionTypes.Guesstimate:
-                return <></>;
             default:
                 return (
                     <div style={{ width: "100%", height: "100%", display: "flex", justifyContent: "center", alignItems: "center"  }} onClick={() => setMediaOpen(!mediaOpen)}>

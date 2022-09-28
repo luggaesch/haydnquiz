@@ -20,10 +20,6 @@ export default function MatchView() {
 
     function getComponent() {
         switch (match.phase) {
-            case GamePhases.Before:
-                return (
-                    <StartButton onClick={() => setPhase(GamePhases.Playing)}/>
-                )
             case GamePhases.Playing:
                 if (showQRCodes) {
                     return (
@@ -42,13 +38,13 @@ export default function MatchView() {
                     )
                 }
                 return (
-                    <div style={{ overflow: "hidden", padding: 20, width: "100vw", height: "100vh", display: "grid", gridTemplateRows: "70% 30%", gridTemplateColumns: "70%", textAlign: "center", justifyContent: "center", alignItems: "center", fontSize: "10rem" }}>
-                        <Button onClick={() => {
+                    <div style={{ overflow: "hidden", padding: 20, width: "100vw", height: "100vh", display: "flex", textAlign: "center", justifyContent: "center", alignItems: "center", fontSize: "10rem" }}>
+                        <div onClick={() => {
                             setPhase(GamePhases.Solutions);
                             setCurrentQuestionNum(0);
-                        }} style={{ fontSize: "3rem", background: "var(--accent)", color: "var(--text)", height: "20vh", width: "100%", padding: 20 }}>
+                        }} style={{ cursor: "pointer", display: "flex", textAlign: "center", justifyContent: "center", alignItems: "center", color: "#222", borderRadius: 50, fontSize: "5rem", background: "var(--accent)", height: "20vh", width: "50%", padding: 20 }}>
                             Zur Auflösung
-                        </Button>
+                        </div>
                     </div>
                 )
             case GamePhases.Solutions:

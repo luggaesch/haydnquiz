@@ -15,7 +15,6 @@ export default async function handler(
         return;
     }
     const session = await unstable_getServerSession(req, res, authOptions);
-    console.log(session);
     /*if (!session) {
         res.status(403).send("Access to requested resource prohibited.");
         return;

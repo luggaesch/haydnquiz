@@ -134,3 +134,28 @@
     font-size: 5.2rem;
     text-align: center;
 }
+
+.imageWrap {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.imageGrid {
+    width: 100%;
+    height: 100%;
+    display: grid;
+}
+
+.imageLabel {
+    background: #22222280;
+    color: white;
+    font-size: 4rem;
+    font-weight: bold;
+    border-radius: 4px;
+    padding: 10px;
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    z-index: 20;
+}

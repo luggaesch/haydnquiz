@@ -5,7 +5,6 @@ import QuestionWrapper from "../questions/wrapper";
 import Link from "next/link";
 
 export default function MatchItem({ match }: { match: Match }) {
-    console.log(match);
 
     return (
         <div style={{ display: "grid", gridTemplateRows: "1fr 5fr 1fr", height: "70%", background: "var(--dark-paper)", borderRadius: 8, width: "70%", marginTop: 10, boxShadow: "0 8px 16px rgba(0,0,0,0.19), 0 3px 3px rgba(0,0,0,0.23)" }}>

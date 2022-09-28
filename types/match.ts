@@ -3,7 +3,6 @@ import Team from "./team";
 import Answer from "./answer";
 
 export enum GamePhases {
-    Before,
     Playing,
     Transition,
     Solutions,
