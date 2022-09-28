@@ -1,4 +1,3 @@
-import {useGameContext} from "../../contexts/GameContext";
 import {useMemo} from "react";
 import Team from "../../types/team";
 import {GiLaurelsTrophy} from "react-icons/gi";

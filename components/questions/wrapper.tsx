@@ -1,22 +1,18 @@
 import styles from "../../styles/index.module.css";
-import React, {useMemo, useState} from "react";
+import React, {useState} from "react";
 import useSound from "use-sound";
 // @ts-ignore
 import countdownSfx from "../../assets/sounds/countdown.mp3"
 import TimerControl from "../view/timer-control";
 import {getIconByJoker} from "../../data/jokers";
-import Question, {getIconByQuestionType, QuestionTypes} from "../../types/question";
-import {getColorByTopic, getIconByTopic} from "../../data/topics";
+import Question, {QuestionTypes} from "../../types/question";
 import HideOverlay from "./parts/hide-overlay";
 import {FaLightbulb} from "react-icons/fa";
 import PopupContainer from "./parts/popup-container";
 import MediaContent from "./parts/media-content";
-import SolutionContent from "./parts/solution-content";
 import Answer from "../../types/answer";
 import MetaContainer from "./parts/meta-container";
 import Team from "../../types/team";
-import {Input, InputNumber} from "antd";
-import answer from "../../types/answer";
 import CreditDistribution, {Credit} from "./parts/credit-distribution";
 
 export default function QuestionWrapper({ index, question, answers, teams, hideTimer, hideOverlay, fontSize, uploadCredits }: { index?: number, question: Question, answers?: Answer[], teams?: Team[], hideTimer?: boolean, hideOverlay?: boolean, fontSize?: number, uploadCredits?: (credits: Credit[], questionId: string) => void }) {

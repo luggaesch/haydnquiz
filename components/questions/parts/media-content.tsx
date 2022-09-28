@@ -1,4 +1,3 @@
-import {MediaTypes} from "../../../data/questions";
 import styles from "../../../styles/index.module.css";
 import ReactPlayer from "react-player";
 import Image from "next/image";
@@ -9,6 +8,7 @@ import {FaArrowUp} from "react-icons/fa";
 import PopupContainer from "./popup-container";
 import SortMiniGameView from "./sort";
 import shuffle from "../../../lib/shuffle";
+import {MediaTypes} from "../../../types/media";
 
 function getBorderRadiusByImageIndex(index: number) {
     switch (index) {

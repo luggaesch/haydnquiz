@@ -5,13 +5,12 @@ import {Jokers} from "../../data/jokers";
 import {Button, Form, Input, InputNumber, Modal, Radio, Select, Slider, Switch, Upload, UploadFile} from "antd";
 import {RcFile} from "antd/es/upload";
 import {PlusOutlined} from "@ant-design/icons";
-import Media from "../../types/media";
+import Media, { MediaTypes } from "../../types/media";
 import axios from "axios";
 import styles from "../../styles/form.module.css";
 import {v4} from "uuid";
 import Image from "next/image";
 import QuestionWrapper from "../questions/wrapper";
-import {MediaTypes} from "../../data/questions";
 
 const { Option } = Select;
 

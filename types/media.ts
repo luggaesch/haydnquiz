@@ -1,4 +1,10 @@
-import {MediaTypes} from "../data/questions";
+
+export enum MediaTypes {
+    "Audio" = "Audio",
+    "Video" = "Video",
+    "Image" = "Image",
+    "Text" = "Text"
+}
 
 export interface MediaInterface {
     _id?: string,

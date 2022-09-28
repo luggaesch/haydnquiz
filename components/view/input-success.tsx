@@ -1,4 +1,3 @@
-import {MdDone} from "react-icons/md";
 import {ThumbUp} from "@mui/icons-material";
 
 export default function InputSuccess({ uploadRound }: { uploadRound: number }) {
