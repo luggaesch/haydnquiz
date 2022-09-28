@@ -44,6 +44,18 @@ export default function UploadRoundDisplay({ onUploadFinished }: { onUploadFinis
         return currentAnswers.length / (targetQuestions.length * match.teams.length);
     }
 
+    function getLink(teamId: string) {
+        let host;
+        if (process.env.NEXT_PUBLIC_IP_ADDR){
+            host = `http://${process.env.NEXT_PUBLIC_IP_ADDR}:3000`
+        } else if (location) {
+            host = location.origin;
+        } else {
+            host = "https://haydnquiz.herokuapp.com";
+        }
+        return `${host}/quiz/play/${match._id}/${targetUploadRound}/${teamId}`;
+    }
+
     return (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1, repeat: 0 }} exit={{ opacity: 0 }}  style={{ position: "relative", width: "100vw", height: "100vh" }}>
             {loading && <LoadingOverlay />}
@@ -53,10 +65,10 @@ export default function UploadRoundDisplay({ onUploadFinished }: { onUploadFinis
                         <div key={index}>
                             <div style={contentStyle}>
                                 <div style={{ height: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                                    <Link href={`${process.env.NEXT_PUBLIC_IP_ADDR + ":3000" || location?.origin}/quiz/play/${match._id}/${targetUploadRound}/${team._id}`}>
+                                    <Link href={getLink(team._id!)}>
                                         <a>
                                             <div style={{ display: "flex", justifyContent: "center", alignItems: "center", border: `2px dashed ${team.color}`, borderRadius: 8, padding: 100 }}>
-                                                {<QRCodeCanvas style={{ border: "20px solid white" }} size={512} value={`${process.env.NEXT_PUBLIC_IP_ADDR + ":3000" || location?.origin}/quiz/play/${match._id}/${targetUploadRound}/${team._id}`} />}
+                                                {<QRCodeCanvas style={{ border: "20px solid white" }} size={512} value={getLink(team._id!)} />}
                                             </div>
                                         </a>
                                     </Link>
