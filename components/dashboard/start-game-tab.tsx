@@ -1,13 +1,12 @@
 import {Empty, Form, Select} from "antd";
 import Quiz from "../../types/quiz";
 import React, {Dispatch, SetStateAction, useMemo, useState} from "react";
-import TopicQueue from "../view/topic-queue";
 import {DashboardTabs} from "../../pages/dashboard";
 import {FaPlay, FaPlus} from "react-icons/fa";
 import styles from "../../styles/dashboard.module.css";
 import Team from "../../types/team";
 import {Person} from "@mui/icons-material";
-import PopupState, { bindTrigger, bindPopover } from 'material-ui-popup-state';
+import PopupState, {bindPopover, bindTrigger} from 'material-ui-popup-state';
 import Popover from "@mui/material/Popover";
 import axios from "axios";
 import {useRouter} from "next/router";
@@ -16,9 +15,6 @@ const {Option} = Select;
 
 export default function NewGameTab({ selectedQuizId, setSelectedQuizId, quizzes, teams, setTab }: { selectedQuizId: string | undefined, setSelectedQuizId: Dispatch<SetStateAction<string | undefined>>, quizzes: Quiz[], teams: Team[], setTab: Dispatch<SetStateAction<DashboardTabs>> }) {
     const { push } = useRouter();
-    const selectedQuiz = useMemo(() => {
-        return quizzes[quizzes.findIndex((q) => q._id === selectedQuizId)]
-    }, [quizzes, selectedQuizId]);
     const [currentlySelectedTeamId, setCurrentlySelectedTeamId] = useState(teams[0]._id);
     const [selectedTeamIds, setSelectedTeamIds] = useState<string[]>([]);
     const selectedTeams = useMemo(() => {

@@ -1,9 +1,9 @@
 import {NextApiRequest, NextApiResponse} from "next";
 import {unstable_getServerSession} from "next-auth";
 import {authOptions} from "../auth/[...nextauth]";
-import {GameState} from "../../../contexts/GameContext";
 import connectMongo from "../../../lib/db/connectMongo";
 import {MatchModel} from "../../../lib/db/models";
+import {GamePhases} from "../../../types/match";
 
 export default async function handler(
     req: NextApiRequest,
@@ -25,7 +25,7 @@ export default async function handler(
             user: session.user.id,
             quiz: quizId,
             teams: teamIds,
-            state: GameState.Before,
+            phase: GamePhases.Before,
             currentQuestionIndex: 0
         });
         res.send(JSON.stringify(match));

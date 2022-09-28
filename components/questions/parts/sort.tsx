@@ -18,7 +18,6 @@ const selectedAnimation = {
 }
 
 export default function SortMiniGameView({ sortElements, unit }: { sortElements: SortElement[], unit: string }) {
-    console.log(sortElements);
     const [orderedItems, setOrderedItems] = useState<SortElement[]>([sortElements[getAverageIndex(sortElements.map((e) => e.value))]])
     console.log(getAverageIndex(sortElements.map((e) => e.value)));
     const [selectedElementIndex, setSelectedElementIndex] = useState(-1);

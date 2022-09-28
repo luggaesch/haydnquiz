@@ -8,7 +8,7 @@ import {AiFillBackward, AiFillForward} from "react-icons/ai";
 import {useThemeSwitcher} from "react-css-theme-switcher";
 
 export default function RightDrawer({ open, setOpen, children }: { open: boolean, setOpen: Dispatch<SetStateAction<boolean>>, children: ReactNode }) {
-    const { gameState, setGameState, currentQuestionNum, maxQuestionNum } = useGameContext();
+    const { match, setPhase } = useGameContext();
     const [isDarkMode, setIsDarkMode] = useState(false);
     const { switcher, themes } = useThemeSwitcher();
 
@@ -31,10 +31,10 @@ export default function RightDrawer({ open, setOpen, children }: { open: boolean
                         <Home style={{ fontSize: "inherit" }} />
                     </a>
                 </Link>
-                <div className={styles.container} onClick={() => setGameState(gameState - 1)}>
+                <div className={styles.container} onClick={() => setPhase(match.phase - 1)}>
                     <AiFillBackward style={{ fontSize: "inherit", color: "inherit" }}  />
                 </div>
-                <div className={styles.container} onClick={() => currentQuestionNum === maxQuestionNum - 1 && setGameState(gameState + 1)}>
+                <div className={styles.container} onClick={() => setPhase(match.phase + 1)}>
                     <AiFillForward style={{ fontSize: "inherit", color: "inherit" }} />
                 </div>
             </Space>

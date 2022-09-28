@@ -3,12 +3,13 @@ import {unstable_getServerSession} from "next-auth";
 import {authOptions} from "../../auth/[...nextauth]";
 import {MatchModel, MediaModel, QuestionModel, QuizModel, TeamModel} from "../../../../lib/db/models";
 import connectMongo from "../../../../lib/db/connectMongo";
+import {getFullyPopulatedMatchById} from "../../../../lib/db/utils/match-utils";
 
 export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse
 ) {
-    const { matchId } = req.query;
+    const matchId = String(req.query.matchId);
     if (!matchId) {
         res.status(500).send("No Match Id provided.");
         return;
@@ -20,12 +21,10 @@ export default async function handler(
         return;
     }*/
     await connectMongo;
-    const match = await MatchModel.findOne({ _id: matchId })
-        .populate({ path: "teams", model: TeamModel })
-        .populate({ path: "quiz", model: QuizModel, populate: { path: "questions", model: QuestionModel, populate: { path: "media", model: MediaModel } } });
-    /*if (match.user._id !== session!.user.id) {
-        res.status(403).send("Access to requested resource prohibited.");
+    const match = await getFullyPopulatedMatchById(matchId);
+    if (!match) {
+        res.status(400).send("No Match with ID in Database");
         return;
-    }*/
+    }
     res.send(JSON.stringify(match));
 }

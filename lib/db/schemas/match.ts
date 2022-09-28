@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import {GameState} from "../../../contexts/GameContext";
+import {GamePhases} from "../../../types/match";
 
 const MatchSchema = new mongoose.Schema({
     user: {
@@ -24,14 +24,15 @@ const MatchSchema = new mongoose.Schema({
             type: new mongoose.Schema({
                 teamId: { type: String, required: true },
                 questionId: { type: String, required: true },
-                values: [{ type: String }]
+                values: [{ type: String }],
+                points: { type: Number, default: 0 }
             }),
             default: []
         }
     ],
-    state: {
+    phase: {
         type: Number,
-        enum: GameState,
+        enum: GamePhases,
         required: true
     },
     currentQuestionIndex: {

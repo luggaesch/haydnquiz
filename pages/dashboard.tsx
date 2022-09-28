@@ -18,6 +18,8 @@ import TeamTab from "../components/dashboard/team-tab";
 import Team from "../types/team";
 import QuizzesTab from "../components/dashboard/quizzes-tab";
 import {useRouter} from "next/router";
+import Header from "../components/layout/header";
+import Layout from "../components/layout";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const session = await getSession(context);
@@ -78,43 +80,45 @@ export default function Dashboard({ user, quizzes, unfinishedMatches, teams }: {
     }
 
     return (
-        <div className={styles.root}>
-            <div className={styles.sidebar}>
-                <div className={styles.sidebarTitle}>
-                    <div className={styles.navigation}><IoMdApps /></div>
-                    <div className={styles.title}>Dashboard</div>
+        <Layout>
+            <div className={styles.root}>
+                <div className={styles.sidebar}>
+                    <div className={styles.sidebarTitle}>
+                        <div className={styles.navigation}><IoMdApps /></div>
+                        <div className={styles.title}>Dashboard</div>
+                    </div>
+                    <div className={styles.sidebarUser}>
+                        <Avatar src={<img src={"https://images.unsplash.com/photo-1588167056840-13caf6e4562a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=930&q=80"} />} style={{ width: "10em", height: "10em" }} />
+                        <div style={{ fontSize: "1.5em" }}>{user.name}</div>
+                    </div>
+                    <div className={styles.sideMenu}>
+                        <div onClick={() => setTab(DashboardTabs.Resume)}>
+                            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", fontSize: "0.8em" }}><VscDebugContinue /></div>
+                            <div>Resume</div>
+                        </div>
+                        <div onClick={() => setTab(DashboardTabs.New)}>
+                            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", fontSize: "0.8em" }}><PlayArrowOutlined /></div>
+                            <div>Start new Game</div>
+                        </div>
+                        <div onClick={() => setTab(DashboardTabs.Quizzes)}>
+                            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", fontSize: "0.8em" }}><ListAltOutlined /></div>
+                            <div>Quizzes</div>
+                        </div>
+                        <div onClick={() => setTab(DashboardTabs.Teams)}>
+                            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", fontSize: "0.8em" }}><TeamOutlined /></div>
+                            <div>Teams</div>
+                        </div>
+                        <div onClick={() => setTab(DashboardTabs.Previous)}>
+                            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", fontSize: "0.8em" }}><History /></div>
+                            <div>Previous Games</div>
+                        </div>
+                        <motion.span initial={{ top: 0 }} animate={{ top: tab * 12.5 + "%" }} style={{ position: "absolute", top: 0, left: 2, width: 4, height: "10%", background: "var(--accent)", borderRadius: 10, transform: "translateY(12.5%)" }}></motion.span>
+                    </div>
                 </div>
-                <div className={styles.sidebarUser}>
-                    <Avatar src={<img src={"https://images.unsplash.com/photo-1467810563316-b5476525c0f9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1469&q=80"} />} style={{ width: "10em", height: "10em" }} />
-                    <div style={{ fontSize: "1.5em" }}>{user.name}</div>
-                </div>
-                <div className={styles.sideMenu}>
-                    <div onClick={() => setTab(DashboardTabs.Resume)}>
-                        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", fontSize: "0.8em" }}><VscDebugContinue /></div>
-                        <div>Resume</div>
-                    </div>
-                    <div onClick={() => setTab(DashboardTabs.New)}>
-                        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", fontSize: "0.8em" }}><PlayArrowOutlined /></div>
-                        <div>Start new Game</div>
-                    </div>
-                    <div onClick={() => setTab(DashboardTabs.Quizzes)}>
-                        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", fontSize: "0.8em" }}><ListAltOutlined /></div>
-                        <div>Quizzes</div>
-                    </div>
-                    <div onClick={() => setTab(DashboardTabs.Teams)}>
-                        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", fontSize: "0.8em" }}><TeamOutlined /></div>
-                        <div>Teams</div>
-                    </div>
-                    <div onClick={() => setTab(DashboardTabs.Previous)}>
-                        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", fontSize: "0.8em" }}><History /></div>
-                        <div>Previous Games</div>
-                    </div>
-                    <motion.span initial={{ top: 0 }} animate={{ top: tab * 12.5 + "%" }} style={{ position: "absolute", top: 0, left: 2, width: 4, height: "10%", background: "var(--accent)", borderRadius: 10, transform: "translateY(12.5%)" }}></motion.span>
+                <div style={{ overflow: "hidden" }}>
+                    {getComponentByTab()}
                 </div>
             </div>
-            <div style={{ overflow: "hidden" }}>
-                {getComponentByTab()}
-            </div>
-        </div>
+        </Layout>
     )
 }

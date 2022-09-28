@@ -1,6 +1,6 @@
 import {GetServerSideProps} from "next";
 import axios from "axios";
-import Match from "../../../types/match";
+import Match, {GamePhases} from "../../../types/match";
 import MatchView from "../../../components/questions/match-view";
 import {ThemeSwitcherProvider} from 'react-css-theme-switcher';
 import Soundcheck from "../../../components/view/soundcheck";
@@ -10,7 +10,7 @@ import TopicQueue from "../../../components/view/topic-queue";
 import ProgressControl from "../../../components/view/progress-control";
 import RightDrawer from "../../../components/view/right-drawer";
 import {useState} from "react";
-import {GameProvider, GameState, useGameContext} from "../../../contexts/GameContext";
+import {GameProvider, useGameContext} from "../../../contexts/GameContext";
 import {FaAlignJustify} from "react-icons/fa";
 import Topics from "../../../components/view/topics";
 import PopupContainer from "../../../components/questions/parts/popup-container";
@@ -29,23 +29,22 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 export default function MatchWrapper({ match }: { match: Match }) {
     return (
-        <GameProvider>
-            <MatchPage match={match} />
+        <GameProvider match={match} >
+            <MatchPage />
         </GameProvider>
     )
 }
 
-function MatchPage({ match }: { match: Match }) {
-    const { gameState, setGameState, currentQuestionNum, setCurrentQuestionNum } = useGameContext();
+function MatchPage() {
+    const { match, setPhase, setCurrentQuestionNum } = useGameContext();
     const [open, setOpen] = useState(false);
     const [showOverlay, setShowOverlay] = useState(false);
-    const [isInitialScreen, setIsInitialScreen] = useState(true);
 
     function handleQueueItemClick(index: number) {
-        if (gameState < GameState.Playing) {
-            setGameState(GameState.Playing);
-        } else if (gameState < GameState.Solutions && gameState > GameState.Playing) {
-            setGameState(GameState.Solutions);
+        if (match.phase < GamePhases.Playing) {
+            setPhase(GamePhases.Playing);
+        } else if (match.phase < GamePhases.Solutions && match.phase > GamePhases.Playing) {
+            setPhase(GamePhases.Solutions);
         }
         setCurrentQuestionNum(index);
     }
@@ -55,14 +54,14 @@ function MatchPage({ match }: { match: Match }) {
             <RightDrawer open={open} setOpen={setOpen}>
                 <div style={{ width: "100%", display: "grid", height: 80, gridTemplateColumns: "1fr 1fr 1fr 2fr", gridGap: 10 }}>
                     <Soundcheck open={open} />
-                    <TopicOverlayToggle setShowOverlay={setShowOverlay} setIsInitialScreen={setIsInitialScreen} />
+                    <TopicOverlayToggle setShowOverlay={setShowOverlay} />
                 </div>
                 <div style={{ backgroundColor: "#282828", padding: 10, borderRadius: 12 }}>
                     <TeamDisplay teams={match.teams} />
                 </div>
                 <div style={{ display: "grid", gridTemplateRows: "2fr 3fr" }}>
-                    <TopicQueue handleQueueItemClick={handleQueueItemClick} currentQuestionIndex={currentQuestionNum} questions={match.quiz.questions} />
-                    <ProgressControl currentIndex={currentQuestionNum} maxIndex={match.quiz.questions.length - 1}  onTransition={(modifier) => setCurrentQuestionNum(currentQuestionNum + modifier)} />
+                    <TopicQueue handleQueueItemClick={handleQueueItemClick} currentQuestionIndex={match.currentQuestionIndex} questions={match.quiz.questions} />
+                    <ProgressControl currentIndex={match.currentQuestionIndex} maxIndex={match.quiz.questions.length - 1}  onTransition={(modifier) => setCurrentQuestionNum(match.currentQuestionIndex + modifier)} />
                 </div>
             </RightDrawer>
             <div style={{ width: 35, height: 35, display: "flex", justifyContent: "center", alignItems: "center", borderRadius: "50%", position: "absolute", top: 10, right: 5, zIndex: 10, color: "var(--text)", backgroundColor: "transparent", boxShadow: "0 3px 6px rgba(0,0,0,0.19), 0 2px 2px rgba(0,0,0,0.23)" }} onClick={() => setOpen(!open)}>
@@ -71,7 +70,7 @@ function MatchPage({ match }: { match: Match }) {
             <PopupContainer open={showOverlay} setOpen={setShowOverlay} >
                 <Topics />
             </PopupContainer>
-            <MatchView propMatch={match} />
+            <MatchView  />
         </ThemeSwitcherProvider>
     )
 }

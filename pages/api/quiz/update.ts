@@ -15,6 +15,10 @@ export default async function handler(
         }
         await connectMongo;
         const queriedQuiz = await QuizModel.findOne({ _id: quiz._id });
+        if (!queriedQuiz) {
+            res.status(400).send("No Quiz with ID in Database");
+            return;
+        }
         queriedQuiz.name = quiz.name;
         queriedQuiz.questions = quiz.questions;
         queriedQuiz.stops = quiz.stops;

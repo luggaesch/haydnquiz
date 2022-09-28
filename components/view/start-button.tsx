@@ -2,7 +2,6 @@ import {motion} from "framer-motion";
 import {PowerSettingsNew} from "@mui/icons-material";
 import styles from "../../styles/start.module.css";
 import {Spin} from "antd";
-import LoadingIcon from "antd/es/button/LoadingIcon";
 import {LoadingOutlined} from "@ant-design/icons";
 
 export default function StartButton({ ...rest }: { [x:string]: any }) {

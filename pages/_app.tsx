@@ -4,8 +4,8 @@ import type {AppProps} from 'next/app'
 import {SessionProvider} from "next-auth/react";
 import {useEffect, useState} from "react";
 import {Router} from "next/router";
-import {Skeleton, Spin} from "antd";
-import { motion } from 'framer-motion';
+import {Spin} from "antd";
+import {motion} from 'framer-motion';
 import {LoadingOutlined} from "@ant-design/icons";
 
 function MyApp({ Component, pageProps }: AppProps) {

@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "NODE_OPTIONS=--max-old-space-size=8192 next dev",
+    "dev": "NODE_OPTIONS=--max-old-space-size=16000 next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -25,7 +25,7 @@
     "material-ui-popup-state": "^4.1.0",
     "mongodb": "^4.8.1",
     "mongoose": "^6.5.2",
-    "next": "12.2.3",
+    "next": "12.3.1",
     "next-auth": "^4.10.3",
     "next-images": "^1.8.4",
     "qrcode.react": "^3.1.0",

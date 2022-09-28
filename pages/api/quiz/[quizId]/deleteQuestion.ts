@@ -20,6 +20,7 @@ export default async function handler(
             res.status(500).send("Quiz with ID does not exist.");
             return;
         }
+        // @ts-ignore
         await queriedQuiz.questions.pull({ _id: questionId });
         await queriedQuiz.save();
         //TODO: Delete Question from DB?

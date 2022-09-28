@@ -1,7 +1,15 @@
 import Quiz from "./quiz";
 import Team from "./team";
-import {GameState} from "../contexts/GameContext";
 import Answer from "./answer";
+
+export enum GamePhases {
+    Before,
+    Playing,
+    Transition,
+    Solutions,
+    Rankings,
+    End
+}
 
 type Match = {
     _id?: string,
@@ -9,7 +17,7 @@ type Match = {
     quiz: Quiz,
     teams: Team[],
     answers: Answer[],
-    state: GameState,
+    phase: GamePhases,
     currentQuestionIndex: number,
     startTime: string,
     finished: boolean,

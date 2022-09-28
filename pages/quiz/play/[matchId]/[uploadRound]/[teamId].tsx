@@ -7,9 +7,6 @@ import Match from "../../../../../types/match";
 import InputWaiting from "../../../../../components/view/input-waiting";
 import InputSuccess from "../../../../../components/view/input-success";
 import InputError from "../../../../../components/view/input-error";
-import {Spin} from "antd";
-import {LoadingOutlined} from "@ant-design/icons";
-import {motion} from "framer-motion";
 import LoadingOverlay from "../../../../../components/view/loading-overlay";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -21,6 +18,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 }
 
 export default function AnswerInput({ match, uploadRound, teamId }: { match: Match, uploadRound: number, teamId: string }) {
+    console.log(match);
     const [currentMatch, setCurrentMatch] = useState(match);
     const questions = useMemo(() => {
         const startIndex = uploadRound === 0 ? 0 : currentMatch.quiz.stops[uploadRound - 1];
@@ -72,7 +70,7 @@ export default function AnswerInput({ match, uploadRound, teamId }: { match: Mat
             if (i !== -1) {
                 currentMatch.answers[i].values = v;
             } else {
-                currentMatch.answers.push({ teamId, questionId: questions[index]._id!, values: v });
+                currentMatch.answers.push({ teamId, questionId: questions[index]._id!, values: v, points: 0 });
             }
         });
         try {
@@ -93,9 +91,9 @@ export default function AnswerInput({ match, uploadRound, teamId }: { match: Mat
     return success === null ? (
         <div style={{ padding: 20, width: "100vw", color: "var(--text)", display: "flex", flexDirection: "column", maxHeight: "100vh", overflow: "auto" }}>
             <div style={{ width: "100%", display: "flex", justifyContent: "center", fontSize: 24, marginBottom: "0.5em" }}>Team {currentMatch.teams.find((t) => t._id === teamId)?.name}, Round: {uploadRound + 1}</div>
-            <div style={{ position: "relative", width: "100%", display: "grid", gridAutoRows: 500, gridGap: "1em" }}>
+            <div style={{  width: "100%", display: "grid", gridAutoRows: 500, gridGap: "1em" }}>
                 {loading &&
-                    <LoadingOverlay />
+                    <div style={{ width: "100vw", height: "100vh", position: "fixed" }}><LoadingOverlay /></div>
                 }
                 {questions.map((q, index) => (
                     <div key={index} style={{ display: "grid", gridTemplateRows: "1fr 5fr", backgroundColor: "var(--question-item)", fontSize: 8, borderRadius: 12, boxShadow: "0 8px 16px rgba(0,0,0,0.19), 0 3px 3px rgba(0,0,0,0.23)" }}>

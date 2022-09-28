@@ -6,30 +6,22 @@ import {MongoDBAdapter} from "@next-auth/mongodb-adapter";
 export const authOptions: NextAuthOptions = {
     // https://next-auth.js.org/configuration/providers/oauth
     adapter: MongoDBAdapter(clientPromise),
+    secret: process.env.NEXTAUTH_SECRET,
     providers: [
-        /* EmailProvider({
-             server: process.env.EMAIL_SERVER,
-             from: process.env.EMAIL_FROM,
-           }),
-        */
-        /*GithubProvider({
-            clientId: process.env.GITHUB_ID!,
-            clientSecret: process.env.GITHUB_SECRET,
-        }),*/
         GoogleProvider({
             clientId: process.env.GOOGLE_ID!,
             clientSecret: process.env.GOOGLE_SECRET!,
         }),
     ],
     theme: {
-        colorScheme: "light",
+        colorScheme: "dark",
     },
     callbacks: {
         async session({ session, token, user }) {
             // Send properties to the client, like an access_token from a provider.
             session.user = user;
             return session
-        }
+        },
     },
     /*pages: {
         signIn: "/auth/login"

@@ -2,9 +2,9 @@ import Team from "../../types/team";
 import styles from "../../styles/dashboard.module.css";
 import {FaPlus} from "react-icons/fa";
 import Popover from '@mui/material/Popover';
-import PopupState, { bindTrigger, bindPopover } from 'material-ui-popup-state';
+import PopupState, {bindPopover, bindTrigger} from 'material-ui-popup-state';
 import TeamInput from "../view/team-input";
-import {Person, PersonAdd} from "@mui/icons-material";
+import {Person} from "@mui/icons-material";
 import React from "react";
 
 export default function TeamTab({ teams, updateTeams }: { teams: Team[], updateTeams: (name: string, numOfMembers: number, color: string) => void }) {

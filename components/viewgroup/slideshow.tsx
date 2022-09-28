@@ -35,7 +35,7 @@ const swipePower = (offset: number, velocity: number) => {
     return Math.abs(offset) * velocity;
 };
 
-export default function Slideshow({ nodes, currentIndex, setCurrentIndex }: { nodes: ReactNode[], currentIndex: number, setCurrentIndex: React.Dispatch<SetStateAction<number>> }) {
+export default function Slideshow({ nodes, currentIndex, setCurrentIndex }: { nodes: ReactNode[], currentIndex: number, setCurrentIndex: (nextQuestionNum: number) => void }) {
     const [[page, direction], setPage] = useState([currentIndex, 0]);
 
     const paginate = (newDirection: number) => {

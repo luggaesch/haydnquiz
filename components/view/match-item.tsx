@@ -14,7 +14,7 @@ export default function MatchItem({ match }: { match: Match }) {
                 <div style={{ display: "grid", gridTemplateRows: "2fr 3fr", borderRight: "1px solid var(--dark-background)" }}>
                     <div style={{ fontSize: "1.8em",  padding: 20 }}>
                         <div>Quiz: {match.quiz.name}</div>
-                        <div>State: {match.state}</div>
+                        <div>State: {match.phase}</div>
                         <div>Answers: {match.answers.length}</div>
                         <div>Current Question: </div>
                     </div>

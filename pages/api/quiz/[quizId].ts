@@ -13,5 +13,9 @@ export default async function handler(
     }
     await connectMongo;
     const quiz = await QuizModel.findOne({ _id: quizId }).populate({ path: "questions", model: QuestionModel, populate: { path: "media", model: MediaModel } });
+    if (!quiz) {
+        res.status(400).send("No Quiz with ID in Database");
+        return;
+    }
     res.send(JSON.stringify(quiz));
 }

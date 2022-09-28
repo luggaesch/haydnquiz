@@ -16,6 +16,10 @@ export default async function handler(
         }
         await connectMongo;
         const queriedMatch = await MatchModel.findOne({ _id: matchId });
+        if (!queriedMatch) {
+            res.status(400).send("No Match with ID in Database");
+            return;
+        }
         if ((queriedMatch as Match).currentlyOpenUploadRound !== uploadRound) {
             res.status(403).send("Round locked");
             return;

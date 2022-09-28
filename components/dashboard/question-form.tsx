@@ -10,7 +10,6 @@ import axios from "axios";
 import styles from "../../styles/form.module.css";
 import {v4} from "uuid";
 import Image from "next/image";
-import {GameProvider} from "../../contexts/GameContext";
 import QuestionWrapper from "../questions/wrapper";
 import {MediaTypes} from "../../data/questions";
 
@@ -287,9 +286,7 @@ export default function QuestionForm({ question, addQuestion }: { question?: Que
                         Preview
                     </div>
                     <div style={{ background: "#333" }}>
-                        <GameProvider>
-                            <QuestionWrapper fontSize={8} hideTimer={true} hideOverlay={true} question={{ unit, sortElements: sortItems, choices, jokerReward: hasJokerValue ? joker : undefined, media: { type: getMediaTypeByQuestionType(questionType) ?? MediaTypes.Text, content: mediaContent !== "" ? mediaContent :  ".", sources: solutionList.length > 0 ? solutionList : [] } , topic, type: questionType, caption, timeInSeconds: time, value: hasJokerValue ? -1 : questionValue, solutionType, solution: solutionContent }} />
-                        </GameProvider>
+                        <QuestionWrapper fontSize={8} hideTimer={true} hideOverlay={true} question={{ unit, sortElements: sortItems, choices, jokerReward: hasJokerValue ? joker : undefined, media: { type: getMediaTypeByQuestionType(questionType) ?? MediaTypes.Text, content: mediaContent !== "" ? mediaContent :  ".", sources: solutionList.length > 0 ? solutionList : [] } , topic, type: questionType, caption, timeInSeconds: time, value: hasJokerValue ? -1 : questionValue, solutionType, solution: solutionContent }} />
                     </div>
                 </div>
             </div>
