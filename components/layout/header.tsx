@@ -39,7 +39,7 @@ export default function Header() {
                                 }}
                                 style={{ background: "transparent" }}
                             >
-                                <div style={{ background: "#282828", height: 400, width: 400, borderRadius: 12, display: "flex", justifyContent: "center", alignItems: "center" }}>
+                                <div style={{ background: "#282828", height: 400, width: 400, borderRadius: 12, display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column" }}>
                                     {session ? <div style={{ display: "flex", justifyContent: "center", alignItems: "center", width: "80%", height: "80%" }}>
                                         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gridTemplateRows: "1fr 1fr", width: "100%", height: "100%", gridGap: 5 }}>
                                             <div style={{  display: "flex", justifyContent: "center", alignItems: "center" }}>
@@ -69,7 +69,7 @@ export default function Header() {
                                         </div>
                                     </div>
                                     :
-                                        <Empty style={{ color: "white" }} description={"Sign in to use this App."} />
+                                        <Empty style={{ fontSize: 16, color: "white", width: "100%", height: "100%", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column" }} description={"Sign in to use this App."} />
                                     }
                                 </div>
                             </Popover>
