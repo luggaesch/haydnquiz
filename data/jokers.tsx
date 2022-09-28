@@ -1,9 +1,8 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Wikipedia from "../public/wikipedia.svg";
-import { library } from "@fortawesome/fontawesome-svg-core";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {library} from "@fortawesome/fontawesome-svg-core";
 // @ts-ignore
-import { faPeopleRobbery, faEye, faStarHalfStroke, faAnglesUp, faPhone } from "@fortawesome/free-solid-svg-icons"
-import { faWikipediaW } from "@fortawesome/free-brands-svg-icons";
+import {faAnglesUp, faEye, faPeopleRobbery, faPhone, faStarHalfStroke} from "@fortawesome/free-solid-svg-icons"
+import {faWikipediaW} from "@fortawesome/free-brands-svg-icons";
 
 library.add(faPeopleRobbery, faEye, faStarHalfStroke, faAnglesUp, faPhone);
 library.add(faWikipediaW);
