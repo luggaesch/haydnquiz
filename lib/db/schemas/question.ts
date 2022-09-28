@@ -2,7 +2,7 @@ import {Topics} from "../../../data/topics";
 import {Jokers} from "../../../data/jokers";
 import mongoose from "mongoose";
 import {QuestionTypes, SolutionTypes} from "../../../types/question";
-import {MediaTypes} from "../../../data/questions";
+import {MediaTypes} from "../../../types/media";
 
 const QuestionSchema = new mongoose.Schema({
     type: {
