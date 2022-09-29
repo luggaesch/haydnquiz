@@ -115,13 +115,13 @@ function getPopupContentByQuestionType(question: Question) {
     }
 }
 
-export default function MediaContent({ question, rowEnd, shrink }: { question: Question, rowEnd: number, shrink?: boolean }) {
+export default function MediaContent({ question, rowEnd, shrink, onMediaConsumed }: { question: Question, rowEnd: number, shrink?: boolean, onMediaConsumed: () => void }) {
     const [mediaOpen, setMediaOpen] = useState(false);
 
     function getBoxContentByQuestionType() {
         switch (question.type) {
             case QuestionTypes.Hearing:
-                return <AudioPlayer shrink={shrink} audio={Number(question.media!.content!)} onFinished={() => {}} />
+                return <AudioPlayer shrink={shrink} audio={Number(question.media!.content!)} onFinished={() => onMediaConsumed()} />
             case QuestionTypes.Choice:
                 return (
                     <div style={{ width: "100%", height: "100%", display: "grid", gridTemplateRows: "1fr 1fr", gridTemplateColumns: "1fr 1fr", gridGap: 5 }}>

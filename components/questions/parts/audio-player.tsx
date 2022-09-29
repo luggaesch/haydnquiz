@@ -35,6 +35,13 @@ export default function AudioPlayer({ audio, onFinished, shrink }: { audio: numb
         }
     }, [isRunning, hasFinished]);
 
+    useEffect(() => {
+        return () => {
+            pause();
+            stop();
+        }
+    }, []);
+
     function handlePlay() {
         if (duration && currentTime >= duration/1000) {
             setHasFinished(false);

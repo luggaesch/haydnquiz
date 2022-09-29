@@ -7,7 +7,6 @@ export enum GamePhases {
     Transition,
     Solutions,
     Rankings,
-    End
 }
 
 type Match = {

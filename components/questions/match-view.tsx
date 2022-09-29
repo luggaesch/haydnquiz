@@ -57,12 +57,7 @@ export default function MatchView() {
                 return (
                     <TrophyScreen match={match} />
                 )
-            case GamePhases.End:
-                return (
-                    <div style={{ overflow: "hidden", fontSize: "10rem", color: "var(--text)", width: "100%", height: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                        Ende
-                    </div>
-                )}
+        }
     }
 
     return (

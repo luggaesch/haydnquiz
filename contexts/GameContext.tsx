@@ -52,14 +52,14 @@ export const GameProvider = (props: { match: Match, children: ReactNode } ) => {
     }
 
     function setPhase(nextPhase: GamePhases) {
-        if (nextPhase !== match.phase) {
+        if (nextPhase !== match.phase && (nextPhase >= 0 && nextPhase <= GamePhases.Rankings)) {
             if (nextPhase === GamePhases.Solutions && nextPhase > match.phase) {
                 match.currentQuestionIndex = 0;
             } else if (nextPhase === GamePhases.Playing && nextPhase < match.phase) {
                 match.currentQuestionIndex = match.quiz.questions.length - 1;
             }
             match.phase = nextPhase;
-            match.finished = nextPhase === GamePhases.End;
+            match.finished = nextPhase === GamePhases.Rankings;
             if (updateInterval) {
                 clearInterval(updateInterval);
                 setUpdateInterval(null);

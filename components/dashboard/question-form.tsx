@@ -234,7 +234,7 @@ export default function QuestionForm({ question, onSubmit }: { question?: Questi
                                 }
                                 setSolutionList([...solutionList])
                             }
-                            } value={solutionList.length} min={1} max={8} />}
+                            } value={solutionList.length} min={1} max={10} />}
                             {solutionType === SolutionTypes.Text ?
                                 <Form.Item>
                                     <Input value={solutionContent} onChange={(event) => setSolutionContent(event.target.value)} style={{ width: "100%" }} placeholder={"Item Name"}/>

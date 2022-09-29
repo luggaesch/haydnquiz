@@ -56,7 +56,7 @@ export default function CreditDistribution({ teams, answers, question, onFinishe
                     )}
                 )}
             </div>
-            <SolutionContent type={question.solutionType} text={question.solution} array={question.solutionArray} />
+            <SolutionContent question={question} />
             <div style={{ boxShadow: "0 8px 16px rgba(0,0,0,0.19), 0 3px 3px rgba(0,0,0,0.23)", position: "absolute", right: 20, bottom: 20, display: "flex", justifyContent: "center", alignItems: "center", textAlign: "center", fontSize: "3rem", width: 120, height: 120, backgroundColor: "var(--accent)", color: "#222", borderRadius: "50%", cursor: "pointer", padding: 20 }} onClick={handleDoneClick}><Done fontSize={"inherit"} /> </div>
         </div>
     )

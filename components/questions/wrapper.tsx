@@ -19,6 +19,7 @@ export default function QuestionWrapper({ index, question, answers, teams, hideT
     const [play] = useSound(countdownSfx, { volume: 1});
     const [solutionOpen, setSolutionOpen] = useState(false);
     const [hideVisible, setHideVisible] = useState(true);
+    const [timerDelayActive, setTimerDelayActive] = useState(question.type === QuestionTypes.Hearing || question.type === QuestionTypes.Video);
 
     function getCaptionRowEnd() {
         switch (question.type) {
@@ -44,8 +45,8 @@ export default function QuestionWrapper({ index, question, answers, teams, hideT
                     {index !== undefined && <div style={{ fontSize: "0.6em", position: "absolute", top: 5, left: 10, width: "2.8em", height: "2.8em", display: "flex", justifyContent: "center", alignItems: "center", background: "#222", boxShadow: "0 8px 16px rgba(0,0,0,0.10), 0 3px 3px rgba(0,0,0,0.15)", borderRadius: "50%"}}>#{index + 1}</div>}
                     {question.caption}
                 </div>
-                {question.type !== QuestionTypes.Basic && <MediaContent shrink={fontSize !== undefined ? fontSize < 10 : false} question={question} rowEnd={getCaptionRowEnd()} />}
-                {(!hideVisible && question.timeInSeconds !== -1 && !hideTimer) && <div className={styles.singleContainer} style={{ gridColumn: 3, gridRow: 1 }}>
+                {question.type !== QuestionTypes.Basic && <MediaContent onMediaConsumed={() => setTimerDelayActive(false)} shrink={fontSize !== undefined ? fontSize < 10 : false} question={question} rowEnd={getCaptionRowEnd()} />}
+                {(!hideVisible && question.timeInSeconds !== -1 && !hideTimer && !timerDelayActive) && <div className={styles.singleContainer} style={{ gridColumn: 3, gridRow: 1 }}>
                     <TimerControl totalTime={question.timeInSeconds} playCountdown={play} />
                 </div>}
                 {answers && teams && question.value !== -1 &&
