@@ -13,7 +13,7 @@ export default function SolutionContent({ question }: { question: Question }) {
             case SolutionTypes.Text:
                 return <div>{question.solution}</div>
             case SolutionTypes.List:
-                return question.solutionArray!.map((text, index, list) => <div style={{ fontSize: 1 - list.length / 10 + "em" }} key={index}>{text}</div>)
+                return question.solutionArray!.map((text, index, list) => <div style={{ fontSize: (1 - list.length / 10) + "em" }} key={index}>{text}</div>)
             case SolutionTypes.Image:
                 return <div className={styles.imageWrap}><Image layout="fill" objectFit="contain" src={question.solution} alt=""/></div>
         }
