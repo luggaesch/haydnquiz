@@ -108,7 +108,7 @@ export default function SortMiniGameView({ sortElements, unit }: { sortElements:
                                         repeat: 0
                                     }}
                         >
-                            <div>{v.name}{isFinished && ` - ${unit === "Date" ? new Date(v.value).toLocaleDateString() : (v.value + " " + unit)}`}</div>
+                            <div>{v.name}{isFinished && ` - ${unit === "date" ? new Date(v.value).toLocaleDateString() : (v.value + " " + unit)}`}</div>
                             {selectedElementIndex !== -1 &&
                                 <div style={{ height: "100%", display: "grid", gridTemplateRows: "1fr 1fr", alignItems: "center", justifyContent: "center"  }}>
                                     <div onClick={() => handleSortAttempt(orderedItems.indexOf(v), 1)} style={{ height: 5,  display: "flex", justifyContent: "center", alignItems: "center" }}>
