@@ -51,7 +51,7 @@ function getPopupContentByQuestionType(question: Question) {
             case MediaTypes.Image: {
                 if (media.content) {
                     return (
-                        <div className={styles.imageWrap}>
+                        <div style={{ width: "100%", height: "100%" }} className={styles.imageWrap}>
                             <Image layout="fill" objectFit="contain" src={media.content} alt=""/>
                         </div>
                     )
@@ -62,9 +62,25 @@ function getPopupContentByQuestionType(question: Question) {
                                 gridTemplateColumns: "1fr 1fr 1fr 1fr"
                             }}>
                                 {media.sources.map((url: string, index: number) => (
-                                    <div key={index + "_" + url} className={styles.imageWrap} >
+                                    <div key={index + "_" + url} className={styles.imageWrap}>
                                         <div className={styles.imageLabel}>{index + 1}</div>
-                                        <Image layout="fill" objectFit="contain" src={url} alt={""} style={{ borderRadius: getBorderRadiusByImageIndex(index) }}/>
+                                        <Image layout="fill" objectFit="contain" src={url} alt={""}
+                                               style={{borderRadius: getBorderRadiusByImageIndex(index)}}/>
+                                    </div>))
+                                }
+                            </div>
+                        )
+                    }
+                    else if (media.sources.length == 10) {
+                        return (
+                            <div className={styles.imageGrid} style={{
+                                gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr"
+                            }}>
+                                {media.sources.map((url: string, index: number) => (
+                                    <div key={index + "_" + url} className={styles.imageWrap}>
+                                        <div className={styles.imageLabel}>{index + 1}</div>
+                                        <Image layout="fill" objectFit="contain" src={url} alt={""}
+                                               style={{borderRadius: getBorderRadiusByImageIndex(index)}}/>
                                     </div>))
                                 }
                             </div>
