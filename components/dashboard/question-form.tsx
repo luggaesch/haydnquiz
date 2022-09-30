@@ -197,10 +197,16 @@ export default function QuestionForm({ question, onSubmit }: { question?: Questi
                                             sortItems[index].name = event.target.value;
                                             setSortItems([...sortItems]);
                                         }} value={e.name} style={{ width: "45%" }} placeholder="Item Name"/>
+                                        {unit === "date" ?
+                                            <Input onChange={(event) => {
+                                                sortItems[index].value = Date.parse(event.target.value);
+                                                setSortItems([...sortItems]);
+                                            }} value={e.value} style={{ width: "45%" }} />
+                                            :
                                         <InputNumber onChange={(value) => {
                                             sortItems[index].value = value;
                                             setSortItems([...sortItems]);
-                                        }} value={e.value} style={{ width: "45%" }} />
+                                        }} value={e.value} style={{ width: "45%" }} />}
                                     </>
                                 ))}
                             </Form.Item>
