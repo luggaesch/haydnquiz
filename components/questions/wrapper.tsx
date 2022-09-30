@@ -42,7 +42,7 @@ export default function QuestionWrapper({ index, question, answers, teams, hideT
                     {question.jokerReward && <div className={styles.jokerDisplay} style={{}} >
                         {getIconByJoker(question.jokerReward, "var(--text)", 60, 60)} {question.jokerReward}
                     </div>}
-                    {index !== undefined && <div style={{ fontSize: "0.6em", position: "absolute", top: 5, left: 10, width: "2.8em", height: "2.8em", display: "flex", justifyContent: "center", alignItems: "center", background: "#222", boxShadow: "0 8px 16px rgba(0,0,0,0.10), 0 3px 3px rgba(0,0,0,0.15)", borderRadius: "50%"}}>#{index + 1}</div>}
+                    {index !== undefined && <div style={{ fontSize: "0.6em", position: "absolute", top: 0, left: 0, transform: "translateX(-90%)", width: "2.8em", height: "2.8em", display: "flex", justifyContent: "center", alignItems: "center", background: "var(--question-item)", borderRadius: "12px 0 0 12px"}}>#{index + 1}</div>}
                     {question.caption}
                 </div>
                 {question.type !== QuestionTypes.Basic && <MediaContent onMediaConsumed={() => setTimerDelayActive(false)} shrink={fontSize !== undefined ? fontSize < 10 : false} question={question} rowEnd={getCaptionRowEnd()} />}

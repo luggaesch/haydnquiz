@@ -5,6 +5,7 @@ import Team from "../../../types/team";
 import Answer from "../../../types/answer";
 import Question from "../../../types/question";
 import {Done} from "@mui/icons-material";
+import CoverOverlay from "../../view/cover-overlay";
 
 export type Credit = {
     id: string,
@@ -39,7 +40,8 @@ export default function CreditDistribution({ teams, answers, question, onFinishe
                             <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", fontSize: "0.5em" }}>
                                 {team.name}
                             </div>
-                            <div style={{ width: "100%", maxHeight: "100%", boxShadow: "0 8px 16px rgba(0,0,0,0.19), 0 3px 3px rgba(0,0,0,0.23)", background: "#151515", borderRadius: 20, border: `3px dashed ${team.color}80`,  display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", overflow: "auto" }}>
+                            <div style={{ position: "relative", width: "100%", maxHeight: "100%", boxShadow: "0 8px 16px rgba(0,0,0,0.19), 0 3px 3px rgba(0,0,0,0.23)", background: "#151515", borderRadius: 20, border: `3px dashed ${team.color}80`,  display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", overflow: "auto" }}>
+                                <CoverOverlay />
                                 {answer?.values.map((v, index, list) => (
                                         <div style={{ fontSize: listFontSize - list.length/3 }} key={index} >{v}</div>
                                 ))}

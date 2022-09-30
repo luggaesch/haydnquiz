@@ -77,7 +77,7 @@ export default function QuestionForm({ question, onSubmit }: { question?: Questi
             timeInSeconds: questionType === QuestionTypes.Sort ? -1 : time,
             value: hasJokerValue ? -1 : questionValue,
             jokerReward: hasJokerValue ? joker : undefined,
-            solution: solutionContent !== "" ? solutionContent : "...",
+            solution: solutionContent !== "" ? solutionContent : solutionFile[0].url ? solutionFile[0].url : "...",
             solutionType,
             solutionArray: solutionType === SolutionTypes.List ? solutionList : undefined,
             media,
@@ -91,7 +91,7 @@ export default function QuestionForm({ question, onSubmit }: { question?: Questi
     // @ts-ignore
     return (
         <div style={{ background: "#222", width: "100vw", height: "100vh", color: "white", display: "flex", alignItems: "center", gridTemplateColumns: "60% 40%", overflow: "hidden" }}>
-            <Form name="Add Question" style={{ height: "100%", padding: 10, color: "white", fontSize: "2rem", width: "60%" }} {...formItemLayout}>
+            <Form name="Add Question" style={{ overflowY: "auto", height: "100%", padding: 10, color: "white", fontSize: "2rem", width: "60%" }} {...formItemLayout}>
                 <Form.Item label="Topic" className={styles.form}>
                     <Select defaultValue={topic} onChange={(nextValue) => setTopic(nextValue)}>
                         {Object.values(Topics).map((value, index) => (

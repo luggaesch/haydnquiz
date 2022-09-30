@@ -12,6 +12,7 @@
     border-radius: 12px;
     cursor: pointer;
     text-decoration: none;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.10), 0 3px 3px rgba(0,0,0,0.15);
 }
 
 .container:hover {

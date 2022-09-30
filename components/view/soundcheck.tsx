@@ -18,7 +18,7 @@ export default function Soundcheck({ open, ...rest }: { open: boolean, [x:string
     }, [open])
 
     return (
-        <div {...rest} className={styles.container} onClick={() => {
+        <div {...rest} style={{ boxShadow: "0 8px 16px rgba(0,0,0,0.10), 0 3px 3px rgba(0,0,0,0.15)" }} className={styles.container} onClick={() => {
             if (isPlaying) {
                 stop();
                 setIsPlaying(false);

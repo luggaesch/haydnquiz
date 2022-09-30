@@ -56,6 +56,13 @@ function getPopupContentByQuestionType(question: Question) {
                         </div>
                     )
                 } else if (media.sources) {
+                    if (media.sources.length === 1) {
+                        return (
+                            <div style={{ width: "100%", height: "100%" }} className={styles.imageWrap}>
+                                <Image layout="fill" objectFit="contain" src={media.sources[0]} alt=""/>
+                            </div>
+                        )
+                    }
                     if (media.sources.length === 8) {
                         return (
                             <div className={styles.imageGrid} style={{
@@ -64,7 +71,7 @@ function getPopupContentByQuestionType(question: Question) {
                                 {media.sources.map((url: string, index: number) => (
                                     <div key={index + "_" + url} className={styles.imageWrap}>
                                         <div className={styles.imageLabel}>{index + 1}</div>
-                                        <Image layout="fill" objectFit="contain" src={url} alt={""}
+                                        <Image layout="fill" objectFit="cover" src={url} alt={""}
                                                style={{borderRadius: getBorderRadiusByImageIndex(index)}}/>
                                     </div>))
                                 }
@@ -80,7 +87,7 @@ function getPopupContentByQuestionType(question: Question) {
                                 {media.sources.map((url: string, index: number) => (
                                     <div key={index + "_" + url} className={styles.imageWrap}>
                                         <div className={styles.imageLabel}>{index + 1}</div>
-                                        <Image layout="fill" objectFit="contain" src={url} alt={""}
+                                        <Image layout="fill" objectFit="cover" src={url} alt={""}
                                                style={{borderRadius: getBorderRadiusByImageIndex(index)}}/>
                                     </div>))
                                 }

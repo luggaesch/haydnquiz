@@ -94,7 +94,7 @@ export default function AnswerInput({ match, uploadRound, teamId }: { match: Mat
                 }
                 {questions.map((q, index) => (
                     <div key={index} style={{ paddingBottom: "4em", display: "grid", gridTemplateRows: "1fr 7fr", backgroundColor: "var(--question-item)", fontSize: 8, borderRadius: 12, boxShadow: "0 8px 16px rgba(0,0,0,0.19), 0 3px 3px rgba(0,0,0,0.23)" }}>
-                        <div style={{ width: "100%", display: "flex", justifyContent: "center", alignItems: "center", fontSize: "3em" }}>{match.quiz.questions.findIndex((e) => e._id === q._id) + 1}. {q.caption}</div>
+                        <div style={{ width: "100%", display: "flex", justifyContent: "center", alignItems: "center", fontSize: "3em" }}>{match.quiz.questions.findIndex((e) => e._id === q._id) + 1}.</div>
                         <div style={{ display: "grid", gridTemplateColumns: "1fr 8fr", fontSize: 6 }}>
                             <MetaContainer question={q} />
                             <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", padding: "0 5vw" }}>
