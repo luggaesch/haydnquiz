@@ -158,7 +158,7 @@ export default function QuestionForm({ question, onSubmit }: { question?: Questi
                                             listType="picture-card"
                                             fileList={imageFileList}
                                         >
-                                            {imageFileList.length >= 8 ? null : uploadButton}
+                                            {imageFileList.length >= 12 ? null : uploadButton}
                                         </Upload>
                                         <Modal open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancel} style={{ width: '100%', height: "100%" }}>
                                             <Image layout={"fill"} objectFit={"contain"} alt="example"  src={previewImage} />

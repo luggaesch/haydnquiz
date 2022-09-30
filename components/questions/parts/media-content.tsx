@@ -71,10 +71,11 @@ function getPopupContentByQuestionType(question: Question) {
                             </div>
                         )
                     }
-                    else if (media.sources.length == 10) {
+                    else if (media.sources.length > 8) {
                         return (
                             <div className={styles.imageGrid} style={{
-                                gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr"
+                                gridTemplateColumns: "1fr 1fr 1fr 1fr",
+                                gridTemplateRows: "1fr 1fr 1fr",
                             }}>
                                 {media.sources.map((url: string, index: number) => (
                                     <div key={index + "_" + url} className={styles.imageWrap}>
