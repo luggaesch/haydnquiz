@@ -77,7 +77,7 @@ export default function QuestionForm({ question, onSubmit }: { question?: Questi
             timeInSeconds: questionType === QuestionTypes.Sort ? -1 : time,
             value: hasJokerValue ? -1 : questionValue,
             jokerReward: hasJokerValue ? joker : undefined,
-            solution: solutionContent !== "" ? solutionContent : solutionFile[0].url ? solutionFile[0].url : "...",
+            solution: solutionContent !== "" ? solutionContent : solutionFile[0] && solutionFile[0].url ? solutionFile[0].url : "...",
             solutionType,
             solutionArray: solutionType === SolutionTypes.List ? solutionList : undefined,
             media,
