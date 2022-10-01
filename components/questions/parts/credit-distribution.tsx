@@ -31,7 +31,7 @@ export default function CreditDistribution({ teams, answers, question, onFinishe
     }
 
     return (
-        <div style={{ position: "relative", width: "100%", height: "100%", color: "var(--text)", display: "grid", gridTemplateRows: "55% 55%", gridGap: 5, padding: 5 }}>
+        <div style={{ position: "relative", width: "100%", height: "100%", color: "var(--text)", display: "grid", gridTemplateRows: "1fr 1fr", gridGap: 5, padding: 5 }}>
             <div style={{ display: "grid", gridTemplateColumns: `repeat(${teams.length}, 1fr)`, gridGap: 5, alignItems: "center" }}>
                 {teams.map((team) => {
                     const answer = answers.find((a) => a.teamId === team._id);
