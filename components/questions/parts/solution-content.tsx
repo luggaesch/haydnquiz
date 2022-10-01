@@ -11,7 +11,7 @@ export default function SolutionContent({ question }: { question: Question }) {
     function getComponentByType() {
         switch (question.solutionType) {
             case SolutionTypes.Text:
-                return <div>{question.type === QuestionTypes.Choice ? question.choices[Number[question.solution]] : question.solution}</div>
+                return <div>{question.type === QuestionTypes.Choice && question.choices ? question.choices[Number[question.solution]] : question.solution}</div>
             case SolutionTypes.List:
                 return question.solutionArray!.map((text, index) => <div style={{ fontSize: "0.5em" }} key={index}>{text}</div>)
             case SolutionTypes.Image:
