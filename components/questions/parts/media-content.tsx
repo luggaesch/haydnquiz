@@ -9,6 +9,8 @@ import PopupContainer from "./popup-container";
 import SortMiniGameView from "./sort";
 import shuffle from "../../../lib/shuffle";
 import {MediaTypes} from "../../../types/media";
+import Team from "../../../types/team";
+import GuesstimateGame from "../guesstimate";
 
 function getBorderRadiusByImageIndex(index: number) {
     switch (index) {
@@ -25,14 +27,14 @@ function getBorderRadiusByImageIndex(index: number) {
     }
 }
 
-function getPopupContentByQuestionType(question: Question) {
+function getPopupContentByQuestionType(question: Question, teams?: Team[]) {
     if (question.type === QuestionTypes.Sort) {
         return (
             <SortMiniGameView sortElements={shuffle(question.sortElements!)} unit={question.unit!}/>
         )
     } else if (question.type === QuestionTypes.Guesstimate) {
         return (
-            <></>
+            <GuesstimateGame solution={Number(question.solution)} teams={teams!} />
         )
     } else {
         const media = question.media;
@@ -139,8 +141,9 @@ function getPopupContentByQuestionType(question: Question) {
     }
 }
 
-export default function MediaContent({ question, rowEnd, shrink, onMediaConsumed }: { question: Question, rowEnd: number, shrink?: boolean, onMediaConsumed: () => void }) {
+export default function MediaContent({ question, rowEnd, shrink, onMediaConsumed, teams }: { question: Question, rowEnd: number, shrink?: boolean, onMediaConsumed: () => void, teams?: Team[] }) {
     const [mediaOpen, setMediaOpen] = useState(false);
+    console.log(teams);
 
     function getBoxContentByQuestionType() {
         switch (question.type) {
@@ -170,7 +173,7 @@ export default function MediaContent({ question, rowEnd, shrink, onMediaConsumed
         <div className={styles.mediaContainer} style={{ gridRowStart: rowEnd, background: question.type === QuestionTypes.Choice ? "transparent" : "var(--question-item)" }}>
             {getBoxContentByQuestionType()}
             <PopupContainer open={mediaOpen} setOpen={setMediaOpen}>
-                {getPopupContentByQuestionType(question)}
+                {getPopupContentByQuestionType(question, teams)}
             </PopupContainer>
         </div>
     )

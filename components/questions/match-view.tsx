@@ -28,7 +28,7 @@ export default function MatchView() {
                 }
                 return (
                     <Slideshow currentIndex={match.currentQuestionIndex} setCurrentIndex={setCurrentQuestionNum} nodes={match.quiz.questions.map((q) => (
-                        <QuestionWrapper index={match.currentQuestionIndex} question={q} key={q._id} />
+                        <QuestionWrapper teams={match.teams} index={match.currentQuestionIndex} question={q} key={q._id} />
                     ))} />
                 )
             case GamePhases.Transition:
@@ -50,7 +50,7 @@ export default function MatchView() {
             case GamePhases.Solutions:
                 return (
                     <Slideshow currentIndex={match.currentQuestionIndex} setCurrentIndex={setCurrentQuestionNum} nodes={match.quiz.questions.map((q) => (
-                        <QuestionWrapper uploadCredits={uploadCredits} hideOverlay={true} hideTimer={true} teams={match!.teams} answers={match!.answers.filter((a) => a.questionId === match.quiz.questions[match.currentQuestionIndex]._id)} index={match.currentQuestionIndex} question={q} key={q._id} />
+                        <QuestionWrapper uploadCredits={uploadCredits} hideOverlay={true} hideTimer={true} teams={match.teams} answers={match.answers.filter((a) => a.questionId === match.quiz.questions[match.currentQuestionIndex]._id)} index={match.currentQuestionIndex} question={q} key={q._id} />
                     ))} />
                 )
             case GamePhases.Rankings:

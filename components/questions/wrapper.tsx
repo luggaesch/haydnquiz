@@ -25,7 +25,6 @@ export default function QuestionWrapper({ index, question, answers, teams, hideT
         switch (question.type) {
             case QuestionTypes.Basic:
                 return 5;
-            case QuestionTypes.Guesstimate:
             case QuestionTypes.Choice:
                 return 3;
             default:
@@ -45,7 +44,7 @@ export default function QuestionWrapper({ index, question, answers, teams, hideT
                     {index !== undefined && <div style={{ fontSize: "0.6em", position: "absolute", top: 0, left: 0, transform: "translateX(-90%)", width: "2.8em", height: "2.8em", display: "flex", justifyContent: "center", alignItems: "center", background: "var(--question-item)", borderRadius: "12px 0 0 12px"}}>#{index + 1}</div>}
                     {question.caption}
                 </div>
-                {question.type !== QuestionTypes.Basic && <MediaContent onMediaConsumed={() => setTimerDelayActive(false)} shrink={fontSize !== undefined ? fontSize < 10 : false} question={question} rowEnd={getCaptionRowEnd()} />}
+                {question.type !== QuestionTypes.Basic && <MediaContent teams={teams} onMediaConsumed={() => setTimerDelayActive(false)} shrink={fontSize !== undefined ? fontSize < 10 : false} question={question} rowEnd={getCaptionRowEnd()} />}
                 {(!hideVisible && question.timeInSeconds !== -1 && !hideTimer && !timerDelayActive) && <div className={styles.singleContainer} style={{ gridColumn: 3, gridRow: 1 }}>
                     <TimerControl totalTime={question.timeInSeconds} playCountdown={play} />
                 </div>}

@@ -1,21 +1,19 @@
 import React, {useMemo, useState} from "react";
 import styles from "../../styles/question.module.css";
-import {useGameContext} from "../../contexts/GameContext";
 import {Input} from "antd";
-import {CheckOutlined} from "@ant-design/icons";
+import Team from "../../types/team";
+import {Done} from "@mui/icons-material";
 
-export default function GuesstimateQuestion() {
-    /*const { teams } = useGameContext();
+export default function GuesstimateGame({ solution, teams }: { solution: number, teams: Team[] }) {
     const [values, setValues] = useState<string[]>(teams.map(() => ""));
     const [isSubmitted, setIsSubmitted] = useState(false);
     const results = useMemo(() => {
         if (isSubmitted) {
             return values.map((v) => {
-                const solution = Number(question.solution);
                 return solution - Number(v);
             });
         }
-    }, [values, isSubmitted, question]);
+    }, [values, isSubmitted, solution]);
 
     function handleValueChange(nextValue: string, index: number) {
         const currentValues = [...values];
@@ -24,29 +22,23 @@ export default function GuesstimateQuestion() {
     }
 
     return (
-        <div {...rest}>
-            <div className={styles.content} style={{ top: "18vh", height: "40%" }}>
-                <p>{question.caption}</p>
-                {isSubmitted && <p>Antwort: {question.solution}</p> }
-            </div>
+        <div style={{ width: "100%", height: "100%", display: "flex", justifyContent: "center", alignItems: "center", position: "relative" }}>
             <div className={styles.guessContainer}>
                 {teams.map((c, index) => (
-                    <div className={styles.inputContainer} key={question._id + "_" + index}>
+                    <div className={styles.inputContainer} key={index}>
+                        <div style={{ borderBottom: "2px solid #111", width: "100%", textAlign: "center" }}>{c.name}</div>
                         <Input className={styles.input} style={{ borderColor: c.color }}
                                inputMode="numeric" placeholder={`Team ${c.name}`}
                                value={values[index]} onChange={(event) => handleValueChange(event.target.value, index)}
                                type="number"
                         />
-                        {results && <p style={{ fontSize: "2rem" }}>{results[index]}</p>}
+                        {results && <p style={{  }}>{Math.abs(results[index])}</p>}
                     </div>
                 ))}
             </div>
             {values.indexOf("") === -1 && !isSubmitted && <div className={styles.submitButton} onClick={() => setIsSubmitted(true)}>
-                <CheckOutlined style={{ fontSize: "inherit" }} />
+                <Done style={{ fontSize: "inherit" }} />
             </div>}
         </div>
-    )*/
-    return (
-        <div></div>
     )
 }
