@@ -153,7 +153,7 @@ export default function MediaContent({ question, rowEnd, shrink, onMediaConsumed
                 return (
                     <div style={{ width: "100%", height: "100%", display: "grid", gridTemplateRows: "1fr 1fr", gridTemplateColumns: "1fr 1fr", gridGap: 5 }}>
                         {question.choices!.map((choice, index) => (
-                            <div style={{  borderRadius: 8, background: "#282828", display: "grid", gridTemplateColumns: "1fr 3fr", alignItems: "center", color: "var(--text)", fontSize: "1.5em" }} key={index}>
+                            <div style={{  borderRadius: 8, background: "var(--question-item)", display: "grid", gridTemplateColumns: "1fr 3fr", alignItems: "center", color: "var(--text)", fontSize: "2em" }} key={index}>
                                 <div style={{ textAlign: "center" }}>{["A", "B", "C", "D"][index]}.</div>
                                 <div>{choice}</div>
                             </div>
