@@ -1,16 +1,15 @@
 import {useGameContext} from "../../contexts/GameContext";
 import {useEffect, useState} from "react";
-import Slideshow from "../viewgroup/slideshow";
-import QuestionWrapper from "./wrapper";
+import Slideshow from "../../components/viewgroup/slideshow";
+import QuestionWrapper from "../../features/question";
 import {getColorByTopic} from "../../data/topics";
-import StartButton from "../view/start-button";
-import ParticleWrapper from "../view/particle-wrapper";
+import ParticleWrapper from "../../components/view/particle-wrapper";
 import {GamePhases} from "../../types/match";
-import {Button} from "antd";
-import TrophyScreen from "./trophy-screen";
-import UploadRoundDisplay from "./parts/upload-round-display";
+import TrophyScreen from "../../components/questions/trophy-screen";
+import UploadRoundDisplay from "../../components/questions/parts/upload-round-display";
+import styles from "./match.module.css";
 
-export default function MatchView() {
+export default function MatchContent() {
     const { match, targetUploadRound, setPhase, setCurrentQuestionNum, uploadCredits } = useGameContext();
     const [showQRCodes, setShowQRCodes] = useState(targetUploadRound !== -1);
 
@@ -38,11 +37,11 @@ export default function MatchView() {
                     )
                 }
                 return (
-                    <div style={{ overflow: "hidden", padding: 20, width: "100vw", height: "100vh", display: "flex", textAlign: "center", justifyContent: "center", alignItems: "center", fontSize: "10rem" }}>
+                    <div className={styles.finish}>
                         <div onClick={() => {
                             setPhase(GamePhases.Solutions);
                             setCurrentQuestionNum(0);
-                        }} style={{ cursor: "pointer", display: "flex", textAlign: "center", justifyContent: "center", alignItems: "center", color: "#222", borderRadius: 50, fontSize: "5rem", background: "var(--accent)", height: "20vh", width: "50%", padding: 20 }}>
+                        }}>
                             Zur Auflösung
                         </div>
                     </div>
@@ -50,7 +49,14 @@ export default function MatchView() {
             case GamePhases.Solutions:
                 return (
                     <Slideshow currentIndex={match.currentQuestionIndex} setCurrentIndex={setCurrentQuestionNum} nodes={match.quiz.questions.map((q) => (
-                        <QuestionWrapper uploadCredits={uploadCredits} hideOverlay={true} hideTimer={true} teams={match.teams} answers={match.answers.filter((a) => a.questionId === match.quiz.questions[match.currentQuestionIndex]._id)} index={match.currentQuestionIndex} question={q} key={q._id} />
+                        <QuestionWrapper jokers={match.jokers.filter((j) => j.assignedQuestionId === match.quiz.questions[match.currentQuestionIndex]._id)}
+                                         uploadCredits={uploadCredits}
+                                         hideOverlay={true} hideTimer={true}
+                                         teams={match.teams}
+                                         answers={match.answers.filter((a) => a.questionId === match.quiz.questions[match.currentQuestionIndex]._id)}
+                                         index={match.currentQuestionIndex}
+                                         question={q}
+                                         key={q._id} />
                     ))} />
                 )
             case GamePhases.Rankings:
@@ -62,7 +68,7 @@ export default function MatchView() {
 
     return (
         <div>
-            <main style={{ width: "100vw", height: "100vh", overflow: "hidden" }}>
+            <main className={styles.mainContainer}>
                 <ParticleWrapper color={getColorByTopic(match.quiz.questions[match.currentQuestionIndex].topic)} />
                 {getComponent()}
             </main>

@@ -14,17 +14,13 @@
 .container > div {
     display: grid;
     grid-row: auto;
-    grid-row-gap: 10px;
+    grid-row-gap: 15px;
     margin: 20px 0 0 10px;
 }
 
 .teamItem {
-    display: flex;
-    flex-direction: column;
-}
-
-.teamItem > div {
-    margin-top: 5px;
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
 }
 
 .submitButton {

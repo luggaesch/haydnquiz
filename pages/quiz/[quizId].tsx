@@ -3,11 +3,10 @@ import connectMongo from "../../lib/db/connectMongo";
 import Quiz from "../../types/quiz";
 import axios from "axios";
 import React, {useState} from "react";
-import {Close, DeleteOutline, EditOutlined, StopOutlined} from "@mui/icons-material";
-import QuestionWrapper from "../../components/questions/wrapper";
+import {Close} from "@mui/icons-material";
 import {FaPlus} from "react-icons/fa";
 import PopupContainer from "../../components/questions/parts/popup-container";
-import QuestionForm from "../../components/dashboard/question-form";
+import Index from "../../features/question/form";
 import Question from "../../types/question";
 import {
     DragDropContext,
@@ -21,6 +20,7 @@ import {
 import {Empty} from "antd";
 import styles from "../../styles/dashboard.module.css";
 import Link from "next/link";
+import CollapsableQuestion from "../../features/question/collapsed";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     await connectMongo;
@@ -107,24 +107,12 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
                             <div ref={provided.innerRef}
                                  {...provided.draggableProps}
                                  {...provided.dragHandleProps}>
-                                <div key={index} style={{ borderBottom: index !== props.questions.length - 1 ?  "2px solid #333" : "none", display: "grid", gridTemplateColumns: "7fr 1fr", height: "100%", padding: 10 }}
-                                >
-                                    <QuestionWrapper question={question} fontSize={12} hideTimer={true} hideOverlay={true} />
-                                    <div style={{ borderLeft: "2px solid #333", display: "flex", alignItems: "center", justifyContent: "center", gap: 10, flexDirection: "column" }}>
-                                        <div onClick={() => {
-                                            setQuestionToEdit(question);
-                                            setOpen(true);
-                                        }} style={{ width: 100, height: 100, display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "var(--question-item)", borderRadius: "50%", boxShadow: "0 8px 16px rgba(0,0,0,0.19), 0 3px 3px rgba(0,0,0,0.23)" }}>
-                                            <EditOutlined />
-                                        </div>
-                                        {index !== 0 && <div onClick={() => updateStops(index)} style={{ width: 100, height: 100, display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: currentQuiz.stops?.includes(index) ? "var(--accent-negative)" : "var(--question-item)", borderRadius: "50%", boxShadow: "0 8px 16px rgba(0,0,0,0.19), 0 3px 3px rgba(0,0,0,0.23)" }}>
-                                            <StopOutlined />
-                                        </div>}
-                                        <div onClick={() => deleteQuestion(question._id!)} style={{ width: 100, height: 100, display: "flex", justifyContent: "center", alignItems: "center", backgroundColor: "var(--question-item)", borderRadius: "50%", boxShadow: "0 8px 16px rgba(0,0,0,0.19), 0 3px 3px rgba(0,0,0,0.23)" }}>
-                                            <DeleteOutline />
-                                        </div>
-                                    </div>
-                                </div>
+                                <CollapsableQuestion question={question} index={index} isStop={currentQuiz.stops?.includes(index)}
+                                                     onSetEdit={setQuestionToEdit}
+                                                     onSetOpen={setOpen}
+                                                     onUpdateStops={updateStops}
+                                                     onDelete={deleteQuestion}
+                                />
                             </div>
                         )}
                     </Draggable>
@@ -176,7 +164,10 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
                                         ref={provided.innerRef}
                                         style={{
                                             backgroundColor: snapshot.isDraggingOver ? '#33333380' : 'transparent',
-                                            display: "grid", gridAutoRows: 500, padding: 10, overflowY: "auto",
+                                            display: "flex",
+                                            flexDirection: "column",
+                                            gap: 5,
+                                            padding: 10, overflowY: "auto",
                                             height: "100%"
                                         }}
                                         {...provided.droppableProps}
@@ -197,7 +188,7 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
                     }
                 </div>
                 <PopupContainer open={open} setOpen={setOpen}>
-                    <QuestionForm question={questionToEdit} onSubmit={(question) => questionToEdit ? updateQuestion(question) : addQuestion(question)} />
+                    <Index question={questionToEdit} onSubmit={(question) => questionToEdit ? updateQuestion(question) : addQuestion(question)} />
                 </PopupContainer>
             </div>
         </div>

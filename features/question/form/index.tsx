@@ -1,16 +1,13 @@
 import {useState} from "react";
-import {Topics} from "../../data/topics";
-import Question, {getMediaTypeByQuestionType, QuestionTypes, SolutionTypes} from "../../types/question";
-import {Jokers} from "../../data/jokers";
-import {Button, Form, Input, InputNumber, Modal, Radio, Select, Slider, Switch, Upload, UploadFile} from "antd";
-import {RcFile} from "antd/es/upload";
-import {PlusOutlined} from "@ant-design/icons";
-import Media, { MediaTypes } from "../../types/media";
-import axios from "axios";
-import styles from "../../styles/form.module.css";
-import {v4} from "uuid";
-import Image from "next/image";
-import QuestionWrapper from "../questions/wrapper";
+import {Topics} from "../../../data/topics";
+import Question, {getMediaTypeByQuestionType, QuestionTypes, SolutionTypes} from "../../../types/questions";
+import {Jokers} from "../../../data/jokers";
+import {Button, Form, Input, InputNumber, Radio, Select, Slider, Switch, UploadFile} from "antd";
+import Media, {MediaTypes} from "../../../types/media";
+import styles from "../../../styles/form.module.css";
+import QuestionWrapper from "../index";
+import MediaUpload from "./media-upload";
+import SortInput from "./sort-input";
 
 const { Option } = Select;
 
@@ -19,15 +16,7 @@ const formItemLayout = {
     wrapperCol: { span: 14 },
 }
 
-const getBase64 = (file: RcFile): Promise<string> =>
-    new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result as string);
-        reader.onerror = error => reject(error);
-    });
-
-export default function QuestionForm({ question, onSubmit }: { question?: Question, onSubmit: (question: Question) => void }) {
+export default function Index({ question, onSubmit }: { question?: Question, onSubmit: (question: Question) => void }) {
     const [topic, setTopic] = useState<Topics>(question ? question.topic : Topics.Nature);
     const [questionType, setQuestionType] = useState<QuestionTypes>(question ? question.type : QuestionTypes.Basic);
     const [caption, setCaption] = useState(question ? question.caption : "");
@@ -44,32 +33,8 @@ export default function QuestionForm({ question, onSubmit }: { question?: Questi
     const [choices, setChoices] = useState<string[]>((question && question.choices) ? question.choices : ["A", "B", "C", "D"]);
     const [unit, setUnit] = useState((question && question.unit) ? question.unit : "");
     const [sortItems, setSortItems] = useState<{ name: string, value: number}[]>((question && question.sortElements) ? question.sortElements : [{ name: "", value: 0 }]);
-    const [previewOpen, setPreviewOpen] = useState(false);
-    const [previewImage, setPreviewImage] = useState('');
-    const [previewTitle, setPreviewTitle] = useState('');
-
-    const handleCancel = () => setPreviewOpen(false);
-
-    const handlePreview = async (file: UploadFile) => {
-        if (!file.url && !file.preview) {
-            file.preview = await getBase64(file.originFileObj as RcFile);
-        }
-
-        setPreviewImage(file.url || (file.preview as string));
-        setPreviewOpen(true);
-        setPreviewTitle(file.name || file.url!.substring(file.url!.lastIndexOf('/') + 1));
-    };
-
-    const uploadButton = (
-        <div>
-            <PlusOutlined />
-            <div style={{ marginTop: 8 }}>Upload</div>
-        </div>
-    );
 
     async function handleSubmit() {
-        const mediaType = getMediaTypeByQuestionType(questionType);
-        const media: Media | undefined = mediaType ? { type: mediaType, content: mediaContent !== "" ? mediaContent : undefined, sources: imageFileList.length > 0 ? imageFileList.map((file) => file.url!) : undefined } : undefined;
         const question: Question = {
             topic,
             type: questionType,
@@ -80,15 +45,26 @@ export default function QuestionForm({ question, onSubmit }: { question?: Questi
             solution: solutionContent !== "" ? solutionContent : solutionFile[0] && solutionFile[0].url ? solutionFile[0].url : "...",
             solutionType,
             solutionArray: solutionType === SolutionTypes.List ? solutionList : undefined,
-            media,
-            choices: questionType === QuestionTypes.Choice ? choices : undefined,
-            sortElements: questionType === QuestionTypes.Sort ? sortItems : undefined,
-            unit: questionType === QuestionTypes.Sort ? unit : undefined
+        }
+        switch (question.type) {
+            case QuestionTypes.Hearing:
+            case QuestionTypes.Video:
+            case QuestionTypes.Image:
+            case QuestionTypes.Quote:
+                const mediaType = getMediaTypeByQuestionType(questionType);
+                const media: Media | undefined = mediaType ? { type: mediaType, content: mediaContent !== "" ? mediaContent : undefined, sources: imageFileList.length > 0 ? imageFileList.map((file) => file.url!) : undefined } : undefined;
+                onSubmit({...question, media});
+                return;
+            case QuestionTypes.Sort:
+                onSubmit({...question, unit, sortElements: sortItems});
+                return;
+            case QuestionTypes.Choice:
+                onSubmit({ ...question, choices });
+                return;
         }
         onSubmit(question);
     }
 
-    // @ts-ignore
     return (
         <div style={{ background: "#222", width: "100vw", height: "100vh", color: "white", display: "flex", alignItems: "center", gridTemplateColumns: "60% 40%", overflow: "hidden" }}>
             <Form name="Add Question" style={{ overflowY: "auto", height: "100%", padding: 10, color: "white", fontSize: "2rem", width: "60%" }} {...formItemLayout}>
@@ -143,28 +119,7 @@ export default function QuestionForm({ question, onSubmit }: { question?: Questi
                             : questionType === QuestionTypes.Video || questionType === QuestionTypes.Hearing ?
                                 <Input value={mediaContent} onChange={(event) => setMediaContent(event.target.value)} placeholder={"Enter a URL to a Video or Number of Audio File (Upload currently not supported)"} />
                                 :
-                                <Form.Item>
-                                    <>
-                                        <Upload
-                                            customRequest={async (req) => {
-                                                const data = new FormData();
-                                                data.set("image", req.file);
-                                                const res = await axios.post("https://api.imgur.com/3/upload", data, { headers: { 'Authorization': `Client-ID b6fc4610962fa99` } });
-                                                console.log(res);
-                                                const { id, link } = res.data.data;
-                                                setImageFileList([...imageFileList, { uid: v4(), name: id, url: link }])
-                                            }
-                                            }
-                                            listType="picture-card"
-                                            fileList={imageFileList}
-                                        >
-                                            {imageFileList.length >= 12 ? null : uploadButton}
-                                        </Upload>
-                                        <Modal open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancel} style={{ width: '100%', height: "100%" }}>
-                                            <Image layout={"fill"} objectFit={"contain"} alt="example"  src={previewImage} />
-                                        </Modal>
-                                    </>
-                                </Form.Item>
+                                <MediaUpload files={imageFileList} setFiles={setImageFileList} />
                         }
                     </Form.Item>
                     :
@@ -177,40 +132,7 @@ export default function QuestionForm({ question, onSubmit }: { question?: Questi
                                 }} />
                             ))}
                         </Form.Item>
-                        : questionType === QuestionTypes.Sort &&
-                        <Form.Item label="Items to Sort" className={styles.form}>
-                            <Form.Item style={{ width: "100%" }}>
-                                <Input style={{ width:" 45%" }} onChange={(event) => setUnit(event.target.value)} placeholder="m/s" value={unit} />
-                                <InputNumber style={{ width: "30%" }} onChange={(value) => {
-                                    if (value > sortItems.length) {
-                                        for (let i = sortItems.length; i < value; i++) sortItems.push({ name: "", value: 0 });
-                                    } else {
-                                        sortItems.splice(value, sortItems.length - value);
-                                    }
-                                    setSortItems([...sortItems]);
-                                }} value={sortItems.length} min={1} max={10} />
-                            </Form.Item>
-                            <Form.Item>
-                                {sortItems.map((e, index) => (
-                                    <>
-                                        <Input onChange={(event) => {
-                                            sortItems[index].name = event.target.value;
-                                            setSortItems([...sortItems]);
-                                        }} value={e.name} style={{ width: "45%" }} placeholder="Item Name"/>
-                                        {unit === "date" ?
-                                            <Input onChange={(event) => {
-                                                sortItems[index].value = Date.parse(event.target.value);
-                                                setSortItems([...sortItems]);
-                                            }} value={e.value} style={{ width: "45%" }} />
-                                            :
-                                        <InputNumber onChange={(value) => {
-                                            sortItems[index].value = value;
-                                            setSortItems([...sortItems]);
-                                        }} value={e.value} style={{ width: "45%" }} />}
-                                    </>
-                                ))}
-                            </Form.Item>
-                        </Form.Item>
+                        : questionType === QuestionTypes.Sort && <SortInput unit={unit} setUnit={setUnit} items={sortItems} setSortItems={setSortItems} />
                 }
                 {questionType === QuestionTypes.Guesstimate ?
                     <Form.Item label="Correct Guess" className={styles.form}>
@@ -246,28 +168,8 @@ export default function QuestionForm({ question, onSubmit }: { question?: Questi
                                     <Input value={solutionContent} onChange={(event) => setSolutionContent(event.target.value)} style={{ width: "100%" }} placeholder={"Item Name"}/>
                                 </Form.Item>
                                 :
-                                solutionType === SolutionTypes.Image ? <Form.Item>
-                                        <>
-                                            <Upload
-                                                customRequest={async (req) => {
-                                                    const data = new FormData();
-                                                    data.set("image", req.file);
-                                                    const res = await axios.post("https://api.imgur.com/3/upload", data, { headers: { 'Authorization': `Client-ID b6fc4610962fa99` } });
-                                                    console.log(res);
-                                                    const { id, link } = res.data.data;
-                                                    setSolutionFile([{ uid: v4(), name: id, url: link }])
-                                                }
-                                                }
-                                                listType="picture-card"
-                                                fileList={solutionFile}
-                                            >
-                                                {uploadButton}
-                                            </Upload>
-                                            <Modal open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancel} style={{ width: '100vw', height: "100vh" }}>
-                                                <Image layout={"fill"} objectFit={"contain"} alt="example" src={previewImage}  />
-                                            </Modal>
-                                        </>
-                                    </Form.Item>
+                                solutionType === SolutionTypes.Image ?
+                                    <MediaUpload files={solutionFile} setFiles={setSolutionFile} />
                                     :
                                     <Form.Item>
                                         {solutionList.map((e, index) => (

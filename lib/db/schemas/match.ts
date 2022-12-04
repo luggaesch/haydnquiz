@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import {GamePhases} from "../../../types/match";
+import {Jokers} from "../../../types/joker";
 
 const MatchSchema = new mongoose.Schema({
     user: {
@@ -26,6 +27,16 @@ const MatchSchema = new mongoose.Schema({
                 questionId: { type: String, required: true },
                 values: [{ type: String }],
                 points: { type: Number, default: 0 }
+            }),
+            default: []
+        }
+    ],
+    jokers: [
+        {
+            type: new mongoose.Schema({
+                name: { type: String, enum: Jokers, required: true },
+                teamId: { type: String, required: true },
+                assignedQuestionId: { type: String, default: undefined },
             }),
             default: []
         }

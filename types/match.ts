@@ -1,6 +1,7 @@
 import Quiz from "./quiz";
 import Team from "./team";
 import Answer from "./answer";
+import Joker from "./joker";
 
 export enum GamePhases {
     Playing,
@@ -20,7 +21,8 @@ type Match = {
     startTime: string,
     finished: boolean,
     currentlyOpenUploadRound: number,
-    pastUploadRounds: number[]
+    pastUploadRounds: number[],
+    jokers: Joker[]
 }
 
 export function isMatch(match: Match | any): match is Match {

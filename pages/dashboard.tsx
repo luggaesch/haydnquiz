@@ -18,7 +18,6 @@ import TeamTab from "../components/dashboard/team-tab";
 import Team from "../types/team";
 import QuizzesTab from "../components/dashboard/quizzes-tab";
 import {useRouter} from "next/router";
-import Header from "../components/layout/header";
 import Layout from "../components/layout";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {

@@ -3,19 +3,20 @@ import React, {useState} from "react";
 import useSound from "use-sound";
 // @ts-ignore
 import countdownSfx from "../../assets/sounds/countdown.mp3"
-import TimerControl from "../view/timer-control";
+import TimerControl from "../../components/view/timer-control";
 import {getIconByJoker} from "../../data/jokers";
 import Question, {QuestionTypes} from "../../types/question";
-import HideOverlay from "./parts/hide-overlay";
+import HideOverlay from "../../components/questions/parts/hide-overlay";
 import {FaLightbulb} from "react-icons/fa";
-import PopupContainer from "./parts/popup-container";
-import MediaContent from "./parts/media-content";
+import PopupContainer from "../../components/questions/parts/popup-container";
+import MediaContent from "../../components/questions/parts/media-content";
 import Answer from "../../types/answer";
-import MetaContainer from "./parts/meta-container";
+import MetaContainer from "../../components/questions/parts/meta-container";
 import Team from "../../types/team";
-import CreditDistribution, {Credit} from "./parts/credit-distribution";
+import CreditDistribution, {Credit} from "../../components/questions/parts/credit-distribution";
+import Joker from "../../types/joker";
 
-export default function QuestionWrapper({ index, question, answers, teams, hideTimer, hideOverlay, fontSize, uploadCredits }: { index?: number, question: Question, answers?: Answer[], teams?: Team[], hideTimer?: boolean, hideOverlay?: boolean, fontSize?: number, uploadCredits?: (credits: Credit[], questionId: string) => void }) {
+export default function QuestionWrapper({ index, question, answers, teams, jokers, hideTimer, hideOverlay, fontSize, uploadCredits  }: { index?: number, question: Question, answers?: Answer[], teams?: Team[], jokers?: Joker[], hideTimer?: boolean, hideOverlay?: boolean, fontSize?: number, uploadCredits?: (credits: Credit[], questionId: string) => void }) {
     const [play] = useSound(countdownSfx, { volume: 1});
     const [solutionOpen, setSolutionOpen] = useState(false);
     const [hideVisible, setHideVisible] = useState(true);
@@ -47,6 +48,15 @@ export default function QuestionWrapper({ index, question, answers, teams, hideT
                 {question.type !== QuestionTypes.Basic && <MediaContent teams={teams} onMediaConsumed={() => setTimerDelayActive(false)} shrink={fontSize !== undefined ? fontSize < 10 : false} question={question} rowEnd={getCaptionRowEnd()} />}
                 {(!hideVisible && question.timeInSeconds !== -1 && !hideTimer && !timerDelayActive) && <div className={styles.singleContainer} style={{ gridColumn: 3, gridRow: 1 }}>
                     <TimerControl totalTime={question.timeInSeconds} playCountdown={play} />
+                </div>}
+                {jokers && teams && <div style={{ gridColumn: 3, gridRow: 1, display: "grid", gridTemplateColumns: "1fr 1fr", justifyContent: "center", gridTemplateRows: "1fr 1fr 1fr", gridColumnGap: 5 }}>
+                    {jokers.map((j) => {
+                        return (
+                            <div key={j._id} style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                                {getIconByJoker(j.name, teams.find((t) => t._id === j.teamId)!.color, 64, 64)}
+                            </div>
+                        )
+                    })}
                 </div>}
                 {answers && teams && question.value !== -1 &&
                     <>

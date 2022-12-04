@@ -2,6 +2,8 @@ import React, {ReactNode, useMemo, useState} from "react";
 import Match, {GamePhases} from "../types/match";
 import axios from "axios";
 import {Credit} from "../components/questions/parts/credit-distribution";
+import Team from "../types/team";
+import Joker, {Jokers} from "../types/joker";
 
 interface GameValue {
     match: Match,
@@ -11,7 +13,9 @@ interface GameValue {
     setCurrentQuestionNum: (nextQuestionNum: number) => void,
     unlockUploadRound: () => void,
     lockUploadRound: () => void,
-    uploadCredits: (credits: Credit[], questionId: string) => void
+    uploadCredits: (credits: Credit[], questionId: string) => void,
+    addJokerToTeam: (team: Team, jokerName: Jokers) => void,
+    assignJokerToQuestion: (jokerId: string, questionId: string) => void,
 }
 
 const GameContext = React.createContext<GameValue | undefined>(undefined);
@@ -144,6 +148,35 @@ export const GameProvider = (props: { match: Match, children: ReactNode } ) => {
             });
     }
 
+    function addJokerToTeam(team: Team, jokerName: Jokers) {
+        setLoading(true);
+        const joker: Joker = { name: jokerName, teamId: team._id!, assignedQuestionId: undefined };
+        axios.post("/api/match/addJoker", { matchId: match._id, joker })
+            .then((res) => {
+                setLoading(true);
+                console.log(res);
+                setMatch({...res.data});
+            })
+            .catch((err) => {
+                console.error(err);
+                setLoading(false);
+            })
+    }
+
+    function assignJokerToQuestion(jokerId: string, questionId: string) {
+        setLoading(true);
+        axios.post("/api/match/assignJokerToQuestion", { matchId: match._id, jokerId, questionId })
+            .then((res) => {
+                setLoading(true);
+                console.log(res);
+                setMatch({...res.data});
+            })
+            .catch((err) => {
+                console.error(err);
+                setLoading(false);
+            })
+    }
+
     const value = {
         match,
         targetUploadRound,
@@ -152,7 +185,9 @@ export const GameProvider = (props: { match: Match, children: ReactNode } ) => {
         setCurrentQuestionNum,
         unlockUploadRound,
         lockUploadRound,
-        uploadCredits
+        uploadCredits,
+        addJokerToTeam,
+        assignJokerToQuestion
     };
 
     return <GameContext.Provider value={value}>

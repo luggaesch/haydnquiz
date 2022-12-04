@@ -148,7 +148,7 @@ export default function MediaContent({ question, rowEnd, shrink, onMediaConsumed
     function getBoxContentByQuestionType() {
         switch (question.type) {
             case QuestionTypes.Hearing:
-                return <AudioPlayer shrink={shrink} audio={Number(question.media!.content!)} onFinished={() => onMediaConsumed()} />
+                return <AudioPlayer shrink={shrink} audio={question.media!.content!} onFinished={() => onMediaConsumed()} />
             case QuestionTypes.Choice:
                 return (
                     <div style={{ width: "100%", height: "100%", display: "grid", gridTemplateRows: "1fr 1fr", gridTemplateColumns: "1fr 1fr", gridGap: 5 }}>

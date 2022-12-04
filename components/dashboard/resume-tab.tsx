@@ -1,5 +1,5 @@
 import Match from "../../types/match";
-import MatchItem from "../view/match-item";
+import MatchItem from "../../features/match/match-item";
 import {Dispatch, SetStateAction, useMemo} from "react";
 import {Empty} from "antd";
 import {DashboardTabs} from "../../pages/dashboard";
