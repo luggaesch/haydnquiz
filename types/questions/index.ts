@@ -1,9 +1,20 @@
 import {Topics} from "../../data/topics";
 import {Jokers} from "../../data/jokers";
-import {FormatQuote, Hearing, Image, ListAlt, Numbers, Sort, TextSnippet, VideoLibrary} from "@mui/icons-material";
+import {
+    FormatQuote,
+    Hearing,
+    Image,
+    ListAlt,
+    Numbers,
+    QuestionMark,
+    Sort,
+    TextSnippet,
+    VideoLibrary
+} from "@mui/icons-material";
 import Media, {MediaTypes} from "../media";
-import MediaQuestion from "./media-question";
 import {SortElement} from "../question";
+import {Category} from "./categorize-question";
+import {BiCategory} from "react-icons/bi";
 
 export enum QuestionTypes {
     Basic = "Basic",
@@ -13,7 +24,8 @@ export enum QuestionTypes {
     Video = "Video",
     Choice = "Choice",
     Sort = "Sort",
-    Guesstimate = "Guesstimate"
+    Guesstimate = "Guesstimate",
+    Categorize = "Categorize"
 }
 
 export enum SolutionTypes {
@@ -37,6 +49,7 @@ type Question = {
     choices?: string[];
     sortElements?: SortElement[];
     unit?: string;
+    categories?: Category[];
 }
 
 export function getIconByQuestionType(type: QuestionTypes) {
@@ -57,6 +70,10 @@ export function getIconByQuestionType(type: QuestionTypes) {
             return Sort;
         case QuestionTypes.Guesstimate:
             return Numbers;
+        case QuestionTypes.Categorize:
+            return BiCategory;
+        default:
+            return QuestionMark;
     }
 }
 

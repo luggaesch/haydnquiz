@@ -6,8 +6,10 @@ import {DarkMode, Home, LightMode} from "@mui/icons-material";
 import {useGameContext} from "../../contexts/GameContext";
 import {AiFillBackward, AiFillForward} from "react-icons/ai";
 import {useThemeSwitcher} from "react-css-theme-switcher";
+import {useMediaQuery} from "react-responsive";
 
 export default function RightDrawer({ open, setOpen, children }: { open: boolean, setOpen: Dispatch<SetStateAction<boolean>>, children: ReactNode }) {
+    const isMobile = useMediaQuery({ query: "(orientation: portrait)" })
     const { match, setPhase } = useGameContext();
     const [isDarkMode, setIsDarkMode] = useState(false);
     const { switcher, themes } = useThemeSwitcher();
@@ -20,7 +22,7 @@ export default function RightDrawer({ open, setOpen, children }: { open: boolean
     };
 
     return (
-        <Drawer headerStyle={{  borderBottom: "1px solid #333333", color: "white", height: "100%" }} bodyStyle={{ padding: 15 }} drawerStyle={{ color: "white", backgroundColor: "#222222", height: "100%" }} width={500} placement={'right'} open={open} onClose={() => setOpen(false)}
+        <Drawer headerStyle={{  borderBottom: "1px solid #333333", color: "white", height: "100%" }} bodyStyle={{ padding: 15 }} drawerStyle={{ color: "white", backgroundColor: "#222222", height: "100%" }} width={isMobile ? "100%" : 500} placement={'right'} open={open} onClose={() => setOpen(false)}
             extra={
             <Space style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr" }}>
                 <div className={styles.container} onClick={() => {toggleDarkMode()}}>

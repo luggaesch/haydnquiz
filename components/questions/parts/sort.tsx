@@ -4,20 +4,22 @@ import React, {useMemo, useState} from "react";
 import getAverageIndex from "../../../lib/median";
 import {SortElement} from "../../../types/question";
 import {FaArrowDown, FaArrowUp} from "react-icons/fa";
+import {useMediaQuery} from "react-responsive";
 
 const successAnimation = {
-    backgroundColor: ["#222", "rgba(0,255,139,0.67)", "#222"]
+    backgroundColor: ["#282828", "rgba(0,255,139,0.67)", "#282828"]
 }
 
 const failureAnimation = {
-    backgroundColor: ["#222", "rgba(255,83,83,0.67)", "#222"]
+    backgroundColor: ["#282828", "rgba(255,83,83,0.67)", "#282828"]
 }
 
 const selectedAnimation = {
-    backgroundColor: ["#222", "#333", "#444"],
+    backgroundColor: ["#282828", "#333", "#444"],
 }
 
 export default function SortMiniGameView({ sortElements, unit }: { sortElements: SortElement[], unit: string }) {
+    const isMobile = useMediaQuery({ query: "(orientation: portrait)" })
     const [orderedItems, setOrderedItems] = useState<SortElement[]>([sortElements[getAverageIndex(sortElements.map((e) => e.value))]]);
     const [selectedElementIndex, setSelectedElementIndex] = useState(-1);
     const isFinished = useMemo(() => {
@@ -93,14 +95,14 @@ export default function SortMiniGameView({ sortElements, unit }: { sortElements:
                                 repeat: 0
                             }}
                             className={styles.sortItem}
-                            onClick={() => handleElementClick(index)} key={index} style={{ display: orderedItems.indexOf(e) !== -1 ? "none" : "flex" }}>
+                            onClick={() => handleElementClick(index)} key={index} style={{ display: orderedItems.indexOf(e) !== -1 ? "none" : "flex", fontSize: isMobile ? 14 : "1em" }}>
                             {e.name}
                         </motion.div>
                     ))}
                 </div>
                 <div className={styles.sortRowGrid}>
                     {[...orderedItems].reverse().map((v, index, arr) => (
-                        <motion.div key={v.name + index} className={styles.sortItem} style={{ display: "grid", gridTemplateColumns: "15fr 1fr" }}
+                        <motion.div key={v.name + index} className={styles.sortItem} style={{ display: "grid", gridTemplateColumns: "15fr 1fr", fontSize: isMobile ? 14 : "1em" }}
                                     animate={(successIndex !== -1 && v.value === orderedItems[successIndex].value) ? successAnimation : {}}
                                     transition={{
                                         duration: 1,

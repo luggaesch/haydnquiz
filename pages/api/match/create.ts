@@ -10,7 +10,7 @@ export default async function handler(
     res: NextApiResponse
 ) {
     if (req.method === "POST") {
-        const { quizId, teamIds } = req.body;
+        const { quizId, teamIds, phase } = req.body;
         if (!quizId || !teamIds) {
             res.status(500).send("No Quiz or Teams provided.");
             return;
@@ -25,7 +25,7 @@ export default async function handler(
             user: session.user.id,
             quiz: quizId,
             teams: teamIds,
-            phase: GamePhases.Playing,
+            phase: phase ?? GamePhases.Playing,
             currentQuestionIndex: 0
         });
         res.send(JSON.stringify(match));

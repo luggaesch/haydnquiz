@@ -8,6 +8,7 @@ import {GamePhases} from "../../types/match";
 import TrophyScreen from "../../components/questions/trophy-screen";
 import UploadRoundDisplay from "../../components/questions/parts/upload-round-display";
 import styles from "./match.module.css";
+import Tutorial from "../tutorial";
 
 export default function MatchContent() {
     const { match, targetUploadRound, setPhase, setCurrentQuestionNum, uploadCredits } = useGameContext();
@@ -19,6 +20,10 @@ export default function MatchContent() {
 
     function getComponent() {
         switch (match.phase) {
+            case GamePhases.Introduction:
+                return (
+                    <Tutorial onSubmit={() => setPhase(GamePhases.Playing)} />
+                );
             case GamePhases.Playing:
                 if (showQRCodes) {
                     return (

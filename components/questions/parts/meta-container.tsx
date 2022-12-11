@@ -1,4 +1,4 @@
-import Question, {getIconByQuestionType} from "../../../types/question";
+import Question, {getIconByQuestionType} from "../../../types/questions";
 import React, {useMemo} from "react";
 import {getColorByTopic, getIconByTopic} from "../../../data/topics";
 import styles from "../../../styles/index.module.css";

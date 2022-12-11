@@ -23,7 +23,7 @@ export default function PopupContainer({ children, open, setOpen }: { open: bool
                             width: "100vw", height: "100vh", position: "absolute", zIndex: 100, top: "0vh", left: "0vw", display: "flex", justifyContent: "center", alignItems: "center", overflow: "hidden"
                         }}
                     >
-                        <div style={{ background: "var(--dark-paper)", width: "98%", height: "98%", borderRadius: 8, overflow: "hidden" }}>
+                        <div style={{ background: "var(--dark-paper)", width: "98%", height: "98%", borderRadius: 8, overflow: "hidden", fontSize: 8 }}>
                             {children}
                         </div>
                         <div style={{ cursor: "pointer", borderRadius: 8, display: "flex", justifyContent: "center", alignItems: "center", position: "absolute", bottom: "1.2%", left: "50%", transform: "translateX(-50%)", color: "var(--text)", width: 50, height: 50, backgroundColor: "#11111160" }}

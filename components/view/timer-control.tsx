@@ -4,6 +4,7 @@ import styles from "../../styles/timer.module.css";
 import {Progress} from "antd";
 import {PauseOutlined} from "@ant-design/icons";
 import {PlayArrowOutlined} from "@mui/icons-material";
+import {useMediaQuery} from "react-responsive";
 
 interface TimerProps {
     totalTime: number,
@@ -12,6 +13,7 @@ interface TimerProps {
 }
 
 export default function TimerControl({ totalTime, playCountdown, ...rest}: TimerProps) {
+    const isMobile = useMediaQuery({ query: "(orientation: portrait)" })
     const expiryTimestamp = useMemo(() => {
         const date = new Date();
         return new Date(date.getTime() + totalTime * 1000);
@@ -31,7 +33,7 @@ export default function TimerControl({ totalTime, playCountdown, ...rest}: Timer
 
     return (
         <div {...rest}>
-            <div style={{ zIndex: 105, position: "relative" }}  className={styles.container} onMouseEnter={() => setShowControl(true)} onMouseLeave={() => setShowControl(false)}>
+            <div style={{ zIndex: 105, position: "relative", width: isMobile ? 80 : 200 }}  className={styles.container} onMouseEnter={() => setShowControl(true)} onMouseLeave={() => setShowControl(false)}>
                 {showControl ?
                     <div className={styles.iconButton} style={{ zIndex: 2 }} onClick={() => {
                         if (!isRunning) {
@@ -42,9 +44,11 @@ export default function TimerControl({ totalTime, playCountdown, ...rest}: Timer
                         {isRunning ? <PauseOutlined style={{ fontSize: "inherit" }} /> : <PlayArrowOutlined style={{ fontSize: "inherit" }} />}
                     </div>
                     : <div className={styles.secondDisplay}>
-                        <p>{totalTime - currentTime}</p>
+                        <p style={isMobile ? { fontSize: 24 } : {}}>{totalTime - currentTime}</p>
                     </div>}
-                <Progress type={"circle"} width={200} trailColor="#aaaaaab0" strokeColor="rgb(0,255,139)" style={{ width: "100%", height: "100%", gridColumn: 1, gridRow: 1 }} showInfo={false} percent={percent} />
+                <div style={{ width: "100%", height: "100%", gridColumn: 1, gridRow: 1, display: "flex", justifyContent: "center", alignItems: "center" }}>
+                    <Progress type={"circle"} width={isMobile ? 80 : 200} trailColor="#aaaaaab0" strokeColor="rgb(0,255,139)"  showInfo={false} percent={percent} />
+                </div>
             </div>
         </div>
     )

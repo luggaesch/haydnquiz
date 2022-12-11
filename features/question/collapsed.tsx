@@ -1,4 +1,4 @@
-import Question from "../../types/question";
+import Question from "../../types/questions";
 import MetaContainer from "../../components/questions/parts/meta-container";
 import React, {useState} from "react";
 import QuestionWrapper from "./index";

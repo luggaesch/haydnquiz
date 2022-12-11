@@ -8,7 +8,7 @@
     color: var(--text) !important;
     grid-column: 1;
     grid-row: 1;
-    font-size: 3rem !important;
+    font-size: 3rem;
     display: flex;
     justify-content: center;
     align-items: center;

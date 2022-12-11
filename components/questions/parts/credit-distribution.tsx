@@ -3,7 +3,7 @@ import SolutionContent from "./solution-content";
 import React, {useMemo, useState} from "react";
 import Team from "../../../types/team";
 import Answer from "../../../types/answer";
-import Question from "../../../types/question";
+import Question from "../../../types/questions";
 import {Done} from "@mui/icons-material";
 import CoverOverlay from "../../view/cover-overlay";
 

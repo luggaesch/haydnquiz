@@ -7,7 +7,7 @@ import {Close} from "@mui/icons-material";
 import {FaPlus} from "react-icons/fa";
 import PopupContainer from "../../components/questions/parts/popup-container";
 import Index from "../../features/question/form";
-import Question from "../../types/question";
+import Question from "../../types/questions";
 import {
     DragDropContext,
     Draggable,

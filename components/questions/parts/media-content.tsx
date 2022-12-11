@@ -3,7 +3,7 @@ import ReactPlayer from "react-player";
 import Image from "next/image";
 import React, {useState} from "react";
 import AudioPlayer from "./audio-player";
-import Question, {QuestionTypes} from "../../../types/question";
+import Question, {QuestionTypes} from "../../../types/questions";
 import {FaArrowUp} from "react-icons/fa";
 import PopupContainer from "./popup-container";
 import SortMiniGameView from "./sort";
@@ -11,6 +11,8 @@ import shuffle from "../../../lib/shuffle";
 import {MediaTypes} from "../../../types/media";
 import Team from "../../../types/team";
 import GuesstimateGame from "../guesstimate";
+import CategorizeMiniGame from "../../../features/question/categorize";
+import {useMediaQuery} from "react-responsive";
 
 function getBorderRadiusByImageIndex(index: number) {
     switch (index) {
@@ -32,6 +34,8 @@ function getPopupContentByQuestionType(question: Question, teams?: Team[]) {
         return (
             <SortMiniGameView sortElements={shuffle(question.sortElements!)} unit={question.unit!}/>
         )
+    } else if (question.type === QuestionTypes.Categorize) {
+        return <CategorizeMiniGame categories={question.categories!} />
     } else if (question.type === QuestionTypes.Guesstimate) {
         return (
             <GuesstimateGame solution={Number(question.solution)} teams={teams!} />
@@ -141,7 +145,7 @@ function getPopupContentByQuestionType(question: Question, teams?: Team[]) {
     }
 }
 
-export default function MediaContent({ question, rowEnd, shrink, onMediaConsumed, teams }: { question: Question, rowEnd: number, shrink?: boolean, onMediaConsumed: () => void, teams?: Team[] }) {
+export default function MediaContent({ question, rowEnd, shrink, onMediaConsumed, teams, ...rest }: { question: Question, rowEnd: number, shrink?: boolean, onMediaConsumed: () => void, teams?: Team[], [x:string]: any }) {
     const [mediaOpen, setMediaOpen] = useState(false);
     console.log(teams);
 
@@ -170,7 +174,7 @@ export default function MediaContent({ question, rowEnd, shrink, onMediaConsumed
     }
 
     return (
-        <div className={styles.mediaContainer} style={{ gridRowStart: rowEnd, background: question.type === QuestionTypes.Choice ? "transparent" : "var(--question-item)" }}>
+        <div className={styles.mediaContainer} style={{ gridRowStart: rowEnd, background: question.type === QuestionTypes.Choice ? "transparent" : "var(--question-item)" }} {...rest}>
             {getBoxContentByQuestionType()}
             <PopupContainer open={mediaOpen} setOpen={setMediaOpen}>
                 {getPopupContentByQuestionType(question, teams)}
