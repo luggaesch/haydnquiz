@@ -23,15 +23,16 @@ export default function NewGameTab({ selectedQuizId, setSelectedQuizId, quizzes,
         return teams.filter((t) => selectedTeamIds.includes(t._id!))
     }, [teams, selectedTeamIds]);
     const [showIntro, setShowIntro] = useState(true);
+    const [selectableTopics, setSelectableTopics] = useState(true);
 
     async function handleSubmit() {
-        const res = await axios.post("/api/match/create", { quizId: selectedQuizId, phase: showIntro ? GamePhases.Introduction : GamePhases.Playing, teamIds: selectedTeams.map((t) => t._id) });
+        const res = await axios.post("/api/match/create", { quizId: selectedQuizId, phase: selectableTopics ? GamePhases.TopicSelection : showIntro ? GamePhases.Introduction : GamePhases.Playing, teamIds: selectedTeams.map((t) => t._id) });
         push("/quiz/play/" + res.data._id);
     }
 
     return (
         <div className={styles.dashboardTab}>
-            <div style={{ width: "75%", height: "90%", padding: 10, display: "grid", gridTemplateRows: "1fr 1.8fr 0.5fr 0.3fr", gridGap: 15 }}>
+            <div style={{ width: "75%", height: "90%", padding: 10, display: "grid", gridTemplateRows: "0.5fr 1.8fr 0.5fr 0.5fr 0.3fr", gridGap: 15 }}>
                 <div className={styles.tabContainer} style={{ gridTemplateRows: "1fr 2fr" }}>
                     <p>Quiz</p>
                     <div>
@@ -121,6 +122,9 @@ export default function NewGameTab({ selectedQuizId, setSelectedQuizId, quizzes,
                 </div>
                 <div className={styles.tabContainer}>
                     <div style={{ display: "grid", gridTemplateColumns: "1fr 5fr", alignItems: "center" }}><Checkbox onChange={() => setShowIntro(!showIntro)} checked={showIntro} style={{ width: 50 }} />Show Introduction</div>
+                </div>
+                <div className={styles.tabContainer}>
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 5fr", alignItems: "center" }}><Checkbox onChange={() => setSelectableTopics(!selectableTopics)} checked={selectableTopics} style={{ width: 50 }} />Allow Topic Selection</div>
                 </div>
                 <div onClick={handleSubmit} className={styles.tabSubmit}><FaPlay /> </div>
             </div>

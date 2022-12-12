@@ -8,11 +8,13 @@ import {GamePhases} from "../../types/match";
 import TrophyScreen from "../../components/questions/trophy-screen";
 import UploadRoundDisplay from "../../components/questions/parts/upload-round-display";
 import styles from "./match.module.css";
-import Tutorial from "../tutorial";
+import Tutorial from "../startup/tutorial";
+import TopicSelection from "../startup/topic-selection";
 
 export default function MatchContent() {
     const { match, targetUploadRound, setPhase, setCurrentQuestionNum, uploadCredits } = useGameContext();
     const [showQRCodes, setShowQRCodes] = useState(targetUploadRound !== -1);
+    const [showTopicSelect, setShowTopicSelect] = useState(false);
 
     useEffect(() => {
         setShowQRCodes(targetUploadRound !== -1);
@@ -20,6 +22,11 @@ export default function MatchContent() {
 
     function getComponent() {
         switch (match.phase) {
+            case GamePhases.TopicSelection:
+                match.teams[0].selectedTopic
+                return !showTopicSelect ? (
+                    <Tutorial onSubmit={() => setShowTopicSelect(true)} />
+                ) : <TopicSelection teams={match.teams} onSubmit={() => setPhase(GamePhases.Playing)} />
             case GamePhases.Introduction:
                 return (
                     <Tutorial onSubmit={() => setPhase(GamePhases.Playing)} />

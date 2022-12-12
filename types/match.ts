@@ -4,6 +4,7 @@ import Answer from "./answer";
 import Joker from "./joker";
 
 export enum GamePhases {
+    TopicSelection = -2,
     Introduction = -1,
     Playing,
     Transition,

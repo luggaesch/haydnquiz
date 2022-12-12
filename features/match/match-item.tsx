@@ -20,7 +20,7 @@ export default function MatchItem({ match }: { match: Match }) {
                     </div>
                     <QuestionWrapper fontSize={5} hideTimer={true} hideOverlay={true} question={match.quiz.questions[match.currentQuestionIndex]} />
                 </div>
-                <TeamDisplay jokers={match.jokers} currentJokerName={undefined} handleJokerAdd={() => {}} handleJokerAssign={() => {}} teams={match.teams} />
+                <TeamDisplay jokers={match.jokers} currentJokerName={undefined} handleJokerDelete={() => {}} handleJokerAdd={() => {}} handleJokerToggle={() => {}} handleJokerTransfer={() => {}} teams={match.teams} />
             </div>
             <div className={styles.resumeContainer}>
                 <Link href={"/quiz/play/" + match._id}>

@@ -15,6 +15,7 @@ import PopupContainer from "../../components/questions/parts/popup-container";
 import Topics from "../../components/match/topics";
 import MatchContent from "./match-content";
 import styles from "./match.module.css";
+import {current} from "immer";
 
 const themes = {
     light: '/theme/light.css',
@@ -22,7 +23,7 @@ const themes = {
 };
 
 export default function MatchComponent() {
-    const { match, setPhase, setCurrentQuestionNum, addJokerToTeam, assignJokerToQuestion } = useGameContext();
+    const { match, setPhase, setCurrentQuestionNum, addJokerToTeam, assignJokerToQuestion, unassignJoker, deleteJoker, transferJoker } = useGameContext();
     const [open, setOpen] = useState(false);
     const [showOverlay, setShowOverlay] = useState(false);
 
@@ -39,8 +40,22 @@ export default function MatchComponent() {
         addJokerToTeam(team, jokerName);
     }
 
-    function handleJokerAssign(jokerId: string) {
-        assignJokerToQuestion(jokerId, match.quiz.questions[match.currentQuestionIndex]._id!);
+    function handleJokerToggle(jokerId: string) {
+        if (match.jokers.find((j) => j._id === jokerId)?.assignedQuestionId) {
+            unassignJoker(jokerId);
+        } else {
+            const question = match.quiz.questions[match.currentQuestionIndex];
+            if (question.jokerReward) return;
+            assignJokerToQuestion(jokerId, match.quiz.questions[match.currentQuestionIndex]._id!);
+        }
+    }
+
+    function handleJokerDelete(jokerId: string) {
+        deleteJoker(jokerId);
+    }
+
+    function handleJokerTransfer(jokerId: string, teamId: string) {
+        transferJoker(jokerId, teamId);
     }
 
     return (
@@ -51,7 +66,11 @@ export default function MatchComponent() {
                     <TopicOverlayToggle setShowOverlay={setShowOverlay} />
                 </div>
                 <div className={styles.teamContainer}>
-                    <TeamDisplay jokers={match.jokers} teams={match.teams} handleJokerAssign={handleJokerAssign} handleJokerAdd={handleJokerAdd} currentJokerName={match.quiz.questions[match.currentQuestionIndex].jokerReward} />
+                    <TeamDisplay jokers={match.jokers} teams={match.teams} handleJokerToggle={handleJokerToggle} handleJokerAdd={handleJokerAdd}
+                                 currentJokerName={match.quiz.questions[match.currentQuestionIndex].jokerReward}
+                                 handleJokerDelete={handleJokerDelete}
+                                 handleJokerTransfer={handleJokerTransfer}
+                    />
                 </div>
                 <div className={styles.progressContainer}>
                     <TopicQueue handleQueueItemClick={handleQueueItemClick} currentQuestionIndex={match.currentQuestionIndex} questions={match.quiz.questions} />

@@ -3,9 +3,12 @@ import styles from "../../styles/team.module.css";
 import Team from "../../types/team";
 import Joker, {Jokers} from "../../types/joker";
 import {getIconByJoker} from "../../data/jokers";
-import {IconButton} from "@mui/material";
+import {IconButton, Popover} from "@mui/material";
+import {usePopupState} from "material-ui-popup-state/hooks";
+import {bindPopover, bindTrigger} from "material-ui-popup-state";
+import {useGameContext} from "../../contexts/GameContext";
 
-export default function TeamDisplay({ teams, jokers, currentJokerName, handleJokerAdd, handleJokerAssign  }: { teams: Team[], jokers: Joker[], currentJokerName: Jokers | undefined, handleJokerAdd: (team: Team, jokerName: Jokers) => void, handleJokerAssign: (jokerId: string) => void }) {
+export default function TeamDisplay({ teams, jokers, currentJokerName, handleJokerAdd, handleJokerToggle, handleJokerDelete, handleJokerTransfer  }: { teams: Team[], jokers: Joker[], currentJokerName: Jokers | undefined, handleJokerAdd: (team: Team, jokerName: Jokers) => void, handleJokerToggle: (jokerId: string) => void, handleJokerDelete: (jokerId: string) => void, handleJokerTransfer: (jokerId: string, teamId: string) => void }) {
 
     return (
         <div className={styles.container}>
@@ -28,16 +31,91 @@ export default function TeamDisplay({ teams, jokers, currentJokerName, handleJok
                                 {currentJokerName && !jokers.find((j) => j.name === currentJokerName && j.teamId === t._id) && <IconButton style={{ borderRadius: "50%", backgroundColor: "#222" }} onClick={() => handleJokerAdd(t, currentJokerName)}>
                                     <Add style={{ color: "white" }} />
                                 </IconButton>}
-                                {teamJokers.map((j) => (
-                                    <div key={j._id} onClick={() => handleJokerAssign(j._id!)} style={{ cursor: "pointer" }}>
-                                        {getIconByJoker(j.name, j.assignedQuestionId ? t.color + "30" : t.color, 32, 32)}
-                                    </div>
+                                {teamJokers.map((j, index) => (
+                                    <JokerIcon joker={j} team={t} key={index} handleToggle={() => handleJokerToggle(j._id!)} handleDelete={() => handleJokerDelete(j._id!)} handleTransfer={(teamId) => handleJokerTransfer(j._id!, teamId)}  />
                                 ))}
                             </div>
                         </div>
                     )
                 })}
             </div>
+        </div>
+    )
+}
+
+function JokerIcon({ joker, team, handleToggle, handleTransfer, handleDelete }: { joker: Joker, team: Team, handleToggle: () => void, handleTransfer: (teamId: string) => void, handleDelete: () => void }) {
+    const popupState = usePopupState({
+        variant: 'popover',
+        popupId: 'demoPopover',
+    })
+
+    return (
+        <div>
+            <div style={{ cursor: "pointer" }} {...bindTrigger(popupState)}>
+                {getIconByJoker(joker.name, joker.assignedQuestionId ? team.color + "30" : team.color, 32, 32)}
+            </div>
+            <Popover
+                {...bindPopover(popupState)}
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'center',
+                }}
+                transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'center',
+                }}
+            >
+                <div style={{ backgroundColor: "#222", color: "white", fontSize: 22, width: 200 }}>
+                    <div style={{ cursor: "pointer", textAlign: "center", borderBottom: "1px solid #11111180", padding: 10 }} onClick={() => {
+                        handleToggle();
+                        popupState.close();
+                    }}>{!joker.assignedQuestionId ? "Anwenden" : "Lösen"}</div>
+                    <div style={{ cursor: "pointer", textAlign: "center", borderBottom: "1px solid #11111180", padding: 10 }} onClick={() => {
+                        handleDelete();
+                        popupState.close();
+                    }}>Entfernen</div>
+                    <Transfer handleClick={(teamId) => {
+                        handleTransfer(teamId);
+                        popupState.close();
+                    }} team={team} />
+                </div>
+            </Popover>
+        </div>
+    )
+}
+
+function Transfer({ team, handleClick }: { team: Team, handleClick: (teamId: string) => void  }) {
+    const { match } = useGameContext();
+    const popupState = usePopupState({
+        variant: 'popover',
+        popupId: 'demoPopover',
+    })
+
+    return (
+        <div>
+            <div {...bindTrigger(popupState)} style={{ cursor: "pointer", textAlign: "center", padding: 10 }}>Übertragen</div>
+            <Popover
+                {...bindPopover(popupState)}
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'center',
+                }}
+                transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'center',
+                }}
+            >
+                <div style={{ backgroundColor: "#222", color: "white", fontSize: 22, width: 200, marginTop: 10 }}>
+                    {match.teams.filter((t) => t._id !== team._id).map((t, index) => (
+                        <div key={index} style={{ cursor: "pointer", textAlign: "center", borderBottom: "1px solid #11111180", padding: 10 }} onClick={() => {
+                            handleClick(t._id!);
+                            popupState.close();
+                        }}>
+                            Zu {t.name}
+                        </div>
+                    ))}
+                </div>
+            </Popover>
         </div>
     )
 }

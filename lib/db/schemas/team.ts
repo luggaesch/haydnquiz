@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import {QuestionTypes} from "../../../types/question";
 
 const TeamSchema = new mongoose.Schema({
     user: {
@@ -17,6 +18,11 @@ const TeamSchema = new mongoose.Schema({
     color: {
         type: String,
         required: true
+    },
+    selectedTopic: {
+        type: String,
+        enum: QuestionTypes,
+        required: false,
     }
 })
 

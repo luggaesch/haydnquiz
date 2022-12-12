@@ -16,6 +16,10 @@ interface GameValue {
     uploadCredits: (credits: Credit[], questionId: string) => void,
     addJokerToTeam: (team: Team, jokerName: Jokers) => void,
     assignJokerToQuestion: (jokerId: string, questionId: string) => void,
+    unassignJoker: (jokerId: string) => void,
+    deleteJoker: (jokerId: string) => void,
+    transferJoker: (jokerId: string, teamId: string) => void,
+    setSelectedTopics: (teams: Team[]) => void,
 }
 
 const GameContext = React.createContext<GameValue | undefined>(undefined);
@@ -167,8 +171,58 @@ export const GameProvider = (props: { match: Match, children: ReactNode } ) => {
         setLoading(true);
         axios.post("/api/match/assignJokerToQuestion", { matchId: match._id, jokerId, questionId })
             .then((res) => {
-                setLoading(true);
-                console.log(res);
+                setLoading(false);
+                setMatch({...res.data});
+            })
+            .catch((err) => {
+                console.error(err);
+                setLoading(false);
+            })
+    }
+
+    function unassignJoker(jokerId: string) {
+        setLoading(true);
+        axios.post("/api/match/unassignJoker", { matchId: match._id, jokerId })
+            .then((res) => {
+                setLoading(false);
+                setMatch({...res.data});
+            })
+            .catch((err) => {
+                console.error(err);
+                setLoading(false);
+            })
+    }
+
+    function deleteJoker(jokerId: string) {
+        setLoading(true);
+        axios.post("/api/match/deleteJoker", { matchId: match._id, jokerId })
+            .then((res) => {
+                setLoading(false);
+                setMatch({...res.data});
+            })
+            .catch((err) => {
+                console.error(err);
+                setLoading(false);
+            })
+    }
+
+    function transferJoker(jokerId: string, teamId: string) {
+        axios.post("/api/match/transferJoker", { matchId: match._id, jokerId, teamId })
+            .then((res) => {
+                setLoading(false);
+                setMatch({...res.data});
+            })
+            .catch((err) => {
+                console.error(err);
+                setLoading(false);
+            })
+    }
+
+    function setSelectedTopics(teams: Team[]) {
+        setLoading(true);
+        axios.post("/api/match/setTopicsForTeams", { matchId: match._id, teams })
+            .then((res) => {
+                setLoading(false);
                 setMatch({...res.data});
             })
             .catch((err) => {
@@ -187,7 +241,11 @@ export const GameProvider = (props: { match: Match, children: ReactNode } ) => {
         lockUploadRound,
         uploadCredits,
         addJokerToTeam,
-        assignJokerToQuestion
+        assignJokerToQuestion,
+        unassignJoker,
+        deleteJoker,
+        transferJoker,
+        setSelectedTopics
     };
 
     return <GameContext.Provider value={value}>
