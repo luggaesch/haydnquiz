@@ -32,7 +32,7 @@ export default function NewGameTab({ selectedQuizId, setSelectedQuizId, quizzes,
 
     return (
         <div className={styles.dashboardTab}>
-            <div style={{ width: "75%", height: "90%", padding: 10, display: "grid", gridTemplateRows: "0.5fr 1.8fr 0.5fr 0.5fr 0.3fr", gridGap: 15 }}>
+            <div style={{ width: "75%", height: "90%", padding: 10, display: "grid", gridTemplateRows: "0.3fr 1.8fr 0.3fr 0.3fr 0.5fr", gridGap: 15 }}>
                 <div className={styles.tabContainer} style={{ gridTemplateRows: "1fr 2fr" }}>
                     <p>Quiz</p>
                     <div>

@@ -95,14 +95,14 @@ export default function SortMiniGameView({ sortElements, unit }: { sortElements:
                                 repeat: 0
                             }}
                             className={styles.sortItem}
-                            onClick={() => handleElementClick(index)} key={index} style={{ display: orderedItems.indexOf(e) !== -1 ? "none" : "flex", fontSize: isMobile ? 14 : "1em" }}>
+                            onClick={() => handleElementClick(index)} key={index} style={{ display: orderedItems.indexOf(e) !== -1 ? "none" : "flex", fontSize: isMobile ? 14 : "2.8rem" }}>
                             {e.name}
                         </motion.div>
                     ))}
                 </div>
                 <div className={styles.sortRowGrid}>
                     {[...orderedItems].reverse().map((v, index, arr) => (
-                        <motion.div key={v.name + index} className={styles.sortItem} style={{ display: "grid", gridTemplateColumns: "15fr 1fr", fontSize: isMobile ? 14 : "1em" }}
+                        <motion.div key={v.name + index} className={styles.sortItem} style={{ display: "grid", gridTemplateColumns: "15fr 1fr", fontSize: isMobile ? 14 : "2.8rem" }}
                                     animate={(successIndex !== -1 && v.value === orderedItems[successIndex].value) ? successAnimation : {}}
                                     transition={{
                                         duration: 1,
