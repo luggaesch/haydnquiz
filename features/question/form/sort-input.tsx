@@ -3,14 +3,12 @@ import {Form, Input, InputNumber} from "antd";
 import {useState} from "react";
 import {SortElement} from "../../../types/questions/sort-question";
 
-export default function SortInput({ unit, items }: { unit: string, items: SortElement[], setUnit: (unit: string) => void, setSortItems: (sortItems: SortElement[]) => void }) {
-    const [unitValue, setUnitValue] = useState(unit);
-    const [sortItems, setSortItems] = useState<SortElement[]>(items);
+export default function SortInput({ unit, sortItems, setUnit, setSortItems }: { unit: string, sortItems: SortElement[], setUnit: (unit: string) => void, setSortItems: (sortItems: SortElement[]) => void }) {
 
     return (
         <Form.Item label="Items to Sort" className={styles.form}>
             <Form.Item style={{ width: "100%" }}>
-                <Input style={{ width:" 45%" }} onChange={(event) => setUnitValue(event.target.value)} placeholder="m/s" value={unit} />
+                <Input style={{ width:" 45%" }} onChange={(event) => setUnit(event.target.value)} placeholder="m/s" value={unit} />
                 <InputNumber style={{ width: "30%" }} onChange={(value) => {
                     if (value > sortItems.length) {
                         for (let i = sortItems.length; i < value; i++) sortItems.push({ name: "", value: 0 });

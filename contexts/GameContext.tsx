@@ -14,6 +14,7 @@ interface GameValue {
     unlockUploadRound: () => void,
     lockUploadRound: () => void,
     uploadCredits: (credits: Credit[], questionId: string) => void,
+    deleteAnswer: (answerId: string) => void,
     addJokerToTeam: (team: Team, jokerName: Jokers) => void,
     assignJokerToQuestion: (jokerId: string, questionId: string) => void,
     unassignJoker: (jokerId: string) => void,
@@ -152,6 +153,19 @@ export const GameProvider = (props: { match: Match, children: ReactNode } ) => {
             });
     }
 
+    function deleteAnswer(answerId: string) {
+        setLoading(true);
+        axios.post("/api/match/removeAnswer", { matchId: match._id, answerId })
+            .then((res) => {
+                setLoading(false);
+                setMatch({...res.data});
+            })
+            .catch((err) => {
+                console.error(err);
+                setLoading(false);
+            })
+    }
+
     function addJokerToTeam(team: Team, jokerName: Jokers) {
         setLoading(true);
         const joker: Joker = { name: jokerName, teamId: team._id!, assignedQuestionId: undefined };
@@ -240,6 +254,7 @@ export const GameProvider = (props: { match: Match, children: ReactNode } ) => {
         unlockUploadRound,
         lockUploadRound,
         uploadCredits,
+        deleteAnswer,
         addJokerToTeam,
         assignJokerToQuestion,
         unassignJoker,

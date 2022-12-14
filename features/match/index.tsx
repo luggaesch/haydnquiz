@@ -16,6 +16,8 @@ import Topics from "../../components/match/topics";
 import MatchContent from "./match-content";
 import styles from "./match.module.css";
 import {current} from "immer";
+import MatchAdminToggle from "../../components/view/match-admin-toggle";
+import MatchAdmin from "./admin";
 
 const themes = {
     light: '/theme/light.css',
@@ -26,6 +28,7 @@ export default function MatchComponent() {
     const { match, setPhase, setCurrentQuestionNum, addJokerToTeam, assignJokerToQuestion, unassignJoker, deleteJoker, transferJoker } = useGameContext();
     const [open, setOpen] = useState(false);
     const [showOverlay, setShowOverlay] = useState(false);
+    const [showAdmin, setShowAdmin] = useState(false);
 
     function handleQueueItemClick(index: number) {
         if (match.phase < GamePhases.Playing) {
@@ -64,6 +67,7 @@ export default function MatchComponent() {
                 <div className={styles.introButtons}>
                     <Soundcheck open={open} />
                     <TopicOverlayToggle setShowOverlay={setShowOverlay} />
+                    <MatchAdminToggle showOverlay={showAdmin} setShowOverlay={setShowAdmin} />
                 </div>
                 <div className={styles.teamContainer}>
                     <TeamDisplay jokers={match.jokers} teams={match.teams} handleJokerToggle={handleJokerToggle} handleJokerAdd={handleJokerAdd}
@@ -83,6 +87,7 @@ export default function MatchComponent() {
             <PopupContainer open={showOverlay} setOpen={setShowOverlay} >
                 <Topics />
             </PopupContainer>
+            {showAdmin && <MatchAdmin match={match} />}
             <MatchContent  />
         </ThemeSwitcherProvider>
     )

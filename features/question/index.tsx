@@ -90,7 +90,7 @@ function QuestionView({ index, question, answers, teams, jokers, hideTimer, hide
                             <FaLightbulb className={styles.icon} />
                         </div>
                         <PopupContainer open={solutionOpen} setOpen={setSolutionOpen}>
-                            <CreditDistribution teams={teams} answers={answers} question={question} onFinished={(credits) => {
+                            <CreditDistribution currentJokers={jokers ?? []} teams={teams} answers={answers} question={question} onFinished={(credits) => {
                                 setSolutionOpen(false);
                                 uploadCredits && uploadCredits(credits, question._id!);
                             }} />
@@ -151,7 +151,7 @@ function QuestionViewMobile({ index, question, answers, teams, jokers, hideTimer
                             <FaLightbulb className={styles.icon} />
                         </div>
                         <PopupContainer open={solutionOpen} setOpen={setSolutionOpen}>
-                            <CreditDistribution teams={teams} answers={answers} question={question} onFinished={(credits) => {
+                            <CreditDistribution currentJokers={jokers ?? []} teams={teams} answers={answers} question={question} onFinished={(credits) => {
                                 setSolutionOpen(false);
                                 uploadCredits && uploadCredits(credits, question._id!);
                             }} />

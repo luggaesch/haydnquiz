@@ -7,6 +7,8 @@ import Media, {MediaTypes} from "../../../types/media";
 import styles from "../../../styles/form.module.css";
 import QuestionWrapper from "../index";
 import MediaUpload from "./media-upload";
+import {Category} from "../../../types/questions/categorize-question";
+import CategoryInput from "./category-input";
 import SortInput from "./sort-input";
 
 const { Option } = Select;
@@ -33,13 +35,14 @@ export default function Index({ question, onSubmit }: { question?: Question, onS
     const [choices, setChoices] = useState<string[]>((question && question.choices) ? question.choices : ["A", "B", "C", "D"]);
     const [unit, setUnit] = useState((question && question.unit) ? question.unit : "");
     const [sortItems, setSortItems] = useState<{ name: string, value: number}[]>((question && question.sortElements) ? question.sortElements : [{ name: "", value: 0 }]);
+    const [categories, setCategories] = useState<Category[]>((question && question.categories) ? question.categories : []);
 
     async function handleSubmit() {
         const question: Question = {
             topic,
             type: questionType,
             caption,
-            timeInSeconds: questionType === QuestionTypes.Sort ? -1 : time,
+            timeInSeconds: questionType === QuestionTypes.Sort || questionType !== QuestionTypes.Categorize ? -1 : time,
             value: hasJokerValue ? -1 : questionValue,
             jokerReward: hasJokerValue ? joker : undefined,
             solution: solutionContent !== "" ? solutionContent : solutionFile[0] && solutionFile[0].url ? solutionFile[0].url : "...",
@@ -61,6 +64,8 @@ export default function Index({ question, onSubmit }: { question?: Question, onS
             case QuestionTypes.Choice:
                 onSubmit({ ...question, choices });
                 return;
+            case QuestionTypes.Categorize:
+                onSubmit({ ...question, categories });
         }
         onSubmit(question);
     }
@@ -89,7 +94,7 @@ export default function Index({ question, onSubmit }: { question?: Question, onS
                 <Form.Item name="caption" label="Caption" className={styles.form}>
                     <Input.TextArea onChange={(event) => setCaption(event.target.value)} value={caption} maxLength={100} />
                 </Form.Item>
-                {questionType !== QuestionTypes.Sort && <Form.Item label="Time" className={styles.form}>
+                {questionType !== QuestionTypes.Sort && questionType !== QuestionTypes.Categorize && <Form.Item label="Time" className={styles.form}>
                     <Form.Item name="time">
                         <InputNumber defaultValue={time} value={time} onChange={(value) => setTime(value)} style={{ width: "30%" }} min={30} max={300} />
                         <span className="ant-form-text"> seconds</span>
@@ -132,7 +137,8 @@ export default function Index({ question, onSubmit }: { question?: Question, onS
                                 }} />
                             ))}
                         </Form.Item>
-                        : questionType === QuestionTypes.Sort && <SortInput unit={unit} setUnit={setUnit} items={sortItems} setSortItems={setSortItems} />
+                        : questionType === QuestionTypes.Categorize ? <CategoryInput categories={categories} setCategories={setCategories} />
+                        : questionType === QuestionTypes.Sort && <SortInput unit={unit} setUnit={setUnit} sortItems={sortItems} setSortItems={setSortItems} />
                 }
                 {questionType === QuestionTypes.Guesstimate ?
                     <Form.Item label="Correct Guess" className={styles.form}>
@@ -147,7 +153,7 @@ export default function Index({ question, onSubmit }: { question?: Question, onS
                             </Select>
                         </Form.Item>
                         :
-                        questionType !== QuestionTypes.Sort &&
+                        questionType !== QuestionTypes.Sort && questionType !== QuestionTypes.Categorize &&
                         <Form.Item label="Solution" className={styles.form}>
                             <Radio.Group style={{ marginBottom: 20 }} value={solutionType} onChange={(event) => setSolutionType(event.target.value) }>
                                 {Object.values(SolutionTypes).map((type, index) => (

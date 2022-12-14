@@ -11,6 +11,7 @@
     color: white;
     box-shadow: var(--elevation-shadow);
     height: 100px;
+    font-size: 26px;
 }
 
 .categorizeItemGrabbed {

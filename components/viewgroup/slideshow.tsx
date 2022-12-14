@@ -2,6 +2,8 @@ import * as React from "react";
 import {ReactNode, SetStateAction, useEffect, useState} from "react";
 import {AnimatePresence, motion} from "framer-motion";
 import styles from "../../styles/slideshow.module.css";
+import {IconButton} from "@mui/material";
+import {ArrowLeft, ArrowRight} from "@mui/icons-material";
 
 const variants = {
     enter: (direction: number) => {
@@ -62,7 +64,7 @@ export default function Slideshow({ nodes, currentIndex, setCurrentIndex }: { no
                         x: { type: "spring", stiffness: 300, damping: 30 },
                         opacity: { duration: 0.1 }
                     }}
-                    drag="x"
+                    drag={false}
                     dragConstraints={{ left: 0, right: 0 }}
                     dragElastic={1}
                     onDragEnd={(e, { offset, velocity }) => {
@@ -74,8 +76,12 @@ export default function Slideshow({ nodes, currentIndex, setCurrentIndex }: { no
                             paginate(-1);
                         }
                     }}
-                    style={{ width: "100%", height: "100%" }}
+                    style={{ width: "100%", height: "100%", position: "relative" }}
                 >
+                    <div style={{ backgroundColor: "#22222280", padding: 10, borderRadius: 20, position: "absolute", bottom: 10, left: 10, width: 250, height: 100, display: "grid", gridTemplateColumns: "1fr 1fr", alignItems: "center" }}>
+                        <IconButton onClick={() => paginate(-1)}><ArrowLeft style={{ color: "#bbb", fontSize: 40 }} /></IconButton>
+                        <IconButton onClick={() => paginate(1)}><ArrowRight style={{ color: "#bbb", fontSize: 40 }}/></IconButton>
+                    </div>
                     {nodes[currentIndex]}
                 </motion.div>
             </AnimatePresence>

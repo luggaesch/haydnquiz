@@ -133,3 +133,20 @@
 .resumeContainer > a > svg {
     color: var(--text);
 }
+
+.adminTableBody > tr:nth-child(even) {
+    background-color: #333333;
+}
+
+.adminTableRow {
+    color: white;
+}
+
+.adminTableRow > th {
+    color: inherit;
+}
+
+.adminTableRow > td {
+    color: inherit;
+    text-align: center;
+}

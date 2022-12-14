@@ -1,7 +1,7 @@
 import {Topics} from "../../../data/topics";
 import {Jokers} from "../../../data/jokers";
-import mongoose from "mongoose";
-import {QuestionTypes, SolutionTypes} from "../../../types/question";
+import mongoose, {Mongoose} from "mongoose";
+import {QuestionTypes, SolutionTypes} from "../../../types/questions";
 import {MediaTypes} from "../../../types/media";
 
 const QuestionSchema = new mongoose.Schema({
@@ -74,7 +74,12 @@ const QuestionSchema = new mongoose.Schema({
     ],
     unit: {
         type: String
-    }
+    },
+    categories: [
+        {
+            type: new mongoose.Schema({ name: { type: String, required: true } , items: [ { type: String, required: true } ] })
+        }
+    ]
 });
 
 export default QuestionSchema;

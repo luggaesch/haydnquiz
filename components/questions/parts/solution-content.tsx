@@ -26,6 +26,7 @@ export default function SolutionContent({ question }: { question: Question }) {
                 <AudioPlayer audio={(question as MediaQuestion).media.content!} onFinished={() => {}} />
             }
             <div style={{ position: "relative", display: "flex", justifyContent: "center", alignItems: "center", width: "50%", height: "100%", boxShadow: "0 8px 16px rgba(0,0,0,0.19), 0 3px 3px rgba(0,0,0,0.23)", background: "#151515", borderRadius: 20, fontSize: "3.5em", padding: "10px 20px"  }}>
+                <div className={styles.metaItem} style={{ position: "absolute", top: "50%", left: 0, transform: "translateX(-120%) translateY(-50%)" }}>{question.value}</div>
                 <CoverOverlay />
                 <div style={{ position: "absolute", left: 10, top: 10 }} ><Lightbulb style={{ fontSize: "1.8em" }} /></div>
                 <div style={{ textAlign: "center", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", height: question.solutionType === SolutionTypes.Image ? "100%" : "fit-content", maxHeight: "100%", overflowY: "auto", width: "100%" }}>
