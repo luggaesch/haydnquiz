@@ -42,7 +42,7 @@ export default function Index({ question, onSubmit }: { question?: Question, onS
             topic,
             type: questionType,
             caption,
-            timeInSeconds: questionType === QuestionTypes.Sort || questionType !== QuestionTypes.Categorize ? -1 : time,
+            timeInSeconds: questionType === QuestionTypes.Sort || questionType === QuestionTypes.Categorize ? -1 : time,
             value: hasJokerValue ? -1 : questionValue,
             jokerReward: hasJokerValue ? joker : undefined,
             solution: solutionContent !== "" ? solutionContent : solutionFile[0] && solutionFile[0].url ? solutionFile[0].url : "...",
