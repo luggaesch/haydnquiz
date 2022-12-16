@@ -21,7 +21,6 @@ export enum Topics {
     "Finance" = "Finanzen und Mathematik",
     "History" = "Geschichte und Religion",
     "Literature" = "Literatur und Sprache",
-    "Linguistics" = "Literatur und Sprache",
     "Sports" = "Sport",
     "Mystery" = "Mystery"
 }
@@ -50,8 +49,6 @@ export function getIconByTopic(topic: Topics) {
             return FaCalendar;
         case Topics.Literature:
             return LibraryBooks;
-        case Topics.Linguistics:
-            return Translate;
         case Topics.Sports:
             return Sports;
         case Topics.Mystery:
@@ -81,8 +78,6 @@ export function getColorByTopic(topic: Topics) {
             return "#51d0c5"
         case Topics.Literature:
             return "#8a2cd8"
-        case Topics.Linguistics:
-            return "#bc2ad3";
         case Topics.Sports:
             return "#b2c3c0"
         case Topics.Mystery:
