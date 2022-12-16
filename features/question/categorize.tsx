@@ -92,9 +92,9 @@ function View({ groups, items, categories }: { categories: Category[], groups: {
                                                 animate={successId === group.id ? successAnimation : {}}
                                                 transition={{ repeat: 0, duration: 1 }}
                                                 onAnimationComplete={() => setSuccessId(null)}
-                                                style={{ position: "relative", boxShadow: "var(--elevation-shadow)", width: 400, height: 400, color: "white", backgroundColor: "#282828", borderRadius: "50%", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}
+                                                style={{ position: "relative", boxShadow: "0 8px 16px rgba(0,0,0,0.19), 0 3px 3px rgba(0,0,0,0.23)", width: 400, height: 400, color: "white", backgroundColor: "#282828", borderRadius: "50%", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}
                                     >
-                                        <div style={{ fontSize: 30, transition: "all 0.2s ease-in-out", position: "absolute", top: state["g"+i]?.length === 0 ? "50%" : 15, left: "50%", transform: "translateX(-50%)" + (state["g"+i]?.length === 0 ? " translateY(-50%)" : "") }}>{group.str}</div>
+                                        <div style={{ textAlign: "center", fontSize: 30, transition: "all 0.2s ease-in-out", position: "absolute", top: state["g"+i]?.length === 0 ? "50%" : 15, left: "50%", transform: "translateX(-50%)" + (state["g"+i]?.length === 0 ? " translateY(-50%)" : "") }}>{group.str}</div>
                                         {state["g"+i]?.map((item: { id: string, str: string }, index: number) => {
                                             return (
                                                 <Draggable isDragDisabled={true} draggableId={item.id} index={index} key={item.id}>
