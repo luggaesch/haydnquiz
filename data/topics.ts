@@ -20,8 +20,8 @@ export enum Topics {
     "FoodAndDrinks" = "Essen und Trinken",
     "Finance" = "Finanzen und Mathematik",
     "History" = "Geschichte und Religion",
-    "Literature" = "Literatur",
-    "Linguistics" = "Linguistik",
+    "Literature" = "Literatur und Sprache",
+    "Linguistics" = "Literatur und Sprache",
     "Sports" = "Sport",
     "Mystery" = "Mystery"
 }
