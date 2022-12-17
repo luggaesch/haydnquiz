@@ -120,7 +120,7 @@ export default function Index({ question, onSubmit }: { question?: Question, onS
                 </Form.Item>
                 {[QuestionTypes.Video, QuestionTypes.Hearing, QuestionTypes.Image, QuestionTypes.Quote].includes(questionType) ? <Form.Item label="Media" className={styles.form}>
                         {questionType === QuestionTypes.Quote ?
-                            <Input.TextArea value={mediaContent} onChange={(event) => setMediaContent(event.target.value)} placeholder={"Rosen sind rot..."} maxLength={100} />
+                            <Input.TextArea value={mediaContent} onChange={(event) => setMediaContent(event.target.value)} placeholder={"Rosen sind rot..."} maxLength={200} />
                             : questionType === QuestionTypes.Video || questionType === QuestionTypes.Hearing ?
                                 <Input value={mediaContent} onChange={(event) => setMediaContent(event.target.value)} placeholder={"Enter a URL to a Video or Number of Audio File (Upload currently not supported)"} />
                                 :

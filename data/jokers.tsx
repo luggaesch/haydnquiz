@@ -1,11 +1,11 @@
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {library} from "@fortawesome/fontawesome-svg-core";
 // @ts-ignore
-import {faAnglesUp, faEye, faPeopleRobbery, faPhone, faStarHalfStroke} from "@fortawesome/free-solid-svg-icons"
-import {faWikipediaW, faApple} from "@fortawesome/free-brands-svg-icons";
+import {faAnglesUp, faEye, faPeopleRobbery, faPhone, faStarHalfStroke, faAppleWhole} from "@fortawesome/free-solid-svg-icons"
+import {faWikipediaW} from "@fortawesome/free-brands-svg-icons";
 
-library.add(faPeopleRobbery, faEye, faStarHalfStroke, faAnglesUp, faPhone);
-library.add(faWikipediaW, faApple);
+library.add(faPeopleRobbery, faEye, faStarHalfStroke, faAnglesUp, faPhone, faAppleWhole);
+library.add(faWikipediaW);
 
 export enum Jokers {
     "Wikipedia"= "Wikipedia",
@@ -33,6 +33,6 @@ export function getIconByJoker(joker: Jokers, color?: string, width?: number, he
         case Jokers.Telefon:
             return <FontAwesomeIcon style={{ color: color ?? "#fff", width: width ?? 84, height: height ?? 84 }} width={width ?? 84} height={height ?? 84} icon="phone" />
         case Jokers.Lehrerliebling:
-            return <FontAwesomeIcon style={{ color: color ?? "#fff", width: width ?? 84, height: height ?? 84 }} width={width ?? 84} height={height ?? 84} icon="apple" />
+            return <FontAwesomeIcon style={{ color: color ?? "#fff", width: width ?? 64, height: height ?? 64 }} width={width ?? 64} height={height ?? 64} icon="apple-whole" />
     }
 }
