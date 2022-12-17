@@ -6,7 +6,8 @@ export enum Jokers {
     "Teamwork" = '"Teamwork"',
     "VierGewinnt" = "Vier Gewinnt",
     "Ueberfall" = "Hände Hoch",
-    "Telefon" = "Call me maybe"
+    "Telefon" = "Call me maybe",
+    "Lehrerliebling" = "Lehrerliebling"
 }
 
 type Joker = {
