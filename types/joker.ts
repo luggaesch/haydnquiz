@@ -1,11 +1,12 @@
+import Match from "./match";
+
 export enum Jokers {
     "Wikipedia"= "Wikipedia",
     "DoubleDown" = "Doppelt oder Nichts",
     "Teamwork" = '"Teamwork"',
     "VierGewinnt" = "Vier Gewinnt",
     "Ueberfall" = "Hände Hoch",
-    "Telefon" = "Call me maybe",
-    "Lehrerliebling" = "Lehrerliebling"
+    "Telefon" = "Call me maybe"
 }
 
 type Joker = {

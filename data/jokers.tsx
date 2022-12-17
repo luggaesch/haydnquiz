@@ -3,10 +3,18 @@ import {library} from "@fortawesome/fontawesome-svg-core";
 // @ts-ignore
 import {faAnglesUp, faEye, faPeopleRobbery, faPhone, faStarHalfStroke} from "@fortawesome/free-solid-svg-icons"
 import {faWikipediaW} from "@fortawesome/free-brands-svg-icons";
-import { Jokers } from "../types/joker";
 
 library.add(faPeopleRobbery, faEye, faStarHalfStroke, faAnglesUp, faPhone);
 library.add(faWikipediaW);
+
+export enum Jokers {
+    "Wikipedia"= "Wikipedia",
+    "DoubleDown" = "Doppelt oder Nichts",
+    "Teamwork" = '"Teamwork"',
+    "VierGewinnt" = "Vier Gewinnt",
+    "Ueberfall" = "Hände Hoch",
+    "Telefon" = "Call me maybe"
+}
 
 export function getIconByJoker(joker: Jokers, color?: string, width?: number, height?: number) {
     switch (joker) {
@@ -23,7 +31,5 @@ export function getIconByJoker(joker: Jokers, color?: string, width?: number, he
             return <FontAwesomeIcon style={{ color: color ?? "#fff", width: width ?? 84, height: height ?? 84 }} width={width ?? 84} height={height ?? 84} icon="angles-up" />
         case Jokers.Telefon:
             return <FontAwesomeIcon style={{ color: color ?? "#fff", width: width ?? 84, height: height ?? 84 }} width={width ?? 84} height={height ?? 84} icon="phone" />
-        case Jokers.Lehrerliebling:
-            return <FontAwesomeIcon style={{ color: color ?? "#fff", width: width ?? 84, height: height ?? 84 }} width={width ?? 84} height={height ?? 84} icon="apple" />
     }
 }
