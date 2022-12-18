@@ -23,10 +23,10 @@ export default function TopicSelection({ teams, onSubmit }: { teams: Team[], onS
 
     return (
         <div style={{ width: "100vw", height: "100vh", overflowY: "scroll", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", padding: 10 }}>
-            <div style={{ width: "100%", height: "100%", display: "grid", gridTemplateColumns: "1fr 1fr", justifyContent: "center", gap: 20, padding: 20 }}>
+            <div style={{ width: "100%", overflowY: "scroll", display: "grid", gridTemplateColumns: "1fr 1fr", justifyContent: "center", gap: 20, padding: 20 }}>
                 {teams.map((t, index) => {
                     return (
-                        <div key={index} style={{ zIndex: 2, boxShadow: "var(--elevation-shadow)", borderRadius: 8, backgroundColor: "#222222", padding: 20, display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", gap: 30  }}>
+                        <div key={index} style={{ height: 300, zIndex: 2, boxShadow: "var(--elevation-shadow)", borderRadius: 8, backgroundColor: "#222222", padding: 20, display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", gap: 30  }}>
                             <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", width: 200, borderRight: "2px solid #11111180" }}>
                                 <p style={{ color: "white", fontSize: 40 }}>{t.name}</p>
                                 <div>

@@ -75,14 +75,14 @@ export default function CreditDistribution({ teams, answers, currentJokers, ques
 
     return (
         <div style={{ position: "relative", width: "100%", height: "100%", color: "var(--text)", display: "grid", gridTemplateRows: "1fr 1fr", gridGap: 5, padding: 5 }}>
-            <div style={{ display: "grid", gridTemplateColumns: `repeat(${teams.length}, 1fr)`, gridGap: 5, alignItems: "center" }}>
+            <div style={{ display: "grid", gridTemplateColumns: `repeat(${teams.length}, 1fr)`, gridGap: 5, alignItems: "center", overflowX: "scroll" }}>
                 {teams.map((team) => {
                     const answer = answers.find((a) => a.teamId === team._id);
                     const joker = currentJokers.find((j) => j.teamId === team._id);
                     const points = credits.find((c) => c.id === team._id)?.points!;
                     return (
-                        <div key={team._id} style={{ height: "100%", width: "100%", fontSize: "3.5em", display: "grid", gridTemplateRows: "0.3fr 5fr 0.5fr"  }}>
-                            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", fontSize: "0.3em" }}>
+                        <div key={team._id} style={{ height: "100%", width: "100%", minWidth: 600, fontSize: "3.5em", display: "grid", gridTemplateRows: "0.3fr 5fr 0.5fr"  }}>
+                            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", fontSize: "1em" }}>
                                 {team.name}
                             </div>
                             <div style={{ position: "relative", width: "100%", maxHeight: "100%", boxShadow: "0 8px 16px rgba(0,0,0,0.19), 0 3px 3px rgba(0,0,0,0.23)", background: "#151515", borderRadius: 20, border: `3px dashed ${team.color}80`,  display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", overflow: "auto" }}>

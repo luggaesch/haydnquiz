@@ -128,7 +128,7 @@ function getPopupContentByQuestionType(question: Question, teams?: Team[]) {
                                     <div key={index + "_" + url}
                                          style={{
                                              position: "relative",
-                                             width: "55vw",
+                                             width: "100vw",
                                              height: "100%",
                                              display: "flex",
                                              justifyContent: "center"

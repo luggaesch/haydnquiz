@@ -149,7 +149,7 @@
 
 .guessContainer {
     width: 100%;
-    height: 100%;
+    height: 95%;
     color: var(--text);
     margin: 0;
     position: absolute;
@@ -161,7 +161,8 @@
     grid-column-gap: 20px;
     grid-row-gap: 20px;
     border-radius: 8px;
-    padding: 10px;
+    padding: 20px;
+    overflow-y: scroll;
 }
 
 .box {
@@ -274,6 +275,7 @@
     justify-content: center;
     gap: 10px;
     font-size: 3rem;
+    min-height: 200px;
 }
 
 .input {

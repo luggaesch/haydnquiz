@@ -17,7 +17,7 @@ export default function HideOverlay({ visible, setVisible }: { visible: boolean,
                     }}
                     onClick={() => setVisible(false)}
                     style={{
-                        width: "100vw", height: "100vh", background: "var(--dark-background)", position: "fixed", zIndex: 100, top: 0, left: 0, display: "flex", justifyContent: "center", alignItems: "center", color: "var(--text)", fontSize: "8rem"
+                        width: "85.95vw", height: "100vh", background: "var(--dark-background)", position: "fixed", zIndex: 100, top: 0, left: "14.05vw", display: "flex", justifyContent: "center", alignItems: "center", color: "var(--text)", fontSize: "8rem"
                     }}
                 >
                     ?

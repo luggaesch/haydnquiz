@@ -130,8 +130,9 @@
     justify-content: center;
     align-items: center;
     color: var(--text);
-    font-size: 5.2em;
+    font-size: 11em;
     text-align: center;
+    flex-wrap: wrap;
 }
 
 .imageWrap {

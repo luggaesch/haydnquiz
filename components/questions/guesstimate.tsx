@@ -26,13 +26,18 @@ export default function GuesstimateGame({ solution, teams }: { solution: number,
             <div className={styles.guessContainer}>
                 {teams.map((c, index) => (
                     <div className={styles.inputContainer} key={index}>
-                        <div style={{ borderBottom: "2px solid #111", width: "100%", textAlign: "center" }}>{c.name}</div>
-                        <Input className={styles.input} style={{ borderColor: c.color }}
-                               inputMode="numeric" placeholder={`Team ${c.name}`}
+                        <div style={{ borderBottom: "2px solid #111", width: "100%", textAlign: "center", background: c.color + "10", borderRadius: 8, padding: 5 }}>{c.name}</div>
+                        {!results ?
+                            <Input className={styles.input} style={{ borderColor: c.color }}
+                               inputMode="numeric" placeholder={`Schätzung eingeben...`}
                                value={values[index]} onChange={(event) => handleValueChange(event.target.value, index)}
                                type="number"
-                        />
-                        {results && <p style={{  }}>{Math.abs(results[index])}</p>}
+                            />
+                            :
+                        <p style={{ color: [...results].sort((a, b) => {
+                                return Math.abs(a) - Math.abs(b);
+                            })[0] === results[index] ? "var(--accent)" : "#fff" }}>{Math.abs(results[index]).toFixed(3)}</p>
+                        }
                     </div>
                 ))}
             </div>
