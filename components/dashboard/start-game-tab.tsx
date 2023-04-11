@@ -91,7 +91,7 @@ export default function NewGameTab({ selectedQuizId, setSelectedQuizId, quizzes,
                                                         <div onClick={() => setCurrentlySelectedTeamId(t._id)} key={t._id} style={{ cursor: "pointer", borderRadius: 12, backgroundColor: t._id === currentlySelectedTeamId ? "#333" : "var(--question-item)", display: "grid", gridTemplateRows: "1fr 3fr", boxShadow: "0 8px 16px rgba(0,0,0,0.19), 0 3px 3px rgba(0,0,0,0.23)" }}>
                                                             <div style={{ textAlign: "center", fontSize: "3em", borderBottom: "1px solid var(--dark-paper)", color: "var(--text)" }}>{t.name}</div>
                                                             <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", padding: "0.5em" }}>
-                                                                {[...Array(t.numOfPlayers)].map((e, index) => (
+                                                                {[...Array(t.players.length)].map((e, index) => (
                                                                     <Person style={{ cursor: "pointer", fontSize: "4em", color: t.color }} key={"p_" + index} />
                                                                 ))}
                                                             </div>
@@ -111,7 +111,7 @@ export default function NewGameTab({ selectedQuizId, setSelectedQuizId, quizzes,
                                 <div onClick={() => setSelectedTeamIds(selectedTeamIds.filter((id) => t._id !== id))} key={t._id} style={{ cursor: "pointer", borderRadius: 12, backgroundColor: "var(--question-item)", display: "grid", gridTemplateRows: "1fr 3fr", boxShadow: "0 8px 16px rgba(0,0,0,0.19), 0 3px 3px rgba(0,0,0,0.23)" }}>
                                     <div style={{ textAlign: "center", fontSize: "2em", borderBottom: "1px solid var(--dark-paper)" }}>{t.name}</div>
                                     <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", padding: "0.5em" }}>
-                                        {[...Array(t.numOfPlayers)].map((e, index) => (
+                                        {[...Array(t.players.length)].map((e, index) => (
                                             <Person style={{ cursor: "pointer", fontSize: "3em", color: t.color }} key={"p_" + index} />
                                         ))}
                                     </div>

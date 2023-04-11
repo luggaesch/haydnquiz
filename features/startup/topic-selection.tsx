@@ -30,7 +30,7 @@ export default function TopicSelection({ teams, onSubmit }: { teams: Team[], onS
                             <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", width: 200, borderRight: "2px solid #11111180" }}>
                                 <p style={{ color: "white", fontSize: 40 }}>{t.name}</p>
                                 <div>
-                                    {[...Array(t.numOfPlayers)].map((e, index) => (
+                                    {[...Array(t.players.length)].map((e, index) => (
                                         <Person style={{color: t.color}} key={"p_" + index}/>
                                     ))}
                                 </div>
