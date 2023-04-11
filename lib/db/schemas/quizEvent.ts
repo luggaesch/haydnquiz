@@ -10,6 +10,10 @@ const QuizEventSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    description: {
+        type: String,
+        required: true
+    },
     quizId: {
         type: String,
         required: true
@@ -18,6 +22,20 @@ const QuizEventSchema = new mongoose.Schema({
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: "team",
+            required: true,
+            default: []
+        }
+    ],
+    solos: [
+        {
+            type: new mongoose.Schema({
+                name: { type: String, required: true },
+                selectedDays: [
+                    {
+                        type: Date, required: true, default: []
+                    }
+                ]
+            }),
             required: true,
             default: []
         }

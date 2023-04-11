@@ -7,6 +7,7 @@ import {z} from "zod";
 
 const RequestBody = z.object({
     name: z.string(),
+    description: z.string(),
     quizId: z.string(),
     availableDays: z.array(z.date()),
 });
@@ -20,14 +21,14 @@ export default async function handler(
         if (!RequestBody.safeParse(requestBody)) {
             res.status(500).send("Malformed Request");
         }
-        const { name, quizId, availableDays } = requestBody;
+        const { name, description, quizId, availableDays } = requestBody;
         const session = await unstable_getServerSession(req, res, authOptions);
         if (!session) {
             res.status(403).send("Access to requested resource prohibited.");
             return;
         }
         await connectMongo;
-        const event = await QuizEventModel.create({ owner: session.user.id, name, quizId, availableDays });
+        const event = await QuizEventModel.create({ owner: session.user.id, name, description, quizId, availableDays });
         res.send(JSON.stringify(event));
     } else {
         res.status(404).send({});
