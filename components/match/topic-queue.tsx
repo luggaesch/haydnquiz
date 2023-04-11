@@ -1,5 +1,5 @@
 import {getColorByTopic, getIconByTopic} from "../../data/topics";
-import Question from "../../types/question";
+import Question from "../../types/questions";
 
 export default function TopicQueue({ currentQuestionIndex, questions, handleQueueItemClick }: { currentQuestionIndex: number, questions: Question[], handleQueueItemClick: (index: number) => void }) {
 

@@ -22,7 +22,7 @@ export default function TeamDisplay({ teams, jokers, currentJokerName, handleJok
                             <div>
                                 <p>{t.name}</p>
                                 <div>
-                                    {[...Array(t.numOfPlayers)].map((e, index) => (
+                                    {[...Array(t.players.length)].map((e, index) => (
                                         <Person style={{color: t.color}} key={"p_" + index}/>
                                     ))}
                                 </div>

@@ -4,12 +4,12 @@ import PopupState, {bindPopover, bindTrigger} from "material-ui-popup-state";
 import {FaPlus} from "react-icons/fa";
 import styles from "../../styles/dashboard.module.css";
 import Popover from "@mui/material/Popover";
-import Question from "../../types/question";
 import {getColorByTopic, getIconByTopic} from "../../data/topics";
 import {EditOutlined, PlayArrowOutlined} from "@mui/icons-material";
 import {DashboardTabs} from "../../pages/dashboard";
 import {Input} from "antd";
 import Link from "next/link";
+import Question from "../../types/questions";
 
 export default function QuizzesTab({ quizzes, setTab, setSelectedQuizId, updateQuizzes }: { quizzes: Quiz[], setTab: Dispatch<SetStateAction<DashboardTabs>>, setSelectedQuizId: Dispatch<SetStateAction<string | undefined>>, updateQuizzes: (name: string) => void }) {
     const [quizName, setQuizName] = useState("")

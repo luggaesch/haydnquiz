@@ -1,3 +1,4 @@
+import {z} from "zod";
 
 export enum MediaTypes {
     "Audio" = "Audio",
@@ -6,18 +7,15 @@ export enum MediaTypes {
     "Text" = "Text"
 }
 
-export interface MediaInterface {
-    _id?: string,
-    type: MediaTypes,
-    content?: string,
-    sources?: string[]
-}
+export const MediaSchema = z.object({
+    _id: z.string().optional(),
+    type: z.nativeEnum(MediaTypes),
+    content: z.string().optional(),
+    sources: z.array(z.string()).optional()
+});
 
-type Media = {
-    _id?: string,
-    type: MediaTypes,
-    content?: string,
-    sources?: string[]
-}
+
+
+type Media = z.infer<typeof MediaSchema>;
 
 export default Media;
