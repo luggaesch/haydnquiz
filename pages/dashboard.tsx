@@ -1,5 +1,5 @@
 import {GetServerSideProps} from "next";
-import {History, ListAltOutlined, PlayArrowOutlined} from "@mui/icons-material";
+import {EventAvailable, History, ListAltOutlined, PlayArrowOutlined} from "@mui/icons-material";
 import Quiz from "../types/quiz";
 import axios from "axios";
 import {getSession} from "next-auth/react";
@@ -19,6 +19,7 @@ import Team from "../types/team";
 import QuizzesTab from "../components/dashboard/quizzes-tab";
 import {useRouter} from "next/router";
 import Layout from "../components/layout";
+import CreateEvent from "../features/dashboard/create-event";
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const session = await getSession(context);
@@ -49,6 +50,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 }
 
 export enum DashboardTabs {
+    Events,
     Resume,
     New,
     Quizzes,
@@ -69,7 +71,7 @@ function DashboardComponent({ user, quizzes, unfinishedMatches, teams }: { user:
     const { push } = useRouter();
     const [currentQuizzes, setCurrentQuizzes] = useState(quizzes);
     const [currentTeams, setCurrentTeams] = useState(teams);
-    const [tab, setTab] = useState<DashboardTabs>(DashboardTabs.Resume);
+    const [tab, setTab] = useState<DashboardTabs>(DashboardTabs.Events);
     const [selectedQuizId, setSelectedQuizId] = useState(quizzes[0] ? quizzes[0]._id : undefined);
 
     async function updateTeams(name: string, numOfMembers: number, color: string) {
@@ -87,6 +89,8 @@ function DashboardComponent({ user, quizzes, unfinishedMatches, teams }: { user:
 
     function getComponentByTab() {
         switch (tab) {
+            case DashboardTabs.Events:
+                return <CreateEvent quizzes={quizzes} />
             case DashboardTabs.Resume:
                 return <ResumeTab matches={unfinishedMatches} setTab={setTab} />
             case DashboardTabs.New:
@@ -113,6 +117,10 @@ function DashboardComponent({ user, quizzes, unfinishedMatches, teams }: { user:
                         <div style={{ fontSize: "1.5em" }}>{user.name}</div>
                     </div>
                     <div className={styles.sideMenu}>
+                        <div onClick={() => setTab(DashboardTabs.Events)}>
+                            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", fontSize: "0.8em" }}><EventAvailable /></div>
+                            <div>Events</div>
+                        </div>
                         <div onClick={() => setTab(DashboardTabs.Resume)}>
                             <div style={{ display: "flex", justifyContent: "center", alignItems: "center", fontSize: "0.8em" }}><VscDebugContinue /></div>
                             <div>Resume</div>

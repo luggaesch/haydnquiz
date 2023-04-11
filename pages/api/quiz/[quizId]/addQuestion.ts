@@ -1,7 +1,6 @@
 import {NextApiRequest, NextApiResponse} from "next";
 import connectMongo from "../../../../lib/db/connectMongo";
 import {QuestionModel, QuizModel} from "../../../../lib/db/models";
-import Question from "../../../../types/question";
 
 export default async function handler(
     req: NextApiRequest,

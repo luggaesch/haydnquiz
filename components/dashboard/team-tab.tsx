@@ -44,7 +44,7 @@ export default function TeamTab({ teams, updateTeams }: { teams: Team[], updateT
                     <div key={t._id} style={{ borderRadius: 12, backgroundColor: "var(--question-item)", display: "grid", gridTemplateRows: "1fr 3fr" }}>
                         <div style={{ textAlign: "center", fontSize: "3em", borderBottom: "1px solid var(--dark-paper)" }}>{t.name}</div>
                         <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", padding: 10 }}>
-                            {[...Array(t.numOfPlayers)].map((e, index) => (
+                            {[...Array(t.players.length)].map((e, index) => (
                                 <Person style={{ cursor: "pointer", fontSize: "4rem", color: t.color }} key={"p_" + index} />
                             ))}
                         </div>

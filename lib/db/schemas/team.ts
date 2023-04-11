@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import {QuestionTypes} from "../../../types/question";
+import {QuestionTypes} from "../../../types/questions";
 
 const TeamSchema = new mongoose.Schema({
     user: {
@@ -11,10 +11,10 @@ const TeamSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    numOfPlayers: {
-        type: Number,
-        required: true
-    },
+    players: [{
+        type: String,
+        required: true,
+    }],
     color: {
         type: String,
         required: true

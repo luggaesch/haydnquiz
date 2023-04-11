@@ -1,4 +1,5 @@
 import Match from "./match";
+import {z} from "zod";
 
 export enum Jokers {
     "Wikipedia"= "Wikipedia",
@@ -10,15 +11,19 @@ export enum Jokers {
     "Lehrerliebling" = "Lehrerliebling"
 }
 
-type Joker = {
-    _id?: string;
-    name: Jokers;
-    teamId: string;
-    assignedQuestionId: string | undefined;
-}
+export const JokerSchema = z.object({
+    _id: z.string().optional(),
+    name: z.nativeEnum(Jokers),
+    teamId: z.string(),
+    assignedQuestionId: z.string().optional()
+});
+
+
+
+type Joker = z.infer<typeof JokerSchema>;
 
 export function isJoker(joker: Joker | any): joker is Joker {
-    return (joker as Joker).name !== undefined;
+    return JokerSchema.safeParse(joker).success;
 }
 
 export default Joker;

@@ -2,7 +2,7 @@ import styles from "../../../styles/question.module.css";
 import {motion} from "framer-motion";
 import React, {useMemo, useState} from "react";
 import getAverageIndex from "../../../lib/median";
-import {SortElement} from "../../../types/question";
+import {SortElement} from "../../../types/questions/sort-question";
 import {FaArrowDown, FaArrowUp} from "react-icons/fa";
 import {useMediaQuery} from "react-responsive";
 

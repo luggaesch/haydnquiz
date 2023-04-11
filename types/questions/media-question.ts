@@ -1,8 +1,11 @@
-import Question from "./index";
-import Media from "../media";
+import Question, {QuestionSchema} from "./index";
+import Media, {MediaSchema} from "../media";
+import {z} from "zod";
 
-type MediaQuestion = Question & {
-    media: Media;
-}
+export const MediaQuestionSchema = QuestionSchema.extend({
+    media: MediaSchema
+})
+
+type MediaQuestion = z.infer<typeof MediaQuestionSchema>;
 
 export default MediaQuestion;

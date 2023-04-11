@@ -5,10 +5,12 @@ import QuestionSchema from "./schemas/question";
 import QuizSchema from "./schemas/quiz";
 import TeamSchema from "./schemas/team";
 import Media from "../../types/media";
-import Question from "../../types/question";
+import Question from "../../types/questions";
 import Quiz from "../../types/quiz";
 import Team from "../../types/team";
 import Match from "../../types/match";
+import QuizEvent from "../../types/quizEvent";
+import QuizEventSchema from "./schemas/quizEvent";
 
 let MediaModel: mongoose.Model<Media>;
 try {
@@ -45,4 +47,11 @@ try {
     MatchModel = mongoose.model<Match>("match", MatchSchema);
 }
 
-export {MatchModel, MediaModel, QuestionModel, TeamModel, QuizModel};
+let QuizEventModel = mongoose.Model<QuizEvent>;
+try {
+    QuizEventModel = mongoose.model<QuizEvent>("quizEvent");
+} catch(err) {
+    QuizEventModel = mongoose.model<QuizEvent>("quizEvent", QuizEventSchema);
+}
+
+export {MatchModel, MediaModel, QuestionModel, TeamModel, QuizModel, QuizEventModel};
