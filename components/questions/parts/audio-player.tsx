@@ -32,7 +32,7 @@ export default function AudioPlayer({ audio, onFinished, shrink }: { audio: stri
             }}>
                 <PlaybackIcon style={{ fontSize: "inherit" }} />
             </div>
-            <ReactPlayer playing={playing} onEnded={() => {
+            <ReactPlayer  playing={playing} onEnded={() => {
                 setHasFinished(true);
                 onFinished();
             }} onProgress={(state) => setCurrentTime(state.playedSeconds)} onDuration={(duration) => setDuration(duration)} url={audio} width={0} height={0} />

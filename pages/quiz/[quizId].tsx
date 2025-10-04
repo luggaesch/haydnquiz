@@ -75,6 +75,7 @@ export default function QuizPage({ quiz }: { quiz: Quiz }) {
         }
         currentQuiz.stops = stops;
         setCurrentQuiz({...currentQuiz});
+        console.log(currentQuiz);
         const res = await axios.post(`/api/quiz/update`, { quiz: currentQuiz });
         console.log(res);
     }

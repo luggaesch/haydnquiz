@@ -3,10 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "install": "npm install",
     "dev": "next dev",
     "dev_old": "NODE_OPTIONS=--max-old-space-size=16000 next dev",
     "build": "next build",
-    "start": "next start -p $PORT",
+    "start": "next start -p 3000",
     "lint": "next lint",
     "heroku-postbuild": "echo '{\"presets\": [\"next/babel\"]}' > .babelrc && npm run build",
     "heroku-cleanup": "rm -rf .next/cache && find node_modules/@next -depth -maxdepth 1 -type d -name 'swc*' -exec rm -rf {} \\; -prune #Remove cache and SWC binaries to reduce heroku slug size"

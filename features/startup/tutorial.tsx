@@ -21,10 +21,10 @@ export default function Tutorial({ onSubmit }: { onSubmit: () => void }) {
     const sections: Section[] = [
         { icon: Group, text: strings.teams },
         { icon: Assignment, text: strings.questions },
-        { icon: Topic, text: strings.topics, handler: () => setShowOverlay(true) },
+        // { icon: Topic, text: strings.topics, handler: () => setShowOverlay(true) },
         { icon: BsSegmentedNav, text: strings.blocks },
-        { icon: GiCardJoker, text: strings.jokers },
-        { icon: BiLaugh, text: strings.bonus },
+        // { icon: GiCardJoker, text: strings.jokers },
+        // { icon: BiLaugh, text: strings.bonus },
         { icon: Smartphone, text: strings.phones },
     ]
 
